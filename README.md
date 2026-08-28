@@ -54,7 +54,7 @@ The project needs Python 3.11 or later. `uv` fetches its own interpreter, so
 
 ```bash
 uv sync
-uv run pytest                  # 106 offline tests, about a second
+uv run pytest                  # 114 offline tests, about a second
 ```
 
 ```bash
@@ -152,12 +152,16 @@ numeric value, which changes with the model. A match trips a circuit breaker.
 `field_sources` makes the model's blast radius auditable, and it agrees with
 the data on every row. The 25 Morrisons rows hold 336 values: `jsonld` 172,
 `regex` 75, `css` 22, `llm` 22, `missing` 45. The 24 Whisky Exchange rows hold
-240: `css` 120, `regex` 24, `missing` 96.
+312: `css` 174, `regex` 24, `missing` 114.
 
-Seven attributes are filled 25 of 25: `price_gbp`, `size_ml`, `sku`,
+Morrisons fills seven attributes 25 of 25: `price_gbp`, `size_ml`, `sku`,
 `availability`, `name`, `brand` and `size_raw`. The rest: `description` 22,
 `flavour_style` 22, `abv_percent` 20, `pack_type` 17, `country_of_origin` 13,
 `price_was` 11.
+
+The Whisky Exchange fills seven 24 of 24: `sku`, `name`, `brand`, `price_gbp`,
+`size_raw`, `size_ml` and `abv_percent`. Then `availability` 23,
+`is_on_promotion` 4 and `price_was` 3.
 
 ### What the audit found
 
@@ -193,33 +197,38 @@ about two seconds.
 The Whisky Exchange publishes no brand field, so the adapter reads words from
 the start of the name. It stops at the first category, style or place word,
 and it takes four words at most. A leading category word is kept, so `Gin Mare`
-survives. That gives `The Botanist`, `Papa Salt`, `Ki No Bi`, `Isle of Harris`
-and `Monkey 47`. It stays a heuristic, and approximate.
-`Roku Noryo Tea Edition Gin` gives `Roku Noryo Tea`, where the brand is `Roku`.
-Morrisons needs none of this, because its JSON-LD carries a real brand field.
+survives. That gives `The Botanist`, `Ki No Bi` and `Isle of Harris`. It
+stays approximate. `Roku Noryo Tea Edition Gin` gives `Roku Noryo Tea`, where
+the brand is `Roku`. Morrisons needs none of this, because its JSON-LD carries
+a real brand field.
 
-Seven of the 19 columns are empty on every Whisky Exchange row: `sku`,
-`price_was`, `pack_type`, `country_of_origin`, `flavour_style`, `availability`
-and `description`. The card holds the name and the price as well, and nothing
-else. The product pages hold no JSON-LD and no description block. The words
-`Country`, `Producer` and `Distillery` there belong to the navigation, not the
-product. Fetching 24 product pages would cost 24 requests and return almost
-nothing, so the columns stay empty rather than guessed. The six filled columns
-are full at 24 of 24: `name`, `brand`, `price_gbp`, `size_raw`, `size_ml` and
-`abv_percent`. Two retailers, the same category, and one publishes about twice
-the structured data of the other. For anyone comparing a category across
-retailers, that asymmetry is itself a result.
+The card carries more than the name and the price. It also holds a promotion
+flash, a basket button and the product id in the href. The adapter reads all
+three. `sku` comes from the URL, which has the shape
+`/p/14553/monkey-47-schwarzwald-dry-gin`. `availability` comes from the basket
+button. One card has no button. That row stays null, because a missing button
+is not a statement about stock. Three promotion flashes read `Save £3`,
+`Save £15` and `Save £8`, so `price_was` is the current price plus the saving.
+The fourth reads `Free Gift`. It names no money, so `price_was` stays null
+there while `is_on_promotion` is true.
+
+Four columns are empty on every row: `pack_type`, `country_of_origin`,
+`flavour_style` and `description`. They share one cause. Each needs a product
+description, and this listing publishes no prose. The product pages hold none
+either: no JSON-LD, no description block. The words `Country`, `Producer` and
+`Distillery` there belong to the navigation, not the product. Fetching 24
+product pages would cost 24 requests and return almost nothing, so the tool
+does not. Morrisons still publishes more per row, and for anyone comparing a
+category across retailers that asymmetry is itself a result.
 
 ## The Whisky Exchange, live
 
-The adapter is verified against fixtures built from the site's real markup,
-and it runs live.
-
-During the build the site returned 403 with a Cloudflare JavaScript challenge,
-and this README called it a permanent site-wide block. That was wrong. Two of
-the three IP addresses in the test were VPN endpoints, and the home page test
-used the VPN as well. Cloudflare scores VPN and datacentre ranges as
-suspicious by default, so those 403s prove nothing about the site's policy.
+The adapter runs live. During the build the site returned 403 with a
+Cloudflare JavaScript challenge, and this README called it a permanent
+site-wide block. That was wrong. Two of the three IP addresses in the test
+were VPN endpoints, and the home page test used one too. Cloudflare scores VPN
+and datacentre ranges as suspicious by default, so those 403s prove nothing
+about the site's policy.
 The one test on a residential connection came minutes after this tool had made
 about 26 requests to the host. That is a flag the tool earned.
 
@@ -233,13 +242,13 @@ single response the two look identical.
 The live run found a second defect. `category_url` was `/c/40/gin`, and that
 path redirects to `/c/40/single-malt-scotch-whisky`. The adapter would have
 collected whisky and labelled it gin. The fixture came from the same page, so
-the tests passed while the code and the fixture were both wrong about what the
-page was. The gin category is `/c/338/gin`, titled "Gin and Jenever".
-Extraction correct, meaning wrong. Only the live run found it.
+the tests passed while both were wrong about what the page was. The gin
+category is `/c/338/gin`, titled "Gin and Jenever". Extraction correct,
+meaning wrong.
 
 ## Tests
 
-106 tests, all offline against fixtures built from real markup, with the model
+114 tests, all offline against fixtures built from real markup, with the model
 faked. The suite makes no network call, even with a real key in `.env`. It
 covers both parsers, the ABV, size and origin patterns, the promotion price,
 the robots paths, the cache and the quota breaker.
@@ -252,8 +261,7 @@ catches a partial failure: a fall from 95% to 5% is a broken selector, not a
 change in stock.
 
 Bot defence escalation. Watch the status codes and the response size, and
-alert on the first 403 rather than after 25 wasted requests. A block can also
-be transient, so retest before anyone rewrites an adapter.
+alert on the first 403 rather than after 25 wasted requests.
 
 Silent model drift. The model returns valid JSON that is wrong, the schema
 validates, and nothing raises; the Fever-Tree origin is the example. Keep a
