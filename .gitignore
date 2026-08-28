@@ -20,4 +20,4 @@ venv/
 Thumbs.db
 
 # Local run output
-run.log
+run*.log
