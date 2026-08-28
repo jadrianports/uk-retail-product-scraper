@@ -208,11 +208,7 @@ result, not the route, and a test asserts that both satisfy it.
 The adapter is verified against HTML fixtures built from the site's real
 markup, captured while it still served plain HTML. Its tests pass.
 
-A live run now returns a Cloudflare JavaScript challenge instead of the
-category page: the body holds `Just a moment...`, `Enable JavaScript and
-cookies`, and the marker `Cloudflare`. Three controlled requests confirm this,
-including one with a plain Chrome User-Agent that had returned 200 for the
-same URL earlier that day. Nothing about the client changed.
+A live run now returns a Cloudflare JavaScript challenge instead of the category page. The body holds `Just a moment...`, `Enable JavaScript and cookies`, and the marker `Cloudflare`. This request from three different IP addresses, including two on a VPN in a different country, returned 403 with the same challenge. The site's home page also returned 403. This is a site-wide block, not tied to this client or this path.
 
 ## Tests
 
