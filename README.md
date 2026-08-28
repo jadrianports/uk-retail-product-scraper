@@ -1,19 +1,19 @@
 # UK Retail Product Scraper
 
-This tool captures product attributes for one category from a UK grocery
-retailer, one row per product and one column per attribute, to CSV and JSON.
-The shipped dataset is 25 gin products from Morrisons, 19 columns wide. A
-second adapter covers gin at The Whisky Exchange; it is fixture-tested, but it
-cannot run live. See "The Whisky Exchange, live" below.
+This tool captures product attributes for one category from a UK retailer,
+one row per product and one column per attribute, to CSV and JSON. Two
+datasets ship: 25 gin products from Morrisons in `data/products.csv`, and 24
+gin products from The Whisky Exchange in `data/whisky_exchange/products.csv`.
+Both are 19 columns wide.
 
 Plain HTTP, not a browser: both sites serve product data in HTML, so a browser
 would add a large dependency for no extra data.
 
 ## Run it
 
-The dataset is committed, so `data/products.csv` can be read with no setup.
-
-The first row of `data/products.csv`:
+Both datasets are committed, so they can be read with no setup. The first
+row of `data/products.csv`, without `product_url`, `description` and
+`field_sources`:
 
 ```
 retailer            morrisons           availability       InStock
@@ -25,10 +25,6 @@ price_gbp           23.5                country_of_origin  (empty)
 price_was           30.5                flavour_style      Invigorating clean and crisp
 is_on_promotion     True                abv_percent        41.8
 ```
-
-Columns `product_url`, `description`, and `field_sources` are not shown.
-The `field_sources` column records where each value came from: `price_gbp`
-from `jsonld`, `price_was` from `css`, `abv_percent` from `regex`.
 
 Clone the repository:
 
@@ -49,21 +45,17 @@ The project needs Python 3.11 or later. `uv` fetches its own interpreter, so
 
 ```bash
 uv sync
-uv run pytest                  # 87 offline tests, about a second
+uv run pytest                  # 91 offline tests, about a second
 ```
-
-The tests need no API key and no network. They are the fastest check that the
-tool works.
 
 ```bash
 cp .env.example .env
 uv run scrape                  # Morrisons, 25 products
-uv run scrape --retailer whisky_exchange --limit 20   # exits 1, see below
+uv run scrape --retailer whisky_exchange   # 24 products, one request
 uv run scrape --no-llm --out out/run1
 ```
 
-`uv run scrape` makes about 26 live requests to Morrisons: the listing page,
-then one per product. Pages are cached, so a second run makes none.
+Every 200 response is cached, so a second run makes no live request.
 
 `.env` holds `GEMINI_API_KEY` for the model and `SCRAPER_CONTACT`, an email for
 the `User-Agent` header. Without the key, derived fields are `null` and the run
@@ -83,10 +75,7 @@ A robots.txt check came before any code.
 | The Whisky Exchange | Permits browse. Denies `/api/product/productlistdata`. | Yes. 31 cards, no JSON-LD. | Second |
 | Asda | `Allow: /`, plus `Content-Signal: ai-train=no`. | No. Client-rendered. | Rejected |
 | Ocado | Unreadable. Holds `x-amzn-waf-action: challenge`. | | Rejected |
-| Tesco | 403 on robots.txt. | | Rejected |
-| Sainsbury's | 403 on robots.txt. | | Rejected |
-| Co-op | 403 on robots.txt. | | Rejected |
-| Iceland | 403 on robots.txt. | | Rejected |
+| Tesco, Sainsbury's, Co-op, Iceland | 403 on robots.txt. | | Rejected |
 | Waitrose | Connection refused. | | Rejected |
 | Booths | Permits everything. | No catalogue. | Rejected |
 
@@ -102,9 +91,9 @@ gave 403, Chrome gave 200, and Chrome with the tool name and contact appended
 gave 200. `USER_AGENT` in `fetch.py` sends that last form.
 
 The reasoning: robots.txt is the site's stated policy and it permits these
-paths, while the WAF is a blunt string filter. The tool stays identifiable and
-obeys robots.txt at run time. The counter-argument: a block is a block, and a
-production deployment should get the retailer's written agreement instead.
+paths, while the WAF is a blunt string filter. The counter-argument: a block
+is a block, and a production deployment should get the retailer's written
+agreement instead.
 
 No IP rotation, no proxy pool, no CAPTCHA solving, no browser. The tool never
 continues past an explicit rate-limit response, and a JavaScript challenge is
@@ -113,9 +102,7 @@ where it stops.
 ## Politeness and reliability
 
 One request per second with jitter, single-threaded. robots.txt is read once
-per host, and an unreadable one denies every path there. Retries are three
-attempts, on 429 and 5xx only. Every 200 response is cached, so re-runs cost
-the retailers nothing.
+per host. Retries are three attempts, on 429 and 5xx only.
 
 ### The fail-loud gate
 
@@ -136,8 +123,7 @@ so a run that parses nothing leaves a header-only CSV. It fired for real: 0 of
 
 The split follows what each source can prove. `flavour_style` needs prose read
 and judged. ABV is a number in a known range, so a model answer is checked with
-`0 <= value <= 100`, not a truthiness test, because 0.0 is a real ABV. A field
-no source states stays `null`.
+`0 <= value <= 100`, not a truthiness test, because 0.0 is a real ABV.
 
 The model is `gemini-3.5-flash-lite` through `google-genai`, with structured
 output against the `Derived` schema. Gemini is a cost choice; a swap to Claude
@@ -155,37 +141,35 @@ numeric value, which changes with the model. A match trips a circuit breaker.
 
 ## Provenance and fill rates
 
-`field_sources` records where each value came from, which makes the model's
-blast radius auditable, and it agrees with the data on every row. The 25 rows
-hold 336 values: `jsonld` 172, `regex` 75, `css` 22, `llm` 22, `missing` 45.
+`field_sources` makes the model's blast radius auditable, and it agrees with
+the data on every row. The 25 Morrisons rows hold 336 values: `jsonld` 172,
+`regex` 75, `css` 22, `llm` 22, `missing` 45. The 24 Whisky Exchange rows hold
+240: `css` 120, `regex` 24, `missing` 96.
 
-Seven product attributes are filled 25 of 25: `price_gbp`, `size_ml`, `sku`,
-`availability`, `name`, `brand` and `size_raw`. With `is_on_promotion` and the
-five identity and provenance columns, 13 of 19 columns are complete. The rest:
-`description` 22, `flavour_style` 22, `abv_percent` 20, `pack_type` 17,
-`country_of_origin` 13, `price_was` 11.
+Seven attributes are filled 25 of 25: `price_gbp`, `size_ml`, `sku`,
+`availability`, `name`, `brand` and `size_raw`. The rest: `description` 22,
+`flavour_style` 22, `abv_percent` 20, `pack_type` 17, `country_of_origin` 13,
+`price_was` 11.
 
 ### What the audit found
 
-An audit re-parsed all 25 rows from cached pages with independent code: zero
-parser defects, and three things no test could find.
+An audit re-parsed all 25 rows with independent code: zero parser defects,
+and three things no test could find.
 
-11 of 25 products (44%) show a promotional price beside a struck-through base
+11 of 25 products show a promotional price beside a struck-through base
 price. The dataset first held the promotion price alone, which would distort a
 price analysis. It now holds `price_was` and `is_on_promotion`.
 
 5 of 25 products are tonic water, because Morrisons puts mixers in the gin
-category. They stay: the tool reports what a shopper sees, and `abv_percent` is
-null for all five, so a consumer can filter them.
+category. They stay: the tool reports what a shopper sees, and `abv_percent`
+is null for all five.
 
 Fever-Tree Refreshingly Light Indian Tonic Water recorded `Democratic Republic
 of Congo` for `country_of_origin`, because the description mentions quinine
-sourced there. Nothing raised an error, and the reply validated against the
-schema: valid JSON with wrong content. The origin pattern also over-captured:
-Whitley Neill Black Cherry Gin read as `United Kingdom Brand J`. A stop-word
-list now ends the capture at the next label, and the model no longer fills the
-field. The column went from 4 to 13 values, so the pattern was the
-real gain.
+sourced there. The origin pattern also over-captured: Whitley Neill Black
+Cherry Gin read as `United Kingdom Brand J`. A stop-word list now ends the
+capture at the next label, and the model no longer fills the field. The column
+went from 4 to 13 values, so the pattern was the real gain.
 
 ## Two retailers, two routes
 
@@ -196,20 +180,42 @@ stops. Both meet at
 `collect(fetcher, limit) -> tuple[list[Product], int]`: the Protocol promises
 the result, not the route, and a test asserts that both satisfy it.
 
+The Morrisons run makes about 26 requests, one per product page. The Whisky
+Exchange run makes one request and takes about two seconds. It also fills
+`abv_percent` 24 of 24, against 20 of 25 at Morrisons, because the cards print
+the strength and Morrisons leaves it in free text on each product page.
+
 ## The Whisky Exchange, live
 
 The adapter is verified against fixtures built from the site's real markup,
-captured while it still served plain HTML.
+and it runs live. Its dataset is `data/whisky_exchange/products.csv`.
 
-A live run now returns a Cloudflare JavaScript challenge instead of the
-category page. The body holds `Just a moment...` and the marker `Cloudflare`.
-The same request from three different IP addresses, including two on a VPN in a
-different country, returned 403 with the same challenge. The home page also
-returned 403: a site-wide block, not tied to this client or this path.
+During the build the site returned 403 with a Cloudflare JavaScript challenge,
+and this README called it a permanent site-wide block. That was wrong. Two of
+the three IP addresses in the test were VPN endpoints, and the home page test
+used the VPN as well. Cloudflare scores VPN and datacentre ranges as
+suspicious by default, so those 403s prove nothing about the site's policy.
+The one test on a residential connection came minutes after this tool had made
+about 26 requests to the host. That is a flag the tool earned.
+
+A retest from a normal connection, VPN off, returned 200 and 24 product cards.
+The flag had decayed. Majestic, also 403 over the VPN, returned 200 too.
+
+The check that was missing: when a site blocks you, work out whether it is a
+flag you earned or a policy the site set, and retest from a clean path before
+you conclude. In a single response the two look identical.
+
+The live run found a second defect. `category_url` was `/c/40/gin`, and that
+path redirects to `/c/40/single-malt-scotch-whisky`. The adapter would have
+collected whisky and labelled it gin. The fixture came from the same page, so
+the tests passed while the code and the fixture were both wrong about what the
+page was. The gin category is `/c/338/gin`, titled "Gin and Jenever".
+Extraction correct, meaning wrong, for the third time here. Only the live run
+found it.
 
 ## Tests
 
-87 tests, all offline against fixtures built from real markup, with the model
+91 tests, all offline against fixtures built from real markup, with the model
 faked. The suite makes no network call, even with a real key in `.env`. It
 covers both parsers, the ABV, size and origin patterns, the promotion price,
 the robots paths, the cache and the quota breaker.
@@ -221,10 +227,12 @@ without raising. The 80% gate catches a total failure. A per-field fill-rate
 comparison against the previous run catches a partial one: a fall from 95% to
 5% is a broken selector, not a change in stock.
 
-Bot defence escalation. Morrisons already serves an AWS WAF script, as the 403
-failure above showed, and The Whisky Exchange has moved on to a JavaScript
-challenge. Watch the status codes and the response size, and alert on the first
-403 rather than after 25 wasted requests.
+Bot defence escalation. Morrisons serves an AWS WAF script, and it returned
+403 for all 25 product pages until the User-Agent changed. Watch the status
+codes and the response size, and alert on the first 403 rather than after 25
+wasted requests. A block can also be transient. The alert has to separate a
+flag this tool earned from a policy the site set, so retry once from a clean
+path before anyone rewrites an adapter.
 
 Silent model drift. The model returns valid JSON that is wrong, the schema
 validates, and nothing raises; the Fever-Tree origin is the example. Keep a
@@ -235,11 +243,10 @@ as the flavour.
 
 ## Known limitations
 
-- `country_of_origin` is filled for 13 of 25 rows; the rest do not state it.
 - Two flavour values restate the category: J.J. Gin and Ableforth's Bathtub
   Gin both give `London dry gin`.
 - The Whisky Exchange adapter takes the brand from the first word of the name:
   `Whitley Neill` gives `Whitley`.
+- `flavour_style` is empty for all 24 Whisky Exchange rows. That site
+  publishes no descriptions, so there is no prose to read.
 - Prices are a snapshot, with no price history.
-- The tool is single-threaded on purpose. Slow is the correct trade for one
-  request per second.
