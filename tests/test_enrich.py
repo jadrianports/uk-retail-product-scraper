@@ -52,3 +52,16 @@ def test_extract_origin():
     assert extract_origin("Country of Origin: United Kingdom") == "United Kingdom"
     assert extract_origin("Produce of Scotland") == "Scotland"
     assert extract_origin("nothing here") is None
+
+
+def test_extract_origin_stops_before_the_next_label():
+    # A country name can run straight into the next label with one space.
+    # The capture must stop at the country name, not run into the label.
+    assert (
+        extract_origin("Country of Origin: United Kingdom Brand J Smith Ltd")
+        == "United Kingdom"
+    )
+    assert (
+        extract_origin("Country of Origin: Italy Manufacturer Engine Srl")
+        == "Italy"
+    )

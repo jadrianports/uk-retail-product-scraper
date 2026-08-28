@@ -82,6 +82,19 @@ def test_adapter_set_size_ml_survives_the_regex_pass():
     assert product.field_sources["size_ml"] == "css"
 
 
+def test_origin_stays_missing_when_regex_finds_nothing_even_with_a_model_call():
+    # The model must never fill country_of_origin. It has misattributed a
+    # country the text mentions for another reason (e.g. an ingredient's
+    # source). A model call for the other gaps must not touch origin.
+    product = _product()
+    product.detail_text = "No strength is stated. No origin is stated."
+    enricher = _Enricher(Derived(flavour_style="Floral", abv_percent=41.0))
+    enrich_product(product, enricher)
+    assert enricher.calls == 1
+    assert product.country_of_origin is None
+    assert product.field_sources["country_of_origin"] == "missing"
+
+
 def test_pack_type_missing_is_tagged_even_on_the_early_return_path():
     # abv, origin and flavour are all already filled, so enrich_product
     # returns before the model step. pack_type must still get a source.

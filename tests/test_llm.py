@@ -86,6 +86,13 @@ def test_prompt_does_not_restate_the_schema():
     assert "json" not in prompt.lower()
 
 
+def test_prompt_does_not_ask_for_origin():
+    enricher = GeminiEnricher(client=None, min_interval=0)
+    prompt = enricher.build_prompt("A Gin", "Some text.").lower()
+    assert "origin" not in prompt
+    assert "country" not in prompt
+
+
 def test_prompt_tells_the_model_not_to_repeat_the_product_name():
     enricher = GeminiEnricher(client=None, min_interval=0)
     prompt = enricher.build_prompt("A Gin", "Some text.")
@@ -93,19 +100,25 @@ def test_prompt_tells_the_model_not_to_repeat_the_product_name():
 
 
 def test_out_of_range_abv_is_nulled_and_the_rest_of_the_reply_survives():
-    parsed = Derived(flavour_style="Juniper led", abv_percent=150.0, country_of_origin="England")
+    parsed = Derived(flavour_style="Juniper led", abv_percent=150.0)
     enricher = GeminiEnricher(client=_FakeClient(parsed), min_interval=0)
     result = enricher.derive("A Gin", "Some text.")
     assert result.abv_percent is None
     assert result.flavour_style == "Juniper led"
-    assert result.country_of_origin == "England"
 
 
 def test_zero_abv_survives_as_a_legitimate_value():
-    parsed = Derived(flavour_style="Juniper led", abv_percent=0.0, country_of_origin="England")
+    parsed = Derived(flavour_style="Juniper led", abv_percent=0.0)
     enricher = GeminiEnricher(client=_FakeClient(parsed), min_interval=0)
     result = enricher.derive("A Gin", "Some text.")
     assert result.abv_percent == 0.0
+
+
+def test_derived_has_no_country_of_origin_field():
+    # The model must never be asked for origin: it has misattributed a
+    # country that the text mentions for another reason. Origin is
+    # regex-only now.
+    assert "country_of_origin" not in Derived.model_fields
 
 
 def test_retry_delay_seconds_parses_the_quoted_retry_delay():

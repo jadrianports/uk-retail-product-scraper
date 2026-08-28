@@ -25,22 +25,21 @@ def enrich_product(product, enricher) -> None:
             setattr(product, field, value)
             product.field_sources[field] = "regex"
 
-    # Tag pack_type now. needs_model can return early below, and a field
-    # this function touches must always end up with a source.
+    # Tag pack_type and country_of_origin now. needs_model can return early
+    # below, and a field this function touches must always end up with a
+    # source. The model never fills country_of_origin — see llm.py for why.
     if product.pack_type is None:
         product.field_sources["pack_type"] = "missing"
+    if product.country_of_origin is None:
+        product.field_sources["country_of_origin"] = "missing"
 
-    needs_model = (
-        product.abv_percent is None
-        or product.country_of_origin is None
-        or product.flavour_style is None
-    )
+    needs_model = product.abv_percent is None or product.flavour_style is None
     if not needs_model:
         return
 
     derived = enricher.derive(product.name or "", (product.description or text)[:1500])
 
-    for field in ("flavour_style", "abv_percent", "country_of_origin"):
+    for field in ("flavour_style", "abv_percent"):
         if getattr(product, field) is not None:
             continue
         value = getattr(derived, field)

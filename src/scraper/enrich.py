@@ -23,9 +23,30 @@ _TO_ML = {"cl": 10.0, "ml": 1.0, "l": 1000.0, "litre": 1000.0, "litres": 1000.0}
 # straight into the next label, so an open pattern captures rubbish.
 _PACK_TYPES = ["Glass Bottle", "Plastic Bottle", "Gift Box", "Carton", "Pouch", "Bottle", "Can", "Tin"]
 
+# Real page text can run a label straight into the next label with one
+# space, e.g. "United Kingdom Brand J Smith Ltd". A closed stop-word list
+# stops the capture before the next label, the same way extract_pack_type
+# uses a closed list. This is not a country dataset; it is a label list.
+_ORIGIN_STOP_WORDS = (
+    "Brand|Manufacturer|Additional|Package|Alcohol|Storage|Producer|"
+    "Distributor|Address|Warning|Ingredients|Nutrition"
+)
+# Each extra word carries its own negative lookahead. This stops the
+# match at the first stop word met, however far the run of words goes.
+# A trailing lookahead alone does not work: it lets a greedy match run
+# past a stop word and settle on end-of-string instead.
+_ORIGIN_WORD = r"[A-Za-z][A-Za-z'-]*"
 _ORIGIN_PATTERNS = [
-    re.compile(r"country\s*of\s*origin\s*:?\s*([A-Za-z][A-Za-z ,.'()-]{2,40}?)(?=\s{2,}|[.;]|$)", re.I),
-    re.compile(r"produce of\s+([A-Za-z][A-Za-z ]{2,30}?)(?=\s{2,}|[.;]|$)", re.I),
+    re.compile(
+        rf"country\s*of\s*origin\s*:?\s*({_ORIGIN_WORD}"
+        rf"(?:\s+(?!(?:{_ORIGIN_STOP_WORDS})\b){_ORIGIN_WORD}){{0,4}})",
+        re.I,
+    ),
+    re.compile(
+        rf"produce of\s+({_ORIGIN_WORD}"
+        rf"(?:\s+(?!(?:{_ORIGIN_STOP_WORDS})\b){_ORIGIN_WORD}){{0,4}})",
+        re.I,
+    ),
 ]
 
 

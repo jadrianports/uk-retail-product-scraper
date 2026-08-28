@@ -49,7 +49,9 @@ def _is_daily_quota_exhausted(error_text: str) -> bool:
 class Derived(BaseModel):
     flavour_style: str | None = None
     abv_percent: float | None = None
-    country_of_origin: str | None = None
+    # The model has no field for country of origin. A past reply named a
+    # country the text stated for an ingredient, not for the product. A
+    # null is better than that guess. Origin comes from the regex only.
 
 
 def build_client():
