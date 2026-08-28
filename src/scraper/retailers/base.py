@@ -8,12 +8,13 @@ class Retailer(Protocol):
     category: str
     category_url: str
 
-    def find_product_urls(self, listing_html: str) -> list[str]: ...
-
-    def parse_product(self, html: str, url: str) -> Product: ...
-
     def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
         """Gather this retailer's own products. Each adapter picks its own route.
+
+        This is the contract the CLI uses. Each adapter reaches its products
+        by a different method, so the interface promises the result and not
+        the route. Each implementation owns find_product_urls and parse_product
+        as its own internal strategy.
 
         Return the parsed products and the expected count (the number of
         products the listing offered, capped at limit). A RobotsDenied
