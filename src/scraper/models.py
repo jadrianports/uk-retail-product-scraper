@@ -46,6 +46,9 @@ class Product(BaseModel):
     # Records where each value came from: jsonld, css, regex, llm or missing.
     field_sources: dict[str, str] = Field(default_factory=dict)
 
+    # Visible page text. The extractors read it. It never reaches the output.
+    detail_text: str = ""
+
     def to_row(self) -> dict[str, object]:
         data = self.model_dump()
         data["field_sources"] = json.dumps(self.field_sources, sort_keys=True)
