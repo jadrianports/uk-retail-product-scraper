@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# Cached pages from the retailer sites
+.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Editor and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
