@@ -80,15 +80,23 @@ def enrich_product(product, enricher) -> None:
     product.size_ml = size_to_ml(product.size_raw)
     product.field_sources["size_ml"] = "regex" if product.size_ml is not None else "missing"
 
+    # An adapter can set a field before enrich_product runs (Whisky Exchange
+    # sets abv_percent from the listing card). Only fill a field still empty,
+    # or the regex overwrites a correct value and its true source is lost.
     for field, extractor in (
         ("abv_percent", extract_abv),
         ("pack_type", extract_pack_type),
         ("country_of_origin", extract_origin),
     ):
         value = extractor(text)
-        if value is not None:
+        if getattr(product, field) is None and value is not None:
             setattr(product, field, value)
             product.field_sources[field] = "regex"
+
+    # Tag pack_type now. needs_model can return early below, and a field
+    # this function touches must always end up with a source.
+    if product.pack_type is None:
+        product.field_sources["pack_type"] = "missing"
 
     needs_model = (
         product.abv_percent is None
@@ -106,6 +114,3 @@ def enrich_product(product, enricher) -> None:
         value = getattr(derived, field)
         setattr(product, field, value)
         product.field_sources[field] = "llm" if value is not None else "missing"
-
-    if product.pack_type is None:
-        product.field_sources["pack_type"] = "missing"

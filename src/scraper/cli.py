@@ -42,7 +42,11 @@ def main() -> int:
     # per-URL fetch loop returns null names there. Parse the listing
     # straight through instead, and skip the per-product fetch entirely.
     if hasattr(site, "parse_listing"):
-        products_raw = site.parse_listing(listing)[: args.limit]
+        try:
+            products_raw = site.parse_listing(listing)[: args.limit]
+        except Exception as exc:
+            log.warning("Cannot read the listing page at %s: %s", site.name, exc)
+            products_raw = []
         expected = len(products_raw)
         log.info("Found %s products on the listing page at %s", expected, site.name)
 
@@ -51,7 +55,11 @@ def main() -> int:
             if product.name is None:
                 log.warning("No name found for product %s of %s. The page layout may have changed.", index, expected)
                 continue
-            enrich_product(product, enricher)
+            try:
+                enrich_product(product, enricher)
+            except Exception as exc:
+                log.warning("Cannot enrich product %s of %s (%s): %s", index, expected, product.name, exc)
+                continue
             products.append(product)
             log.info("%s/%s %s", index, expected, product.name)
     else:

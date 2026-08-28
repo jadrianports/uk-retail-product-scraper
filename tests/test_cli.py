@@ -25,9 +25,11 @@ class _NullEnricher:
         return Derived()
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def no_model_calls(monkeypatch):
-    # enrich_product must never need the network for this test file.
+    # Belt-and-braces: every test that requests this fixture is guaranteed
+    # no network call, even if it forgets --no-llm. Not autouse, because
+    # test_runs_with_no_api_key_present must exercise the real build_client.
     monkeypatch.setattr(cli, "GeminiEnricher", lambda client=None: _NullEnricher())
     monkeypatch.setattr(cli, "build_client", lambda: None)
 
@@ -102,7 +104,7 @@ class _PerUrlRetailer:
         )
 
 
-def test_listing_path_skips_per_product_fetch(monkeypatch, tmp_path):
+def test_listing_path_skips_per_product_fetch(monkeypatch, tmp_path, no_model_calls):
     pages = {"https://listing.example.test/category": "<html></html>"}
     fetcher = _install_fake_fetcher(monkeypatch, pages)
     monkeypatch.setattr(
@@ -119,7 +121,7 @@ def test_listing_path_skips_per_product_fetch(monkeypatch, tmp_path):
     assert data[0]["field_sources"]
 
 
-def test_listing_path_honours_limit(monkeypatch, tmp_path):
+def test_listing_path_honours_limit(monkeypatch, tmp_path, no_model_calls):
     pages = {"https://listing.example.test/category": "<html></html>"}
     _install_fake_fetcher(monkeypatch, pages)
     monkeypatch.setattr(
@@ -134,7 +136,7 @@ def test_listing_path_honours_limit(monkeypatch, tmp_path):
     assert len(data) == 2
 
 
-def test_per_url_path_fetches_each_product(monkeypatch, tmp_path):
+def test_per_url_path_fetches_each_product(monkeypatch, tmp_path, no_model_calls):
     pages = {
         "https://perurl.example.test/category": "<html></html>",
         "https://perurl.example.test/p/1": "<html></html>",
@@ -160,7 +162,7 @@ def test_per_url_path_fetches_each_product(monkeypatch, tmp_path):
     assert len(data) == 3
 
 
-def test_exits_1_when_parse_gate_fails(monkeypatch, tmp_path):
+def test_exits_1_when_parse_gate_fails(monkeypatch, tmp_path, no_model_calls):
     @register
     class _MostlyEmptyRetailer:
         name = "fake_gate_fail"
@@ -195,7 +197,7 @@ def test_exits_1_when_parse_gate_fails(monkeypatch, tmp_path):
     assert exit_code == 1
 
 
-def test_exits_2_when_robots_denied(monkeypatch, tmp_path):
+def test_exits_2_when_robots_denied(monkeypatch, tmp_path, no_model_calls):
     class _DenyingFetcher:
         def __init__(self, contact=""):
             pass
@@ -214,7 +216,64 @@ def test_exits_2_when_robots_denied(monkeypatch, tmp_path):
     assert exit_code == 2
 
 
-def test_runs_with_no_api_key_present(monkeypatch, tmp_path):
+def test_listing_path_survives_a_parse_listing_exception(monkeypatch, tmp_path, no_model_calls):
+    @register
+    class _BrokenListingRetailer:
+        name = "fake_broken_listing"
+        category = "gin"
+        category_url = "https://broken.example.test/category"
+
+        def find_product_urls(self, listing_html: str) -> list[str]:
+            raise AssertionError("the listing path must not call find_product_urls")
+
+        def parse_listing(self, listing_html: str) -> list[Product]:
+            raise ValueError("one malformed card broke the whole listing parse")
+
+    pages = {"https://broken.example.test/category": "<html></html>"}
+    _install_fake_fetcher(monkeypatch, pages)
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", "fake_broken_listing", "--limit", "25", "--out", str(tmp_path), "--no-llm"],
+    )
+
+    # A raise here must degrade to the documented parse-rate gate (exit 1),
+    # not an unhandled traceback with an undocumented exit code.
+    exit_code = cli.main()
+
+    assert exit_code == 1
+
+
+def test_listing_path_skips_one_bad_card_and_keeps_the_rest(monkeypatch, tmp_path, no_model_calls):
+    pages = {"https://listing.example.test/category": "<html></html>"}
+    _install_fake_fetcher(monkeypatch, pages)
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", "fake_listing", "--limit", "25", "--out", str(tmp_path), "--no-llm"],
+    )
+
+    real_enrich_product = cli.enrich_product
+
+    def flaky_enrich_product(product, enricher):
+        if product.name == "Gin 2":
+            raise ValueError("this one card cannot be enriched")
+        return real_enrich_product(product, enricher)
+
+    monkeypatch.setattr(cli, "enrich_product", flaky_enrich_product)
+
+    exit_code = cli.main()
+
+    # 2 of 3 products survive: below the 80% gate, so exit 1 — but the run
+    # completes and writes the 2 good products rather than crashing.
+    assert exit_code == 1
+    data = json.loads((tmp_path / "products.json").read_text("utf-8"))
+    assert len(data) == 2
+    assert "Gin 2" not in {row["name"] for row in data}
+
+
+def test_build_client_returns_none_with_no_api_key_and_the_run_still_succeeds(monkeypatch, tmp_path):
+    # Deliberately does NOT request no_model_calls. cli.build_client and
+    # cli.GeminiEnricher run for real here, so this proves the no-key path
+    # rather than a mock standing in for it.
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     pages = {"https://listing.example.test/category": "<html></html>"}
     _install_fake_fetcher(monkeypatch, pages)
@@ -222,6 +281,8 @@ def test_runs_with_no_api_key_present(monkeypatch, tmp_path):
         "sys.argv",
         ["scrape", "--retailer", "fake_listing", "--limit", "25", "--out", str(tmp_path)],
     )
+
+    assert cli.build_client() is None
 
     exit_code = cli.main()
 

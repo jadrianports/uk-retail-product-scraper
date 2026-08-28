@@ -52,3 +52,29 @@ def test_absent_value_is_marked_missing():
     enrich_product(product, _Enricher(Derived()))
     assert product.abv_percent is None
     assert product.field_sources["abv_percent"] == "missing"
+
+
+def test_adapter_set_provenance_survives_the_regex_pass():
+    # The Whisky Exchange sets abv_percent from the listing card and tags
+    # the source "css". detail_text holds the same figure, so the regex
+    # would derive it again. The adapter's source must not be overwritten.
+    product = _product(abv_percent=40.0, country_of_origin="England", flavour_style="Juniper led")
+    product.field_sources["abv_percent"] = "css"
+    product.detail_text = "Alcohol By Volume 40.0"
+    enricher = _Enricher()
+    enrich_product(product, enricher)
+    assert product.abv_percent == 40.0
+    assert product.field_sources["abv_percent"] == "css"
+    assert enricher.calls == 0
+
+
+def test_pack_type_missing_is_tagged_even_on_the_early_return_path():
+    # abv, origin and flavour are all already filled, so enrich_product
+    # returns before the model step. pack_type must still get a source.
+    product = _product(abv_percent=40.0, country_of_origin="England", flavour_style="Juniper led")
+    product.detail_text = "Alcohol By Volume 40.0"
+    enricher = _Enricher()
+    enrich_product(product, enricher)
+    assert product.pack_type is None
+    assert product.field_sources["pack_type"] == "missing"
+    assert enricher.calls == 0
