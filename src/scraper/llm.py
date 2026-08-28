@@ -62,7 +62,7 @@ class GeminiEnricher:
 
             parsed = getattr(response, "parsed", None)
             if isinstance(parsed, Derived):
-                if parsed.abv_percent is not None and not 0 < parsed.abv_percent <= 100:
+                if parsed.abv_percent is not None and not 0 <= parsed.abv_percent <= 100:
                     parsed.abv_percent = None
                 return parsed
             log.warning("The model reply did not validate for %s on attempt %s", name, attempt)

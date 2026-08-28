@@ -41,3 +41,19 @@ def test_prompt_does_not_restate_the_schema():
     prompt = enricher.build_prompt("A Gin", "Some text.")
     assert "flavour_style" not in prompt
     assert "json" not in prompt.lower()
+
+
+def test_out_of_range_abv_is_nulled_and_the_rest_of_the_reply_survives():
+    parsed = Derived(flavour_style="Juniper led", abv_percent=150.0, country_of_origin="England")
+    enricher = GeminiEnricher(client=_FakeClient(parsed))
+    result = enricher.derive("A Gin", "Some text.")
+    assert result.abv_percent is None
+    assert result.flavour_style == "Juniper led"
+    assert result.country_of_origin == "England"
+
+
+def test_zero_abv_survives_as_a_legitimate_value():
+    parsed = Derived(flavour_style="Juniper led", abv_percent=0.0, country_of_origin="England")
+    enricher = GeminiEnricher(client=_FakeClient(parsed))
+    result = enricher.derive("A Gin", "Some text.")
+    assert result.abv_percent == 0.0
