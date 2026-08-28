@@ -46,3 +46,11 @@ def test_unknown_retailer_raises_key_error_with_known_names():
     error_msg = str(excinfo.value)
     assert "dummy" in error_msg
     assert "Unknown retailer" in error_msg
+
+
+def test_registry_bootstrap_registers_both_retailers():
+    """Test that the package import registers both real retailer adapters."""
+    import scraper.retailers  # noqa: F401
+
+    assert "morrisons" in REGISTRY
+    assert "whisky_exchange" in REGISTRY
