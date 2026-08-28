@@ -72,7 +72,7 @@ A robots.txt check came before any code.
 | Site | robots.txt | Products in plain HTML | Outcome |
 |---|---|---|---|
 | Morrisons | Permits browse. Denies `/api/`. | Yes. 50 gins, with JSON-LD. | Primary |
-| The Whisky Exchange | Permits browse. Denies `/api/product/productlistdata`. | Yes. 31 cards, no JSON-LD. | Second |
+| The Whisky Exchange | Permits browse. Denies `/api/product/productlistdata`. | Yes. 24 cards, no JSON-LD. | Second |
 | Asda | `Allow: /`, plus `Content-Signal: ai-train=no`. | No. Client-rendered. | Rejected |
 | Ocado | Unreadable. Holds `x-amzn-waf-action: challenge`. | | Rejected |
 | Tesco, Sainsbury's, Co-op, Iceland | 403 on robots.txt. | | Rejected |
