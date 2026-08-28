@@ -17,6 +17,8 @@ def test_find_product_urls():
     assert site.find_product_urls(html) == [
         "https://www.thewhiskyexchange.com/p/43556/lagavulin-12-year-old",
         "https://www.thewhiskyexchange.com/p/12345/sipsmith-london-dry-gin",
+        "https://www.thewhiskyexchange.com/p/55123/withers-g1-gin",
+        "https://www.thewhiskyexchange.com/p/61234/tanqueray-no-ten-gin-litre",
     ]
 
 
@@ -35,6 +37,61 @@ def test_parse_products_from_the_listing():
 def test_category_url_points_to_gin_category():
     site = WhiskyExchange()
     assert site.category_url.endswith("/c/338/gin")
+
+
+def test_money_flash_gives_price_was_and_promotion():
+    html, site = _cards()
+    products = site.parse_listing(html)
+    withers = next(p for p in products if p.name == "Withers G1 Gin")
+    assert withers.price_gbp == 20.00
+    assert withers.price_was == 25.00
+    assert withers.is_on_promotion is True
+    assert withers.field_sources["price_was"] == "css"
+    assert withers.field_sources["is_on_promotion"] == "css"
+
+
+def test_non_money_flash_gives_promotion_but_no_price_was():
+    html, site = _cards()
+    products = site.parse_listing(html)
+    tanqueray = next(p for p in products if p.name == "Tanqueray No.Ten Gin Litre")
+    assert tanqueray.is_on_promotion is True
+    assert tanqueray.price_was is None
+    assert tanqueray.field_sources["is_on_promotion"] == "css"
+    assert tanqueray.field_sources["price_was"] == "missing"
+
+
+def test_no_flash_gives_no_promotion_and_no_price_was():
+    html, site = _cards()
+    products = site.parse_listing(html)
+    sipsmith = next(p for p in products if p.name == "Sipsmith London Dry Gin")
+    assert sipsmith.is_on_promotion is False
+    assert sipsmith.price_was is None
+    assert sipsmith.field_sources["is_on_promotion"] == "missing"
+    assert sipsmith.field_sources["price_was"] == "missing"
+
+
+def test_button_present_gives_in_stock():
+    html, site = _cards()
+    products = site.parse_listing(html)
+    lagavulin = next(p for p in products if p.name.startswith("Lagavulin"))
+    assert lagavulin.availability == "InStock"
+    assert lagavulin.field_sources["availability"] == "css"
+
+
+def test_button_absent_gives_no_availability():
+    html, site = _cards()
+    products = site.parse_listing(html)
+    sipsmith = next(p for p in products if p.name == "Sipsmith London Dry Gin")
+    assert sipsmith.availability is None
+    assert sipsmith.field_sources["availability"] == "missing"
+
+
+def test_field_sources_carry_every_new_field_on_every_card():
+    html, site = _cards()
+    products = site.parse_listing(html)
+    for product in products:
+        for field in ("price_was", "is_on_promotion", "availability"):
+            assert field in product.field_sources
 
 
 @pytest.mark.parametrize(

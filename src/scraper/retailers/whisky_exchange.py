@@ -14,6 +14,9 @@ log = logging.getLogger(__name__)
 
 BASE = "https://www.thewhiskyexchange.com"
 _SIZE_IN_META = re.compile(r"^\s*([\d.]+\s*(?:cl|ml|l))\b", re.I)
+# A flash reading "Save £N" states a money saving. A flash like "Free Gift"
+# does not, so it must not feed a price_was guess.
+_SAVING_IN_FLASH = re.compile(r"^save\s*£\s*(\d+(?:\.\d{1,2})?)$", re.I)
 
 # Category, style and place words. A brand name does not stop here when it
 # leads the product name, so "Gin Mare" still reads as a brand.
@@ -105,6 +108,19 @@ class WhiskyExchange:
         size_match = _SIZE_IN_META.search(meta)
         size_raw = size_match.group(1).replace(" ", "") if size_match else None
 
+        flash_tag = card.select_one(".product-extras-flash__content")
+        flash_text = flash_tag.get_text(strip=True) if flash_tag else ""
+        is_on_promotion = bool(flash_text)
+
+        price_was = None
+        saving_match = _SAVING_IN_FLASH.match(flash_text) if flash_text else None
+        if saving_match and price is not None:
+            price_was = round(price + float(saving_match.group(1)), 2)
+
+        button_tag = card.select_one(".product-card__button")
+        button_text = button_tag.get_text(strip=True) if button_tag else ""
+        availability = "InStock" if "add to basket" in button_text.lower() else None
+
         product = Product(
             retailer=self.name,
             category=self.category,
@@ -113,8 +129,11 @@ class WhiskyExchange:
             name=name,
             brand=brand_from_name(name) if name else None,
             price_gbp=price,
+            price_was=price_was,
+            is_on_promotion=is_on_promotion,
             size_raw=size_raw,
             abv_percent=extract_abv(meta),
+            availability=availability,
         )
         product.detail_text = meta
         for field in ("name", "brand", "price_gbp", "size_raw", "abv_percent"):
@@ -122,8 +141,13 @@ class WhiskyExchange:
             # same way the Morrisons adapter does for its JSON-LD fields.
             value = getattr(product, field)
             product.field_sources[field] = "css" if value not in (None, "") else "missing"
-        # The listing card does not show a struck-through price. Do not guess one.
-        product.field_sources["price_was"] = "missing"
+        # The flash element states the promotion. Its absence is a fact too.
+        product.field_sources["is_on_promotion"] = "css" if flash_text else "missing"
+        # Only a money flash gives a price_was. A non-money flash, like
+        # "Free Gift", must not feed a guessed value.
+        product.field_sources["price_was"] = "css" if price_was is not None else "missing"
+        # A missing button is not proof of no stock. Tag it missing, not a guess.
+        product.field_sources["availability"] = "css" if availability is not None else "missing"
         return product
 
     def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
