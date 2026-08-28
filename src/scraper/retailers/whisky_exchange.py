@@ -35,7 +35,8 @@ class WhiskyExchange:
     category = "gin"
     # This site has no JSON-LD. The listing page already holds the size and the
     # strength, so the adapter does not need a second request for each product.
-    category_url = f"{BASE}/c/40/gin"
+    # The path holds the gin and jenever category.
+    category_url = f"{BASE}/c/338/gin"
 
     def find_product_urls(self, listing_html: str) -> list[str]:
         soup = BeautifulSoup(listing_html, "lxml")

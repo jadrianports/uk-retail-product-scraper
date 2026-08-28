@@ -28,3 +28,8 @@ def test_parse_products_from_the_listing():
     assert first.abv_percent == 57.8
     assert first.field_sources["name"] == "css"
     assert products[1].price_gbp == 1299.50
+
+
+def test_category_url_points_to_gin_category():
+    site = WhiskyExchange()
+    assert site.category_url.endswith("/c/338/gin")
