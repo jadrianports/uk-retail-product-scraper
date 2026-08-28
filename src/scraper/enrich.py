@@ -2,14 +2,15 @@ import re
 
 # Two formats occur on one live Morrisons page. A third occurs on the
 # Whisky Exchange listing. Try each in turn.
-# The first pattern uses {1,3}, not {1,2}. A 3-digit reading like "400"
-# must match whole, so the range check below can reject it. {1,2} would
-# cut it to "40" and let a bad value pass as a good one.
+# Each number group ends in (?!\d). Without it, a long run of digits
+# like "1000" lets the group match a short prefix, "100", and that
+# prefix can sit inside the valid range and pass as a real reading.
+# The lookahead stops any match short of the full digit run.
 _ABV_PATTERNS = [
-    re.compile(r"alcohol\s*by\s*volume\s*:?\s*(\d{1,3}(?:\.\d+)?)\s*%?", re.I),
-    re.compile(r"(\d{1,2}(?:\.\d+)?)\s*%\s*(?:abv|vol)", re.I),
-    re.compile(r"\babv\b\s*:?\s*(\d{1,2}(?:\.\d+)?)\s*%?", re.I),
-    re.compile(r"/\s*(\d{1,2}(?:\.\d+)?)\s*%", re.I),
+    re.compile(r"alcohol\s*by\s*volume\s*:?\s*(\d{1,3}(?:\.\d+)?)(?!\d)\s*%?", re.I),
+    re.compile(r"(\d{1,2}(?:\.\d+)?)(?!\d)\s*%\s*(?:abv|vol)", re.I),
+    re.compile(r"\babv\b\s*:?\s*(\d{1,2}(?:\.\d+)?)(?!\d)\s*%?", re.I),
+    re.compile(r"/\s*(\d{1,2}(?:\.\d+)?)(?!\d)\s*%", re.I),
 ]
 
 _SIZE = re.compile(r"(\d+(?:\.\d+)?)\s*(cl|ml|l|litre|litres)\b", re.I)
@@ -33,7 +34,9 @@ def extract_abv(text: str | None) -> float | None:
         if not match:
             continue
         value = float(match.group(1))
-        if 0 < value <= 100:
+        # 0.0% is a real reading — low-and-no-alcohol spirits exist in
+        # this category. Only reject outside the physical range.
+        if 0 <= value <= 100:
             return value
     return None
 

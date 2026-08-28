@@ -12,6 +12,9 @@ from scraper.enrich import extract_abv, extract_origin, extract_pack_type, size_
         ("A London dry gin, 40% ABV, from England", 40.0),
         ("No strength is stated here", None),
         ("Alcohol By Volume 400", None),
+        ("Alcohol By Volume 1000", None),
+        ("abv 400", None),
+        ("Alcohol By Volume 0", 0.0),
     ],
 )
 def test_extract_abv(text, expected):
