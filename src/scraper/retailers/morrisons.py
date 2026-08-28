@@ -107,8 +107,10 @@ class Morrisons:
             description=data.get("description"),
         )
         for field in ("sku", "name", "brand", "price_gbp", "size_raw", "availability", "description"):
-            if getattr(product, field) is not None:
-                product.field_sources[field] = "jsonld"
+            # JSON-LD can give an empty string, not just a missing key. An
+            # empty value is not a sourced value, so tag it missing too.
+            value = getattr(product, field)
+            product.field_sources[field] = "jsonld" if value not in (None, "") else "missing"
 
         if price_was is not None:
             product.field_sources["price_was"] = "css"

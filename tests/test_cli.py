@@ -352,11 +352,32 @@ def test_listing_path_skips_one_bad_card_and_keeps_the_rest(monkeypatch, tmp_pat
     assert "Gin 2" not in {row["name"] for row in data}
 
 
+def test_unwritable_out_path_yields_exit_1_not_a_traceback(monkeypatch, tmp_path, no_model_calls):
+    pages = {"https://listing.example.test/category": "<html></html>"}
+    _install_fake_fetcher(monkeypatch, pages)
+    # A plain file sits where --out expects a directory. write_outputs()
+    # cannot mkdir over it, so this must degrade to exit 1, not a crash.
+    blocked_out = tmp_path / "blocked"
+    blocked_out.write_text("not a directory", encoding="utf-8")
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", "fake_listing", "--limit", "25", "--out", str(blocked_out), "--no-llm"],
+    )
+
+    exit_code = cli.main()
+
+    assert exit_code == 1
+
+
 def test_build_client_returns_none_with_no_api_key_and_the_run_still_succeeds(monkeypatch, tmp_path):
     # Deliberately does NOT request no_model_calls. cli.build_client and
     # cli.GeminiEnricher run for real here, so this proves the no-key path
     # rather than a mock standing in for it.
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    # main() calls load_dotenv() first. A real .env file next to the repo
+    # would put the key straight back. Stop that reload so this test stays
+    # on the no-key path it means to prove.
+    monkeypatch.setattr(cli, "load_dotenv", lambda *a, **k: None)
     pages = {"https://listing.example.test/category": "<html></html>"}
     _install_fake_fetcher(monkeypatch, pages)
     monkeypatch.setattr(

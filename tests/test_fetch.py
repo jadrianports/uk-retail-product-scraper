@@ -1,3 +1,5 @@
+import pytest
+
 from scraper.fetch import Fetcher, RobotsGate, retry_wait
 
 MORRISONS_ROBOTS = """
@@ -71,6 +73,50 @@ def test_retry_wait_falls_back_to_backoff_for_an_http_date():
 
 def test_retry_wait_falls_back_to_backoff_when_header_is_absent():
     assert retry_wait({}, attempt=3) == 8.0
+
+
+def test_retry_wait_clamps_a_negative_retry_after_to_zero():
+    assert retry_wait({"Retry-After": "-5"}, attempt=1) == 0.0
+
+
+class AlwaysRateLimitedResponse:
+    def __init__(self):
+        self.status_code = 429
+        self.text = ""
+        self.headers: dict[str, str] = {}
+
+    def raise_for_status(self):
+        raise AssertionError("raise_for_status must not run for a retryable status")
+
+
+class AlwaysRateLimitedSession:
+    def __init__(self):
+        self.calls = 0
+
+    def get(self, url, timeout=None):
+        self.calls += 1
+        return AlwaysRateLimitedResponse()
+
+
+def test_the_final_attempt_does_not_sleep_before_giving_up(tmp_path, monkeypatch):
+    sleeps: list[float] = []
+    monkeypatch.setattr("scraper.fetch.time.sleep", lambda seconds: sleeps.append(seconds))
+    # Remove the throttle's random jitter so every recorded sleep comes from
+    # the retry logic under test, not from the per-request pacing.
+    monkeypatch.setattr("scraper.fetch.random.uniform", lambda a, b: 0.0)
+    fetcher = Fetcher("test@example.test", cache_dir=tmp_path, delay=0, max_attempts=2)
+    fetcher.session = AlwaysRateLimitedSession()
+    fetcher._gates["https://example.test"] = RobotsGate.from_text(
+        "https://example.test", "User-agent: *\nDisallow: /nope\n"
+    )
+
+    with pytest.raises(RuntimeError):
+        fetcher.get("https://example.test/gin")
+
+    assert fetcher.session.calls == 2
+    # One retry follows attempt 1, so exactly one sleep. Attempt 2 is the
+    # last attempt: it must raise straight away, not sleep first.
+    assert len(sleeps) == 1
 
 
 def test_formatted_user_agent_is_browser_compatible_and_identifies_tool(tmp_path):

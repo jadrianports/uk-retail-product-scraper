@@ -75,3 +75,16 @@ def test_missing_json_ld_gives_nulls_and_does_not_raise():
     product = Morrisons().parse_product("<html><body>nothing</body></html>", PRODUCT_URL)
     assert product.name is None
     assert product.price_gbp is None
+
+
+def test_empty_string_description_is_tagged_missing_not_jsonld():
+    # J.J. Gin London Dry Gin 1L, JJ Pink Gin and Morrisons London Dry Gin
+    # all return description: "" in their JSON-LD. An empty string is not
+    # None, so it must still be tagged missing, not jsonld.
+    html = """<html><head>
+    <script type="application/ld+json">
+    {"@type":"Product","name":"JJ Pink Gin","description":"","offers":{"price":"20.00"}}
+    </script></head><body></body></html>"""
+    product = Morrisons().parse_product(html, PRODUCT_URL)
+    assert product.description == ""
+    assert product.field_sources["description"] == "missing"

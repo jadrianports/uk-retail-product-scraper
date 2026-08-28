@@ -29,7 +29,15 @@ def main() -> int:
 
     site = get_retailer(args.retailer)
     fetcher = Fetcher(contact=os.environ.get("SCRAPER_CONTACT", ""))
-    enricher = GeminiEnricher(client=None if args.no_llm else build_client())
+
+    client = None
+    if not args.no_llm:
+        try:
+            client = build_client()
+        except Exception as exc:
+            log.error("Cannot build the model client: %s", exc)
+            return 1
+    enricher = GeminiEnricher(client=client)
 
     try:
         collected, expected = site.collect(fetcher, args.limit)
@@ -50,7 +58,11 @@ def main() -> int:
         products.append(product)
         log.info("%s/%s %s", index, expected, product.name)
 
-    write_outputs(products, args.out)
+    try:
+        write_outputs(products, args.out)
+    except Exception as exc:
+        log.error("Cannot write output to %s: %s", args.out, exc)
+        return 1
     log.info("Wrote %s products to %s", len(products), args.out)
 
     if not check_parse_rate(parsed=len(products), expected=expected):

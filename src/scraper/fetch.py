@@ -39,7 +39,9 @@ def retry_wait(headers, attempt: int) -> float:
     if wait > MAX_RETRY_WAIT:
         log.warning("Retry-After of %ss exceeds the cap. Wait %ss instead", wait, MAX_RETRY_WAIT)
         wait = MAX_RETRY_WAIT
-    return wait
+    # A malformed or hostile Retry-After header can be negative. time.sleep
+    # rejects a negative value, so a wait can never go below zero.
+    return max(wait, 0.0)
 
 
 class RobotsDenied(Exception):
@@ -131,11 +133,14 @@ class Fetcher:
         last_error: Exception | None = None
         for attempt in range(1, self.max_attempts + 1):
             self._throttle()
+            is_last_attempt = attempt == self.max_attempts
             try:
                 response = self.session.get(url, timeout=30)
             except requests.RequestException as exc:
                 last_error = exc
-                time.sleep(2**attempt)
+                # No point waiting out a backoff when no retry follows it.
+                if not is_last_attempt:
+                    time.sleep(2**attempt)
                 continue
 
             if response.status_code == 200:
@@ -144,10 +149,12 @@ class Fetcher:
                 return response.text
 
             if response.status_code in (429, 500, 502, 503, 504):
+                last_error = requests.HTTPError(f"HTTP {response.status_code}")
+                if is_last_attempt:
+                    continue
                 wait = retry_wait(response.headers, attempt)
                 log.warning("HTTP %s for %s. Wait %ss", response.status_code, url, wait)
                 time.sleep(wait)
-                last_error = requests.HTTPError(f"HTTP {response.status_code}")
                 continue
 
             response.raise_for_status()

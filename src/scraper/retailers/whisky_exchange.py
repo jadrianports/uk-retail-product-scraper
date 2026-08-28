@@ -88,8 +88,10 @@ class WhiskyExchange:
         )
         product.detail_text = meta
         for field in ("name", "brand", "price_gbp", "size_raw", "abv_percent"):
-            if getattr(product, field) is not None:
-                product.field_sources[field] = "css"
+            # Guard against an empty string, not just a missing value, the
+            # same way the Morrisons adapter does for its JSON-LD fields.
+            value = getattr(product, field)
+            product.field_sources[field] = "css" if value not in (None, "") else "missing"
         # The listing card does not show a struck-through price. Do not guess one.
         product.field_sources["price_was"] = "missing"
         return product

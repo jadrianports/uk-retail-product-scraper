@@ -11,16 +11,8 @@ class DummyRetailer:
     category = "test"
     category_url = "http://example.com"
 
-    def find_product_urls(self, listing_html: str) -> list[str]:
-        return []
-
-    def parse_product(self, html: str, url: str) -> Product:
-        return Product(
-            retailer=self.name,
-            category=self.category,
-            product_url=url,
-            scraped_at="2024-01-01",
-        )
+    def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+        return [], 0
 
 
 @pytest.fixture(autouse=True)
