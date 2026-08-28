@@ -5,7 +5,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/14553/monkey-47-schwarzwald-dry-gin",
     "sku": null,
     "name": "Monkey 47 Schwarzwald Dry Gin",
-    "brand": "Monkey",
+    "brand": "Monkey 47",
     "price_gbp": 39.25,
     "price_was": null,
     "is_on_promotion": false,
@@ -18,7 +18,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -39,7 +39,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -60,7 +60,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -81,7 +81,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -102,7 +102,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -110,7 +110,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/13847/the-botanist-islay-dry-gin",
     "sku": null,
     "name": "The Botanist Islay Dry Gin",
-    "brand": "The",
+    "brand": "The Botanist",
     "price_gbp": 35.75,
     "price_was": null,
     "is_on_promotion": false,
@@ -123,7 +123,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -131,7 +131,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/86020/papa-salt-coastal-gin",
     "sku": null,
     "name": "Papa Salt Coastal Gin",
-    "brand": "Papa",
+    "brand": "Papa Salt",
     "price_gbp": 36.75,
     "price_was": null,
     "is_on_promotion": false,
@@ -144,7 +144,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -152,7 +152,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/87313/roku-noryo-tea-edition-gin",
     "sku": null,
     "name": "Roku Noryo Tea Edition Gin",
-    "brand": "Roku",
+    "brand": "Roku Noryo Tea",
     "price_gbp": 33.5,
     "price_was": null,
     "is_on_promotion": false,
@@ -165,7 +165,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -173,7 +173,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/37540/ki-no-bi-kyoto-dry-gin",
     "sku": null,
     "name": "Ki No Bi Kyoto Dry Gin",
-    "brand": "Ki",
+    "brand": "Ki No Bi",
     "price_gbp": 49.75,
     "price_was": null,
     "is_on_promotion": false,
@@ -186,7 +186,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -194,7 +194,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/46091/isle-of-harris-gin",
     "sku": null,
     "name": "Isle of Harris Gin",
-    "brand": "Isle",
+    "brand": "Isle of Harris",
     "price_gbp": 43.5,
     "price_was": null,
     "is_on_promotion": false,
@@ -207,7 +207,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -215,7 +215,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/63474/monkey-47-schwarzwald-dry-gin-gift-box",
     "sku": null,
     "name": "Monkey 47 Schwarzwald Dry Gin Gift Box",
-    "brand": "Monkey",
+    "brand": "Monkey 47",
     "price_gbp": 45.95,
     "price_was": null,
     "is_on_promotion": false,
@@ -228,7 +228,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -249,7 +249,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -257,7 +257,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/87388/oyster-fine-de-claire-adriatic-gin",
     "sku": null,
     "name": "Oyster Fine de Claire Adriatic Gin",
-    "brand": "Oyster",
+    "brand": "Oyster Fine de Claire",
     "price_gbp": 40.75,
     "price_was": null,
     "is_on_promotion": false,
@@ -270,7 +270,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -291,7 +291,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -299,7 +299,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/38509/hendricks-orbium-gin",
     "sku": null,
     "name": "Hendrick's Orbium Gin",
-    "brand": "Hendrick's",
+    "brand": "Hendrick's Orbium",
     "price_gbp": 39.75,
     "price_was": null,
     "is_on_promotion": false,
@@ -312,7 +312,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -320,7 +320,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/48199/personalised-the-quintessential-london-dry-gin",
     "sku": null,
     "name": "Personalised The Quintessential London Dry Gin",
-    "brand": "Personalised",
+    "brand": "Personalised The Quintessential",
     "price_gbp": 39.95,
     "price_was": null,
     "is_on_promotion": false,
@@ -333,7 +333,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -341,7 +341,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/67004/sincere-pure-gin",
     "sku": null,
     "name": "Sincere Pure Gin",
-    "brand": "Sincere",
+    "brand": "Sincere Pure",
     "price_gbp": 29.95,
     "price_was": null,
     "is_on_promotion": false,
@@ -354,7 +354,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -362,7 +362,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/53918/withers-g1-gin",
     "sku": null,
     "name": "Withers G1 Gin",
-    "brand": "Withers",
+    "brand": "Withers G1",
     "price_gbp": 27.5,
     "price_was": null,
     "is_on_promotion": false,
@@ -375,7 +375,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -383,7 +383,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/2281/tanqueray-noten-gin-litre",
     "sku": null,
     "name": "Tanqueray No.Ten Gin Litre",
-    "brand": "Tanqueray",
+    "brand": "Tanqueray No.Ten",
     "price_gbp": 49.95,
     "price_was": null,
     "is_on_promotion": false,
@@ -396,7 +396,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -417,7 +417,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -438,7 +438,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -446,7 +446,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/66148/gin-mare-capri-mediterranean-gin",
     "sku": null,
     "name": "Gin Mare Capri Mediterranean Gin",
-    "brand": "Gin",
+    "brand": "Gin Mare",
     "price_gbp": 47.95,
     "price_was": null,
     "is_on_promotion": false,
@@ -459,7 +459,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -467,7 +467,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/39693/juniper-green-organic-gin",
     "sku": null,
     "name": "Juniper Green Organic Gin",
-    "brand": "Juniper",
+    "brand": "Juniper Green",
     "price_gbp": 23.5,
     "price_was": null,
     "is_on_promotion": false,
@@ -480,7 +480,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -488,7 +488,7 @@
     "product_url": "https://www.thewhiskyexchange.com/p/30580/gin-del-professore-monsieur",
     "sku": null,
     "name": "Gin Del Professore Monsieur",
-    "brand": "Gin",
+    "brand": "Gin Del Professore Monsieur",
     "price_gbp": 44.95,
     "price_was": null,
     "is_on_promotion": false,
@@ -501,6 +501,6 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:56:08Z"
+    "scraped_at": "2026-08-28T20:25:02Z"
   }
 ]
