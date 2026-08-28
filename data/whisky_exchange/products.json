@@ -7,18 +7,18 @@
     "name": "Monkey 47 Schwarzwald Dry Gin",
     "brand": "Monkey 47",
     "price_gbp": 39.25,
-    "price_was": null,
-    "is_on_promotion": false,
+    "price_was": 42.25,
+    "is_on_promotion": true,
     "size_raw": "50cl",
     "size_ml": 500.0,
     "abv_percent": 47.0,
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -36,10 +36,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -57,10 +57,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -78,10 +78,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -99,10 +99,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -120,10 +120,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -141,10 +141,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -162,10 +162,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -183,10 +183,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -204,10 +204,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -225,10 +225,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -246,10 +246,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -267,10 +267,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -288,10 +288,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -309,10 +309,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -332,8 +332,8 @@
     "flavour_style": null,
     "availability": null,
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"missing\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -343,18 +343,18 @@
     "name": "Sincere Pure Gin",
     "brand": "Sincere Pure",
     "price_gbp": 29.95,
-    "price_was": null,
-    "is_on_promotion": false,
+    "price_was": 44.95,
+    "is_on_promotion": true,
     "size_raw": "70cl",
     "size_ml": 700.0,
     "abv_percent": 47.0,
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -364,18 +364,18 @@
     "name": "Withers G1 Gin",
     "brand": "Withers G1",
     "price_gbp": 27.5,
-    "price_was": null,
-    "is_on_promotion": false,
+    "price_was": 35.5,
+    "is_on_promotion": true,
     "size_raw": "70cl",
     "size_ml": 700.0,
     "abv_percent": 40.0,
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -386,17 +386,17 @@
     "brand": "Tanqueray No.Ten",
     "price_gbp": 49.95,
     "price_was": null,
-    "is_on_promotion": false,
+    "is_on_promotion": true,
     "size_raw": "100cl",
     "size_ml": 1000.0,
     "abv_percent": 47.3,
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -414,10 +414,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -435,10 +435,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -456,10 +456,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -477,10 +477,10 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -498,9 +498,9 @@
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": null,
-    "availability": null,
+    "availability": "InStock",
     "description": null,
-    "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T20:25:02Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
+    "scraped_at": "2026-08-28T20:52:43Z"
   }
 ]
