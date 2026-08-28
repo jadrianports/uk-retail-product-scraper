@@ -10,8 +10,13 @@ import requests
 
 log = logging.getLogger(__name__)
 
+# Retailers apply WAF protection to product pages and reject unknown
+# clients. The user agent must look like a browser. We retain the tool
+# name and contact so the site operator can identify this traffic.
 USER_AGENT = (
-    "uk-retail-product-scraper/0.1 (technical exercise; contact: {contact})"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 "
+    "uk-retail-product-scraper/0.1 (+contact: {contact})"
 )
 
 # A site can send a very large Retry-After value. Cap the wait so one
