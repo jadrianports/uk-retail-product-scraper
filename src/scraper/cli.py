@@ -36,6 +36,9 @@ def main() -> int:
     except RobotsDenied as exc:
         log.error("%s", exc)
         return 2
+    except Exception as exc:
+        log.error("Cannot collect %s: %s", args.retailer, exc)
+        return 1
 
     products = []
     for index, product in enumerate(collected, start=1):

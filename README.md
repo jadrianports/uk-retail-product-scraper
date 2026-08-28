@@ -2,8 +2,9 @@
 
 This tool captures product attributes for one category from a UK grocery
 retailer, one row per product and one column per attribute, to CSV and JSON.
-The shipped dataset is 25 gin products from Morrisons. A second adapter reads gin
-at The Whisky Exchange.
+The shipped dataset is 25 gin products from Morrisons. A second adapter exists
+for gin at The Whisky Exchange, fixture-tested but not run live today; see
+"The Whisky Exchange, live" below.
 
 The first row of `data/products.csv`:
 
@@ -28,19 +29,19 @@ value's origin.
 uv sync
 cp .env.example .env
 uv run scrape                  # Morrisons, 25 products
-uv run pytest                  # the 82 offline tests
+uv run pytest                  # the 83 offline tests
 
-uv run scrape --retailer whisky_exchange --limit 20
+uv run scrape --retailer whisky_exchange --limit 20   # exits 1, see below
 uv run scrape --no-llm --out /tmp/run1
 ```
 
-`.env` holds `GEMINI_API_KEY` for the model step and `SCRAPER_CONTACT`, an email
-for the `User-Agent` header. Without the key the derived fields are `null` and
-the run still succeeds. `--retailer` picks the adapter, `--limit` caps the
-products, `--out` sets the output directory, and `--no-llm` skips the model.
+`.env` holds `GEMINI_API_KEY` for the model step and `SCRAPER_CONTACT`, an
+email for the `User-Agent` header. Without the key, derived fields are `null`
+and the run still succeeds. `--retailer` picks the adapter, `--limit` caps the
+products, `--out` sets the output directory, `--no-llm` skips the model.
 
-Exit codes: 0 success, 1 the parse-rate gate failed, 2 robots.txt denied the
-path.
+Exit codes: 0 success, 2 robots.txt denied the path. 1 means no usable
+dataset: the listing could not be fetched, or the parse-rate gate failed.
 
 ## Approach
 
@@ -49,8 +50,8 @@ modules. Structured data comes first, a regular expression second, the model las
 and only for fields still empty. Each step writes its own name into
 `field_sources`.
 
-Plain HTTP, not a browser. Both sites serve the product data in the delivered
-HTML, so a browser would add a large dependency for no extra data.
+Plain HTTP, not a browser. Both sites serve their product data in HTML when
+reachable, so a browser would add a large dependency for no extra data.
 
 ### Which retailer, and why
 
@@ -77,27 +78,28 @@ scraping.
 ## The anti-bot judgement call
 
 The first live run got 200 for the category page and 403 for all 25 product
-pages. Three controlled requests isolated it. The honest agent
+pages. Three controlled requests isolated it: the honest agent
 `uk-retail-product-scraper/0.1` gave 403, Chrome gave 200, and Chrome with the
 tool name and contact appended gave 200. `USER_AGENT` in `fetch.py` sends that
 last form.
 
-The reasoning: robots.txt is the site's stated policy and it permits these paths,
-while the WAF is a blunt string filter. The tool stays identifiable, obeys
-robots.txt at run time, and backs off when told to.
+The reasoning: robots.txt is the site's stated policy and it permits these
+paths, while the WAF is a blunt string filter. The tool stays identifiable,
+obeys robots.txt at run time, and backs off when told to.
 
-The counter-argument: a block is a block. That is defensible, and a production
-deployment should get the retailer's written agreement instead.
+The counter-argument: a block is a block, and a production deployment should
+get the retailer's written agreement instead.
 
 No IP rotation, no proxy pool, no CAPTCHA solving, no browser. The tool never
-continues past an explicit rate-limit response.
+continues past an explicit rate-limit response, and a JavaScript challenge is
+where this approach correctly stops.
 
 ## Politeness and reliability
 
 One request per second with 0 to 0.4 seconds of jitter, single-threaded.
-robots.txt is read once per host at run time, and an unreadable one denies every
-path there. Retries are three attempts, on 429 and 5xx only. Every 200 response
-is cached to `.cache/<host>/<hash>.html`, so re-runs cost the retailers nothing.
+robots.txt is read once per host, and an unreadable one denies every path
+there. Retries are three attempts, on 429 and 5xx only. Every 200 response is
+cached to `.cache/<host>/<hash>.html`, so re-runs cost the retailers nothing.
 
 ### The fail-loud gate
 
@@ -131,19 +133,18 @@ a country the text mentions for another reason.
 The model is `gemini-3.5-flash-lite` through `google-genai`, with structured
 output against the `Derived` Pydantic schema.
 
-Gemini is a cost choice: an unpaid exercise, and a free tier. The client's own
-stack uses Claude and OpenAI, and a swap changes `llm.py` alone. The free tier
-also set the pacing. An earlier run on `gemini-2.5-flash` had 20 requests per
-day, spent the quota, and left 18 products unenriched. Calls are now spaced by
-`MIN_CALL_INTERVAL = 6.0` seconds.
+Gemini is a cost choice: an unpaid exercise on a free tier. A swap to Claude or
+OpenAI changes `llm.py` alone. The free tier also set the pacing:
+`gemini-2.5-flash` gave 20 requests per day, spent the quota, and left 18
+products unenriched. Calls are now spaced by `MIN_CALL_INTERVAL = 6.0` seconds.
 
 ### Two kinds of 429
 
-A per-minute limit is transient: honour the `retryDelay` and retry. A spent
-per-day quota is terminal for the run: stop calling. The API returns 429 for
-both, and the first version waited 59 seconds and retried twice per remaining
-product. `_is_daily_quota_exhausted` now matches the quota name (`PerDay`), not
-the numeric value, which changes with the model. A match trips a circuit breaker.
+A per-minute limit is transient: honour `retryDelay` and retry. A spent
+per-day quota is terminal: stop calling. The API returns 429 for both; the
+first version waited 59 seconds and retried twice per remaining product.
+`_is_daily_quota_exhausted` now matches the quota name (`PerDay`), not the
+numeric value, which changes with the model. A match trips a circuit breaker.
 
 ## Provenance and fill rates
 
@@ -158,30 +159,30 @@ Seven of the 19 columns are filled 25 of 25: `price_gbp`, `size_ml`, `sku`,
 
 ### What the audit found
 
-An audit re-parsed all 25 rows from their cached pages with independent code.
-Zero parser defects, and three things no test could find.
+An audit re-parsed all 25 rows from cached pages with independent code: zero
+parser defects, and three things no test could find.
 
 11 of 25 products (44%) show a promotional price beside a struck-through base
 price. The dataset first held only the promotion price, which would distort a
-price analysis. It now holds `price_was` and `is_on_promotion`.
+price analysis, so it now holds `price_was` and `is_on_promotion`.
 
 5 of 25 products are tonic water, because Morrisons puts mixers in the gin
-category. They are kept on purpose: the tool reports what a shopper sees.
+category. They stay on purpose: the tool reports what a shopper sees.
 `abv_percent` is null for all five, so a consumer can filter them.
 
 `country_of_origin` held a wrong value, and nothing raised an error. Fever-Tree
 Refreshingly Light Indian Tonic Water recorded `Democratic Republic of Congo`,
-because the description says the quinine comes from there. The product does not.
-The reply validated against the schema and was still wrong: the clearest case
-here of valid JSON with wrong content.
+because the description mentions quinine sourced there, though the product is
+not. The reply validated against the schema and was still wrong: the clearest
+case here of valid JSON with wrong content.
 
-The fix had two parts. The origin regular expression was over-capturing, because
-page text runs one label into the next, so Whitley Neill Black Cherry Gin read as
-`United Kingdom Brand J`. A stop-word list now ends the capture at the next
-label. Then `country_of_origin` left the model's scope. Removing the model raised
-the column from 4 values to 13. The regular expression was the real gain, and the
-model had been adding wrong values on top of a broken pattern. Separately,
-`8 x 150ml` read as 150 ml until the size pattern learned the pack multiplier.
+The fix had two parts. The origin regular expression over-captured, because
+page text runs one label into the next, so Whitley Neill Black Cherry Gin read
+as `United Kingdom Brand J`; a stop-word list now ends the capture at the next
+label. Removing `country_of_origin` from the model's scope raised the column
+from 4 values to 13, so the regular expression was the real gain, not the
+model. Separately, `8 x 150ml` read as 150 ml until the size pattern learned
+the pack multiplier.
 
 ## Two retailers, two routes
 
@@ -202,9 +203,20 @@ Both adapters meet at `collect(fetcher, limit) -> tuple[list[Product], int]`,
 which returns the products and the expected count. The Protocol promises the
 result, not the route, and a test asserts that both satisfy it.
 
+## The Whisky Exchange, live
+
+The adapter is verified against HTML fixtures built from the site's real
+markup, captured while it still served plain HTML. Its tests pass.
+
+A live run now returns a Cloudflare JavaScript challenge instead of the
+category page: the body holds `Just a moment...`, `Enable JavaScript and
+cookies`, and the marker `Cloudflare`. Three controlled requests confirm this,
+including one with a plain Chrome User-Agent that had returned 200 for the
+same URL earlier that day. Nothing about the client changed.
+
 ## Tests
 
-82 tests, all offline against HTML fixtures built from real markup, with the
+83 tests, all offline against HTML fixtures built from real markup, with the
 model faked. They cover both parsers, the ABV, size and origin patterns, the
 promotion price, the robots paths including fail-closed, the cache and the quota
 breaker.
@@ -226,9 +238,10 @@ run catches a partial one, because a fall from 95% to 5% is a broken selector,
 not a change in stock.
 
 Bot defence escalation. Morrisons already serves an AWS WAF script, as the 403
-failure above showed. The next step is a JavaScript challenge, which this tool
-cannot answer. Watch the status codes and the response size, and alert on the
-first 403 rather than after 25 wasted requests.
+failure above showed. The next step, a JavaScript challenge, already happened:
+The Whisky Exchange now serves one instead of its category page, and this tool
+does not try to answer it. Watch the status codes and the response size, and
+alert on the first 403 rather than after 25 wasted requests.
 
 Silent model drift. The model returns valid JSON that is wrong, the schema
 validates, and nothing raises. The Fever-Tree origin value is what this looks
@@ -244,8 +257,8 @@ forbids repeating the product name as the flavour.
   both give `London dry gin`.
 - The Whisky Exchange adapter takes the brand from the first word of the name, so
   `Whitley Neill` would give `Whitley`.
-- The Whisky Exchange gin category URL should be confirmed from the site
-  navigation; the build verified the card structure, not that path.
+- The Whisky Exchange adapter cannot complete a live run: the site now serves
+  a Cloudflare JavaScript challenge instead of the category page.
 - Prices are a snapshot, with no price history.
 - The tool is single-threaded on purpose. Slow is the correct trade for one
   request per second.

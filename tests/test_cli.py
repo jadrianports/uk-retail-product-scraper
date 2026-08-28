@@ -1,6 +1,7 @@
 import json
 
 import pytest
+import requests
 
 from scraper import cli
 from scraper.fetch import RobotsDenied
@@ -257,6 +258,41 @@ def test_robots_denied_from_deep_inside_collect_still_exits_2(monkeypatch, tmp_p
     exit_code = cli.main()
 
     assert exit_code == 2
+
+
+def test_exits_1_when_collect_raises_a_non_robots_exception(monkeypatch, tmp_path, no_model_calls, caplog):
+    # This is the live failure that motivated the fix: The Whisky Exchange's
+    # category page now returns 403 from a Cloudflare challenge, and
+    # requests raises HTTPError out of collect(). That must not escape
+    # main() as a traceback; it must degrade to the documented exit 1.
+    @register
+    class _HttpErrorRetailer:
+        name = "fake_http_error"
+        category = "gin"
+        category_url = "https://error.example.test/category"
+
+        def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+            fetcher.get(self.category_url)
+            return [], 0
+
+    class _FailingFetcher:
+        def __init__(self, contact=""):
+            pass
+
+        def get(self, url: str) -> str:
+            raise requests.exceptions.HTTPError(f"403 Client Error: Forbidden for url: {url}")
+
+    monkeypatch.setattr(cli, "Fetcher", _FailingFetcher)
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", "fake_http_error", "--limit", "25", "--out", str(tmp_path), "--no-llm"],
+    )
+
+    with caplog.at_level("ERROR"):
+        exit_code = cli.main()
+
+    assert exit_code == 1
+    assert "fake_http_error" in caplog.text
 
 
 def test_listing_path_survives_a_parse_listing_exception(monkeypatch, tmp_path, no_model_calls):
