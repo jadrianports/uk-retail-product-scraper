@@ -1,5 +1,6 @@
 import logging
 import re
+import string
 from datetime import datetime, timezone
 from urllib.parse import urljoin
 
@@ -13,6 +14,34 @@ log = logging.getLogger(__name__)
 
 BASE = "https://www.thewhiskyexchange.com"
 _SIZE_IN_META = re.compile(r"^\s*([\d.]+\s*(?:cl|ml|l))\b", re.I)
+
+# Category, style and place words. A brand name does not stop here when it
+# leads the product name, so "Gin Mare" still reads as a brand.
+_BRAND_STOP_WORDS = {
+    "gin", "jenever", "vodka", "dry", "london", "old", "tom", "navy", "strength", "sloe", "pink",
+    "organic", "premium", "classic", "edition", "gift", "box", "half", "litre", "litres", "cl", "ml",
+    "islay", "kyoto", "schwarzwald", "coastal", "mediterranean", "capri", "scottish", "cornish",
+    "american", "japanese", "italian", "german", "spanish", "french", "garden", "botanical",
+    "botanicals", "distilled", "handcrafted", "small", "batch", "reserve", "original",
+}
+_BRAND_MAX_WORDS = 4
+
+
+def brand_from_name(name: str) -> str:
+    """Guess a brand from a product name. The site publishes no brand field."""
+    words = name.split()
+    if not words:
+        return ""
+    picked: list[str] = []
+    for index, word in enumerate(words):
+        bare = word.strip(string.punctuation).lower()
+        if index and bare in _BRAND_STOP_WORDS:
+            break
+        picked.append(word)
+        if len(picked) >= _BRAND_MAX_WORDS:
+            break
+    brand = " ".join(picked).strip(string.punctuation)
+    return brand or words[0]
 
 
 def _now() -> str:
@@ -82,7 +111,7 @@ class WhiskyExchange:
             product_url=url,
             scraped_at=_now(),
             name=name,
-            brand=name.split(" ")[0] if name else None,
+            brand=brand_from_name(name) if name else None,
             price_gbp=price,
             size_raw=size_raw,
             abv_percent=extract_abv(meta),

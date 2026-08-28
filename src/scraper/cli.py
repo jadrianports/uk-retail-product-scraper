@@ -16,14 +16,23 @@ from scraper.retailers.base import REGISTRY, get_retailer
 log = logging.getLogger("scraper")
 
 
-def main() -> int:
-    load_dotenv()
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Capture product attributes from a UK retailer.")
     parser.add_argument("--retailer", default="morrisons", choices=sorted(REGISTRY))
     parser.add_argument("--limit", type=int, default=25)
-    parser.add_argument("--out", type=Path, default=Path("data"))
+    # No fixed default here. An explicit --out must win as-is; with no flag,
+    # the default depends on --retailer, so it is filled in after parsing.
+    parser.add_argument("--out", type=Path, default=None)
     parser.add_argument("--no-llm", action="store_true", help="Skip the model step.")
     args = parser.parse_args()
+    if args.out is None:
+        args.out = Path("data") / args.retailer
+    return args
+
+
+def main() -> int:
+    load_dotenv()
+    args = parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 

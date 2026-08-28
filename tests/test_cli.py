@@ -392,6 +392,19 @@ def test_build_client_returns_none_with_no_api_key_and_the_run_still_succeeds(mo
     assert exit_code == 0
 
 
+@pytest.mark.parametrize("retailer, last_part", [("morrisons", "morrisons"), ("whisky_exchange", "whisky_exchange")])
+def test_default_out_path_nests_under_data_by_retailer_name(monkeypatch, retailer, last_part):
+    # No --out flag given: the default must be data/<retailer>, built from
+    # the adapter's own name attribute, not a hard-coded string.
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", retailer, "--no-llm"],
+    )
+    args = cli.parse_args()
+    parts = args.out.parts
+    assert parts[-2:] == ("data", last_part)
+
+
 def test_both_adapters_satisfy_the_collect_contract():
     # Substitutability check: Morrisons and WhiskyExchange behave under one
     # signature, so the CLI never needs to branch on which adapter it holds.
