@@ -18,7 +18,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -39,7 +39,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -60,7 +60,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -81,7 +81,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -102,7 +102,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -123,7 +123,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -144,7 +144,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -165,7 +165,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -186,7 +186,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -207,7 +207,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -228,7 +228,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -249,7 +249,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -270,7 +270,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -291,7 +291,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -312,7 +312,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -333,7 +333,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -354,7 +354,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -375,7 +375,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -396,7 +396,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -417,7 +417,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -438,7 +438,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -459,7 +459,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -480,7 +480,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -501,6 +501,6 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\"}",
-    "scraped_at": "2026-08-28T19:46:46Z"
+    "scraped_at": "2026-08-28T19:56:08Z"
   }
 ]
