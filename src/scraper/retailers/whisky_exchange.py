@@ -1,3 +1,4 @@
+import logging
 import re
 from datetime import datetime, timezone
 from urllib.parse import urljoin
@@ -7,6 +8,8 @@ from bs4 import BeautifulSoup
 from scraper.enrich import extract_abv
 from scraper.models import Product
 from scraper.retailers.base import register
+
+log = logging.getLogger(__name__)
 
 BASE = "https://www.thewhiskyexchange.com"
 _SIZE_IN_META = re.compile(r"^\s*([\d.]+\s*(?:cl|ml|l))\b", re.I)
@@ -90,3 +93,30 @@ class WhiskyExchange:
         # The listing card does not show a struck-through price. Do not guess one.
         product.field_sources["price_was"] = "missing"
         return product
+
+    def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+        # This site lists every hard attribute on the listing page itself.
+        # Its detail page holds no product card for itself, so a per-URL
+        # fetch loop would return null names. Read the listing page and
+        # stop there; do not fetch each product page.
+        listing = fetcher.get(self.category_url)
+        try:
+            cards = self.parse_listing(listing)
+        except Exception as exc:
+            log.warning("Cannot read the listing page at %s: %s", self.name, exc)
+            cards = []
+
+        cards = cards[:limit]
+        expected = len(cards)
+        log.info("Found %s products on the listing page at %s", expected, self.name)
+
+        products: list[Product] = []
+        for index, product in enumerate(cards, start=1):
+            if product.name is None:
+                log.warning(
+                    "No name found for product %s of %s. The page layout may have changed.",
+                    index, expected,
+                )
+                continue
+            products.append(product)
+        return products, expected

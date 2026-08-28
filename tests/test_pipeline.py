@@ -1,6 +1,6 @@
-from scraper.enrich import enrich_product
 from scraper.llm import Derived
 from scraper.models import Product
+from scraper.pipeline import enrich_product
 
 
 class _Enricher:
@@ -66,6 +66,20 @@ def test_adapter_set_provenance_survives_the_regex_pass():
     assert product.abv_percent == 40.0
     assert product.field_sources["abv_percent"] == "css"
     assert enricher.calls == 0
+
+
+def test_adapter_set_size_ml_survives_the_regex_pass():
+    # An adapter can set size_ml itself before enrich_product runs. detail_text
+    # holds a size too, so the regex would derive it again. The adapter's
+    # value and its source tag must not be overwritten.
+    product = _product(abv_percent=40.0, country_of_origin="England", flavour_style="Juniper led")
+    product.size_ml = 500.0
+    product.field_sources["size_ml"] = "css"
+    product.detail_text = "70cl bottle, Alcohol By Volume 40.0"
+    enricher = _Enricher()
+    enrich_product(product, enricher)
+    assert product.size_ml == 500.0
+    assert product.field_sources["size_ml"] == "css"
 
 
 def test_pack_type_missing_is_tagged_even_on_the_early_return_path():

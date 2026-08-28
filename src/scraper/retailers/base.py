@@ -12,6 +12,15 @@ class Retailer(Protocol):
 
     def parse_product(self, html: str, url: str) -> Product: ...
 
+    def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+        """Gather this retailer's own products. Each adapter picks its own route.
+
+        Return the parsed products and the expected count (the number of
+        products the listing offered, capped at limit). A RobotsDenied
+        error must pass through, not be caught here.
+        """
+        ...
+
 
 REGISTRY: dict[str, type] = {}
 

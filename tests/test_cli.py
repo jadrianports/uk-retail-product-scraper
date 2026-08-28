@@ -62,11 +62,9 @@ class _ListingRetailer:
     category = "gin"
     category_url = "https://listing.example.test/category"
 
-    def find_product_urls(self, listing_html: str) -> list[str]:
-        raise AssertionError("the listing path must not call find_product_urls")
-
-    def parse_listing(self, listing_html: str) -> list[Product]:
-        return [
+    def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+        fetcher.get(self.category_url)
+        products = [
             Product(
                 retailer=self.name,
                 category=self.category,
@@ -76,10 +74,8 @@ class _ListingRetailer:
                 size_raw="70cl",
             )
             for i in range(1, 4)
-        ]
-
-    def parse_product(self, html: str, url: str) -> Product:
-        raise AssertionError("the listing path must not fetch or parse per-product pages")
+        ][:limit]
+        return products, len(products)
 
 
 @register
@@ -90,18 +86,23 @@ class _PerUrlRetailer:
     category = "gin"
     category_url = "https://perurl.example.test/category"
 
-    def find_product_urls(self, listing_html: str) -> list[str]:
-        return [f"https://perurl.example.test/p/{i}" for i in range(1, 4)]
-
-    def parse_product(self, html: str, url: str) -> Product:
-        return Product(
-            retailer=self.name,
-            category=self.category,
-            product_url=url,
-            scraped_at="2026-08-28T12:00:00Z",
-            name=f"Product at {url}",
-            size_raw="70cl",
-        )
+    def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+        fetcher.get(self.category_url)
+        urls = [f"https://perurl.example.test/p/{i}" for i in range(1, 4)][:limit]
+        products = []
+        for url in urls:
+            fetcher.get(url)
+            products.append(
+                Product(
+                    retailer=self.name,
+                    category=self.category,
+                    product_url=url,
+                    scraped_at="2026-08-28T12:00:00Z",
+                    name=f"Product at {url}",
+                    size_raw="70cl",
+                )
+            )
+        return products, len(products)
 
 
 def test_listing_path_skips_per_product_fetch(monkeypatch, tmp_path, no_model_calls):
@@ -169,19 +170,26 @@ def test_exits_1_when_parse_gate_fails(monkeypatch, tmp_path, no_model_calls):
         category = "gin"
         category_url = "https://gate.example.test/category"
 
-        def find_product_urls(self, listing_html: str) -> list[str]:
-            return [f"https://gate.example.test/p/{i}" for i in range(1, 6)]
-
-        def parse_product(self, html: str, url: str) -> Product:
-            # Only the first product has a name. The rest fail the parse gate.
-            name = "Only One" if url.endswith("/p/1") else None
-            return Product(
-                retailer=self.name,
-                category=self.category,
-                product_url=url,
-                scraped_at="2026-08-28T12:00:00Z",
-                name=name,
-            )
+        def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+            fetcher.get(self.category_url)
+            urls = [f"https://gate.example.test/p/{i}" for i in range(1, 6)][:limit]
+            expected = len(urls)
+            products = []
+            for url in urls:
+                fetcher.get(url)
+                # Only the first product has a name. The rest fail the parse gate.
+                if not url.endswith("/p/1"):
+                    continue
+                products.append(
+                    Product(
+                        retailer=self.name,
+                        category=self.category,
+                        product_url=url,
+                        scraped_at="2026-08-28T12:00:00Z",
+                        name="Only One",
+                    )
+                )
+            return products, expected
 
     pages = {"https://gate.example.test/category": "<html></html>"}
     for i in range(1, 6):
@@ -216,6 +224,41 @@ def test_exits_2_when_robots_denied(monkeypatch, tmp_path, no_model_calls):
     assert exit_code == 2
 
 
+def test_robots_denied_from_deep_inside_collect_still_exits_2(monkeypatch, tmp_path, no_model_calls):
+    # The category fetch can succeed while a later per-item fetch is denied.
+    # RobotsDenied must still escape collect() and reach the CLI, not just
+    # in the simple case where the very first fetch is denied.
+    @register
+    class _DeniedPartwayRetailer:
+        name = "fake_denied_partway"
+        category = "gin"
+        category_url = "https://partway.example.test/category"
+
+        def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+            fetcher.get(self.category_url)
+            fetcher.get("https://partway.example.test/p/1")
+            return [], 0
+
+    class _PartialDenyFetcher:
+        def __init__(self, contact=""):
+            pass
+
+        def get(self, url: str) -> str:
+            if url.endswith("/category"):
+                return "<html></html>"
+            raise RobotsDenied(f"robots.txt denies {url}")
+
+    monkeypatch.setattr(cli, "Fetcher", _PartialDenyFetcher)
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", "fake_denied_partway", "--limit", "25", "--out", str(tmp_path), "--no-llm"],
+    )
+
+    exit_code = cli.main()
+
+    assert exit_code == 2
+
+
 def test_listing_path_survives_a_parse_listing_exception(monkeypatch, tmp_path, no_model_calls):
     @register
     class _BrokenListingRetailer:
@@ -223,11 +266,14 @@ def test_listing_path_survives_a_parse_listing_exception(monkeypatch, tmp_path, 
         category = "gin"
         category_url = "https://broken.example.test/category"
 
-        def find_product_urls(self, listing_html: str) -> list[str]:
-            raise AssertionError("the listing path must not call find_product_urls")
-
-        def parse_listing(self, listing_html: str) -> list[Product]:
-            raise ValueError("one malformed card broke the whole listing parse")
+        def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+            fetcher.get(self.category_url)
+            try:
+                raise ValueError("one malformed card broke the whole listing parse")
+            except ValueError:
+                # A retailer's own collect() must degrade to an empty result,
+                # not let an internal parse error escape as a crash.
+                return [], 0
 
     pages = {"https://broken.example.test/category": "<html></html>"}
     _install_fake_fetcher(monkeypatch, pages)
@@ -287,3 +333,27 @@ def test_build_client_returns_none_with_no_api_key_and_the_run_still_succeeds(mo
     exit_code = cli.main()
 
     assert exit_code == 0
+
+
+def test_both_adapters_satisfy_the_collect_contract():
+    # Substitutability check: Morrisons and WhiskyExchange behave under one
+    # signature, so the CLI never needs to branch on which adapter it holds.
+    from scraper.retailers.morrisons import Morrisons
+    from scraper.retailers.whisky_exchange import WhiskyExchange
+
+    class _FakeCollectFetcher:
+        def __init__(self, pages):
+            self.pages = pages
+
+        def get(self, url: str) -> str:
+            return self.pages.get(url, "<html></html>")
+
+    for site in (Morrisons(), WhiskyExchange()):
+        fetcher = _FakeCollectFetcher({site.category_url: "<html></html>"})
+        result = site.collect(fetcher, 5)
+
+        assert isinstance(result, tuple)
+        assert len(result) == 2
+        products, expected = result
+        assert isinstance(products, list)
+        assert isinstance(expected, int)

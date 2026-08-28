@@ -1,12 +1,16 @@
 import json
+import logging
 import re
 from datetime import datetime, timezone
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 
+from scraper.fetch import RobotsDenied
 from scraper.models import Product
 from scraper.retailers.base import register
+
+log = logging.getLogger(__name__)
 
 BASE = "https://groceries.morrisons.com"
 
@@ -114,3 +118,26 @@ class Morrisons:
 
         product.detail_text = _detail_text(soup)
         return product
+
+    def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
+        listing = fetcher.get(self.category_url)
+        urls = self.find_product_urls(listing)[:limit]
+        expected = len(urls)
+        log.info("Found %s product pages at %s", expected, self.name)
+
+        products: list[Product] = []
+        for index, url in enumerate(urls, start=1):
+            try:
+                product = self.parse_product(fetcher.get(url), url)
+            except RobotsDenied:
+                raise
+            except Exception as exc:
+                log.warning("Cannot read product %s of %s at %s: %s", index, expected, url, exc)
+                continue
+
+            if product.name is None:
+                log.warning("No name found at %s. The page layout may have changed.", url)
+                continue
+
+            products.append(product)
+        return products, expected
