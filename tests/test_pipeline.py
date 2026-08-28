@@ -105,3 +105,44 @@ def test_pack_type_missing_is_tagged_even_on_the_early_return_path():
     assert product.pack_type is None
     assert product.field_sources["pack_type"] == "missing"
     assert enricher.calls == 0
+
+
+def test_measurement_only_text_skips_the_model_call():
+    # The Whisky Exchange listing cards carry no description. The only
+    # text is a size and strength string. It has no words for the model
+    # to read, so the model must not be called.
+    product = _product()
+    product.detail_text = "70cl / 41.3%"
+    enricher = _Enricher(Derived(flavour_style="Should not be used"))
+    enrich_product(product, enricher)
+    assert enricher.calls == 0
+    assert product.flavour_style is None
+    assert product.field_sources["flavour_style"] == "missing"
+
+
+def test_real_description_still_calls_the_model_once():
+    product = _product()
+    product.detail_text = "A smooth and smoky single malt with notes of dried fruit."
+    enricher = _Enricher(Derived(flavour_style="Smoky and fruity", abv_percent=43.0))
+    enrich_product(product, enricher)
+    assert enricher.calls == 1
+    assert product.flavour_style == "Smoky and fruity"
+    assert product.field_sources["flavour_style"] == "llm"
+
+
+def test_skip_path_leaves_no_field_untagged():
+    product = _product()
+    product.detail_text = "70cl / 41.3%"
+    enricher = _Enricher()
+    enrich_product(product, enricher)
+    assert enricher.calls == 0
+    expected_fields = {
+        "size_ml",
+        "pack_type",
+        "country_of_origin",
+        "abv_percent",
+        "flavour_style",
+    }
+    assert expected_fields <= set(product.field_sources.keys())
+    for field in expected_fields:
+        assert product.field_sources[field] == "missing" or getattr(product, field) is not None

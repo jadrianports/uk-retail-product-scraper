@@ -1,5 +1,13 @@
 from scraper.enrich import extract_abv, extract_origin, extract_pack_type, size_to_ml
 
+# A short text has no room for real prose. The model has nothing to read.
+MIN_TEXT_FOR_MODEL = 20
+
+
+def _has_letters(text: str) -> bool:
+    """Tell a measurement string apart from real prose."""
+    return any(char.isalpha() for char in text)
+
 
 def enrich_product(product, enricher) -> None:
     """Fill the hard attributes. Try regex first, then the model."""
@@ -37,7 +45,17 @@ def enrich_product(product, enricher) -> None:
     if not needs_model:
         return
 
-    derived = enricher.derive(product.name or "", (product.description or text)[:1500])
+    model_text = (product.description or text)[:1500]
+
+    # A call that cannot succeed is worse than no call. A text this short,
+    # or with no letters at all, gives the model nothing to read.
+    if len(model_text.strip()) < MIN_TEXT_FOR_MODEL or not _has_letters(model_text):
+        for field in ("flavour_style", "abv_percent"):
+            if getattr(product, field) is None:
+                product.field_sources[field] = "missing"
+        return
+
+    derived = enricher.derive(product.name or "", model_text)
 
     for field in ("flavour_style", "abv_percent"):
         if getattr(product, field) is not None:
