@@ -1,0 +1,128 @@
+import hashlib
+import logging
+import random
+import time
+from pathlib import Path
+from urllib.parse import urljoin, urlparse
+from urllib.robotparser import RobotFileParser
+
+import requests
+
+log = logging.getLogger(__name__)
+
+USER_AGENT = (
+    "uk-retail-product-scraper/0.1 (technical exercise; contact: {contact})"
+)
+
+
+class RobotsDenied(Exception):
+    """The site rules deny this path."""
+
+
+class RobotsGate:
+    def __init__(self, base_url: str, parser: RobotFileParser | None):
+        self.base_url = base_url
+        self._parser = parser
+
+    @classmethod
+    def from_text(cls, base_url: str, text: str) -> "RobotsGate":
+        parser = RobotFileParser()
+        parser.parse(text.splitlines())
+        return cls(base_url, parser)
+
+    @classmethod
+    def unreadable(cls, base_url: str) -> "RobotsGate":
+        # You cannot read the rules, so you must not scrape the site.
+        return cls(base_url, None)
+
+    def allows(self, url: str) -> bool:
+        if self._parser is None:
+            return False
+        return self._parser.can_fetch("*", url)
+
+
+def load_robots(base_url: str, session: requests.Session) -> RobotsGate:
+    robots_url = urljoin(base_url, "/robots.txt")
+    try:
+        response = session.get(robots_url, timeout=20)
+    except requests.RequestException:
+        return RobotsGate.unreadable(base_url)
+    if response.status_code != 200 or not response.text.strip():
+        log.warning("robots.txt is unreadable at %s (HTTP %s)", robots_url, response.status_code)
+        return RobotsGate.unreadable(base_url)
+    return RobotsGate.from_text(base_url, response.text)
+
+
+class Fetcher:
+    def __init__(
+        self,
+        contact: str,
+        cache_dir: Path = Path(".cache"),
+        delay: float = 1.0,
+        max_attempts: int = 3,
+    ):
+        self.cache_dir = cache_dir
+        self.delay = delay
+        self.max_attempts = max_attempts
+        self.session = requests.Session()
+        self.session.headers.update(
+            {
+                "User-Agent": USER_AGENT.format(contact=contact or "not supplied"),
+                "Accept-Language": "en-GB,en;q=0.9",
+            }
+        )
+        self._gates: dict[str, RobotsGate] = {}
+        self._last_request = 0.0
+
+    def _gate_for(self, url: str) -> RobotsGate:
+        parts = urlparse(url)
+        base = f"{parts.scheme}://{parts.netloc}"
+        if base not in self._gates:
+            self._gates[base] = load_robots(base, self.session)
+        return self._gates[base]
+
+    def _cache_path(self, url: str) -> Path:
+        host = urlparse(url).netloc
+        digest = hashlib.sha256(url.encode()).hexdigest()[:20]
+        return self.cache_dir / host / f"{digest}.html"
+
+    def _throttle(self) -> None:
+        elapsed = time.monotonic() - self._last_request
+        wait = self.delay + random.uniform(0, 0.4) - elapsed
+        if wait > 0:
+            time.sleep(wait)
+        self._last_request = time.monotonic()
+
+    def get(self, url: str) -> str:
+        if not self._gate_for(url).allows(url):
+            raise RobotsDenied(f"robots.txt denies {url}")
+
+        path = self._cache_path(url)
+        if path.exists():
+            return path.read_text("utf-8")
+
+        last_error: Exception | None = None
+        for attempt in range(1, self.max_attempts + 1):
+            self._throttle()
+            try:
+                response = self.session.get(url, timeout=30)
+            except requests.RequestException as exc:
+                last_error = exc
+                time.sleep(2**attempt)
+                continue
+
+            if response.status_code == 200:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(response.text, "utf-8")
+                return response.text
+
+            if response.status_code in (429, 500, 502, 503, 504):
+                wait = float(response.headers.get("Retry-After", 2**attempt))
+                log.warning("HTTP %s for %s. Wait %ss", response.status_code, url, wait)
+                time.sleep(wait)
+                last_error = requests.HTTPError(f"HTTP {response.status_code}")
+                continue
+
+            response.raise_for_status()
+
+        raise RuntimeError(f"Cannot fetch {url}") from last_error
