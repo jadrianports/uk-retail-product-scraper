@@ -17,6 +17,49 @@ class _FakeClient:
         self.models = _FakeModels(parsed, raises)
 
 
+class _FakeModelsDailyQuotaExhausted:
+    """Raises a per-day quota error on every call. Counts calls."""
+
+    def __init__(self):
+        self.call_count = 0
+
+    def generate_content(self, **kwargs):
+        self.call_count += 1
+        raise RuntimeError(
+            "429 RESOURCE_EXHAUSTED. quotaId: "
+            "GenerateRequestsPerDayPerProjectPerModel-FreeTier, "
+            "quotaValue: '20', retryDelay: '59s'"
+        )
+
+
+class _FakeClientDailyQuotaExhausted:
+    def __init__(self):
+        self.models = _FakeModelsDailyQuotaExhausted()
+
+
+class _FakeModelsPerMinuteThenSuccess:
+    """Raises a per-minute quota error once, then returns a parsed reply."""
+
+    def __init__(self, parsed):
+        self.call_count = 0
+        self._parsed = parsed
+
+    def generate_content(self, **kwargs):
+        self.call_count += 1
+        if self.call_count == 1:
+            raise RuntimeError(
+                "429 RESOURCE_EXHAUSTED. quotaId: "
+                "GenerateRequestsPerMinutePerProjectPerModel-FreeTier, "
+                "quotaValue: '5', retryDelay: '0s'"
+            )
+        return type("R", (), {"parsed": self._parsed})()
+
+
+class _FakeClientPerMinuteThenSuccess:
+    def __init__(self, parsed):
+        self.models = _FakeModelsPerMinuteThenSuccess(parsed)
+
+
 def test_derive_returns_the_model_values():
     enricher = GeminiEnricher(client=_FakeClient(Derived(flavour_style="Citrus led London dry")), min_interval=0)
     result = enricher.derive("Ableforth's Bathtub Gin", "Orange peel and juniper.")
@@ -80,3 +123,61 @@ def test_retry_delay_seconds_caps_an_absurdly_large_value():
 
 def test_retry_delay_seconds_returns_a_small_default_when_no_delay_is_present():
     assert retry_delay_seconds("model unavailable") == 2.0
+
+
+def test_daily_quota_error_trips_the_breaker_and_returns_an_empty_result():
+    client = _FakeClientDailyQuotaExhausted()
+    enricher = GeminiEnricher(client=client, min_interval=0)
+
+    result = enricher.derive("A Gin", "Some text.")
+
+    assert result == Derived()
+    assert client.models.call_count == 1
+
+
+def test_tripped_breaker_stops_all_further_api_calls():
+    client = _FakeClientDailyQuotaExhausted()
+    enricher = GeminiEnricher(client=client, min_interval=0)
+
+    enricher.derive("A Gin", "Some text.")
+    calls_after_first_product = client.models.call_count
+
+    second_result = enricher.derive("Another Gin", "Some text.")
+
+    assert second_result == Derived()
+    assert client.models.call_count == calls_after_first_product
+
+
+def test_tripped_breaker_does_not_call_the_retry_delay_helper(monkeypatch):
+    import scraper.llm as llm_module
+
+    def _fail_if_called(error_text):
+        raise AssertionError("retry_delay_seconds must not run once the breaker is tripped")
+
+    client = _FakeClientDailyQuotaExhausted()
+    enricher = GeminiEnricher(client=client, min_interval=0)
+    enricher.derive("A Gin", "Some text.")
+
+    monkeypatch.setattr(llm_module, "retry_delay_seconds", _fail_if_called)
+
+    result = enricher.derive("Another Gin", "Some text.")
+    assert result == Derived()
+
+
+def test_per_minute_quota_error_does_not_trip_the_breaker(monkeypatch):
+    import scraper.llm as llm_module
+
+    monkeypatch.setattr(llm_module.time, "sleep", lambda seconds: None)
+    parsed = Derived(flavour_style="Juniper led")
+    client = _FakeClientPerMinuteThenSuccess(parsed)
+    enricher = GeminiEnricher(client=client, min_interval=0)
+
+    result = enricher.derive("A Gin", "Some text.")
+
+    assert result.flavour_style == "Juniper led"
+    assert client.models.call_count == 2
+    assert enricher._daily_quota_exhausted is False
+
+    later_result = enricher.derive("Another Gin", "Some text.")
+    assert client.models.call_count == 3
+    assert later_result.flavour_style == "Juniper led"

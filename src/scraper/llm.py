@@ -7,11 +7,10 @@ from pydantic import BaseModel
 
 log = logging.getLogger(__name__)
 
-MODEL = "gemini-2.5-flash"
+MODEL = "gemini-3.5-flash-lite"
 
-# The free tier allows 5 requests per minute. Space calls so the tool
-# does not provoke the limit.
-MIN_CALL_INTERVAL = 12.0
+# Space calls so the tool does not provoke the per-minute limit.
+MIN_CALL_INTERVAL = 6.0
 
 # A 429 reply can ask for a long wait. Cap it so one reply cannot
 # stall the run for an unreasonable time.
@@ -38,6 +37,15 @@ def _is_rate_limited(error_text: str) -> bool:
     )
 
 
+def _is_daily_quota_exhausted(error_text: str) -> bool:
+    """Tell a spent daily quota from a per-minute limit.
+
+    Match on the quota name, not the numeric quota value. The value
+    changes per model; the name does not.
+    """
+    return "PerDay" in error_text or "GenerateRequestsPerDayPerProject" in error_text
+
+
 class Derived(BaseModel):
     flavour_style: str | None = None
     abv_percent: float | None = None
@@ -59,6 +67,9 @@ class GeminiEnricher:
         self.client = client
         self.min_interval = min_interval
         self._last_call = 0.0
+        # Set once the daily quota reports as spent. Stops all further
+        # API calls for the rest of this run.
+        self._daily_quota_exhausted = False
 
     def _throttle(self) -> None:
         elapsed = time.monotonic() - self._last_call
@@ -86,6 +97,11 @@ class GeminiEnricher:
         if self.client is None:
             return Derived()
 
+        # The breaker is tripped. Do not call the API or sleep again
+        # this run; the daily quota does not reset until tomorrow.
+        if self._daily_quota_exhausted:
+            return Derived()
+
         from google.genai import types
 
         for attempt in (1, 2):
@@ -102,6 +118,13 @@ class GeminiEnricher:
             except Exception as exc:
                 log.warning("The model call failed for %s on attempt %s: %s", name, attempt, exc)
                 error_text = str(exc)
+                if _is_daily_quota_exhausted(error_text):
+                    self._daily_quota_exhausted = True
+                    log.warning(
+                        "The daily Gemini quota is spent. The remaining products get "
+                        "null derived fields. The quota resets the next day."
+                    )
+                    return Derived()
                 if _is_rate_limited(error_text):
                     wait = retry_delay_seconds(error_text)
                     log.warning("The API reports a limit. Wait %ss before the retry.", wait)
