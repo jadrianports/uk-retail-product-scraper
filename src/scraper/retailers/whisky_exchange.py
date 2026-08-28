@@ -17,6 +17,8 @@ _SIZE_IN_META = re.compile(r"^\s*([\d.]+\s*(?:cl|ml|l))\b", re.I)
 # A flash reading "Save £N" states a money saving. A flash like "Free Gift"
 # does not, so it must not feed a price_was guess.
 _SAVING_IN_FLASH = re.compile(r"^save\s*£\s*(\d+(?:\.\d{1,2})?)$", re.I)
+# Extract product id from URL path like /p/14553/product-name
+_SKU_IN_URL = re.compile(r"/p/(\d+)/")
 
 # Category, style and place words. A brand name does not stop here when it
 # leads the product name, so "Gin Mare" still reads as a brand.
@@ -28,6 +30,12 @@ _BRAND_STOP_WORDS = {
     "botanicals", "distilled", "handcrafted", "small", "batch", "reserve", "original",
 }
 _BRAND_MAX_WORDS = 4
+
+
+def _extract_sku_from_url(url: str) -> str | None:
+    """Extract product id from URL path like /p/14553/product-name."""
+    match = _SKU_IN_URL.search(url)
+    return match.group(1) if match else None
 
 
 def brand_from_name(name: str) -> str:
@@ -121,11 +129,14 @@ class WhiskyExchange:
         button_text = button_tag.get_text(strip=True) if button_tag else ""
         availability = "InStock" if "add to basket" in button_text.lower() else None
 
+        sku = _extract_sku_from_url(url)
+
         product = Product(
             retailer=self.name,
             category=self.category,
             product_url=url,
             scraped_at=_now(),
+            sku=sku,
             name=name,
             brand=brand_from_name(name) if name else None,
             price_gbp=price,
@@ -148,6 +159,8 @@ class WhiskyExchange:
         product.field_sources["price_was"] = "css" if price_was is not None else "missing"
         # A missing button is not proof of no stock. Tag it missing, not a guess.
         product.field_sources["availability"] = "css" if availability is not None else "missing"
+        # The product id sits in the product URL.
+        product.field_sources["sku"] = "css" if sku is not None else "missing"
         return product
 
     def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:

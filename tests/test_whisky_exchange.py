@@ -94,6 +94,25 @@ def test_field_sources_carry_every_new_field_on_every_card():
             assert field in product.field_sources
 
 
+def test_sku_extracted_from_product_url():
+    html, site = _cards()
+    products = site.parse_listing(html)
+    lagavulin = next(p for p in products if p.name.startswith("Lagavulin"))
+    assert lagavulin.sku == "43556"
+    assert lagavulin.field_sources["sku"] == "css"
+
+
+def test_sku_tagged_missing_when_url_does_not_match_pattern():
+    site = WhiskyExchange()
+    from bs4 import BeautifulSoup
+    html = '<a href="/something-else" class="product-card"><p class="product-card__name">Test</p></a>'
+    soup = BeautifulSoup(html, "lxml")
+    card = soup.select_one("a.product-card")
+    product = site._from_card(card, "https://www.thewhiskyexchange.com/something-else")
+    assert product.sku is None
+    assert product.field_sources["sku"] == "missing"
+
+
 @pytest.mark.parametrize(
     "name, expected",
     [
