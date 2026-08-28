@@ -2,28 +2,37 @@
 
 This tool captures product attributes for one category from a UK retailer,
 one row per product and one column per attribute, to CSV and JSON. Two
-datasets ship: 25 gin products from Morrisons in `data/products.csv`, and 24
-gin products from The Whisky Exchange in `data/whisky_exchange/products.csv`.
-Both are 19 columns wide.
+datasets ship: 25 gin products from Morrisons in
+`data/morrisons/products.csv`, and 24 gin products from The Whisky Exchange in
+`data/whisky_exchange/products.csv`. Both are 19 columns wide.
 
 Plain HTTP, not a browser: both sites serve product data in HTML, so a browser
 would add a large dependency for no extra data.
 
 ## Run it
 
-Both datasets are committed, so they can be read with no setup. The first
-row of `data/products.csv`, without `product_url`, `description` and
-`field_sources`:
+Both datasets are committed, so they can be read with no setup. Each retailer
+writes to its own folder:
+
+```
+data/
+  morrisons/         products.csv  products.json
+  whisky_exchange/   products.csv  products.json
+```
+
+The first row of `data/morrisons/products.csv`, without `product_url`,
+`description` and `field_sources`:
 
 ```
 retailer            morrisons           availability       InStock
-category            gin                 scraped_at         2026-08-28T18:45:01Z
+category            gin                 scraped_at         2026-08-28T20:25:05Z
 sku                 106909896           size_raw           70cl
 name                Caorunn Gin         size_ml            700.0
 brand               Caorunn             pack_type          Glass Bottle
 price_gbp           23.5                country_of_origin  (empty)
-price_was           30.5                flavour_style      Invigorating clean and crisp
-is_on_promotion     True                abv_percent        41.8
+price_was           30.5                abv_percent        41.8
+is_on_promotion     True
+flavour_style       Invigorating, clean and crisp, aromatic
 ```
 
 Clone the repository:
@@ -45,7 +54,7 @@ The project needs Python 3.11 or later. `uv` fetches its own interpreter, so
 
 ```bash
 uv sync
-uv run pytest                  # 91 offline tests, about a second
+uv run pytest                  # 106 offline tests, about a second
 ```
 
 ```bash
@@ -60,7 +69,8 @@ Every 200 response is cached, so a second run makes no live request.
 `.env` holds `GEMINI_API_KEY` for the model and `SCRAPER_CONTACT`, an email for
 the `User-Agent` header. Without the key, derived fields are `null` and the run
 still succeeds. `--retailer` picks the adapter, `--limit` caps the products,
-`--out` sets the output directory, `--no-llm` skips the model.
+`--no-llm` skips the model. `--out` sets the output directory. It defaults to
+`data/<retailer>`, and an explicit `--out` wins.
 
 Exit codes: 0 success, 2 robots.txt denied the path. 1 means no usable
 dataset: the listing could not be fetched, or the parse-rate gate failed.
@@ -109,8 +119,7 @@ per host. Retries are three attempts, on 429 and 5xx only.
 If fewer than 80% of the expected products parse, the tool logs the count and
 exits 1. A fetch failure returns before the writers run, so the previous
 dataset stays untouched. A parse-rate failure does not: the writers run first,
-so a run that parses nothing leaves a header-only CSV. It fired for real: 0 of
-25 parsed on the first run.
+so a run that parses nothing leaves a header-only CSV.
 
 ## Where the LLM runs, and where it does not
 
@@ -134,8 +143,7 @@ are now spaced by `MIN_CALL_INTERVAL = 6.0` seconds.
 ### Two kinds of 429
 
 A per-minute limit is transient: honour `retryDelay` and retry. A spent
-per-day quota is terminal: stop calling. The API returns 429 for both; the
-first version waited 59 seconds and retried twice per remaining product.
+per-day quota is terminal: stop calling. The API returns 429 for both.
 `_is_daily_quota_exhausted` now matches the quota name (`PerDay`), not the
 numeric value, which changes with the model. A match trips a circuit breaker.
 
@@ -157,8 +165,8 @@ An audit re-parsed all 25 rows with independent code: zero parser defects,
 and three things no test could find.
 
 11 of 25 products show a promotional price beside a struck-through base
-price. The dataset first held the promotion price alone, which would distort a
-price analysis. It now holds `price_was` and `is_on_promotion`.
+price. The dataset first held the promotion price alone. It now holds
+`price_was` and `is_on_promotion`.
 
 5 of 25 products are tonic water, because Morrisons puts mixers in the gin
 category. They stay: the tool reports what a shopper sees, and `abv_percent`
@@ -175,20 +183,37 @@ went from 4 to 13 values, so the pattern was the real gain.
 
 Morrisons has JSON-LD on every product page, so that adapter reads the listing,
 then one page per product. The Whisky Exchange has none, but its cards carry
-size and strength (`70cl / 57.8%`), so that adapter reads the listing and
-stops. Both meet at
+the size and the strength (`70cl / 57.8%`), so that adapter reads the listing
+and stops. Both meet at
 `collect(fetcher, limit) -> tuple[list[Product], int]`: the Protocol promises
-the result, not the route, and a test asserts that both satisfy it.
+the result, not the route, and a test asserts that both satisfy it. The
+Morrisons run makes about 26 requests. The Whisky Exchange run makes one, in
+about two seconds.
 
-The Morrisons run makes about 26 requests, one per product page. The Whisky
-Exchange run makes one request and takes about two seconds. It also fills
-`abv_percent` 24 of 24, against 20 of 25 at Morrisons, because the cards print
-the strength and Morrisons leaves it in free text on each product page.
+The Whisky Exchange publishes no brand field, so the adapter reads words from
+the start of the name. It stops at the first category, style or place word,
+and it takes four words at most. A leading category word is kept, so `Gin Mare`
+survives. That gives `The Botanist`, `Papa Salt`, `Ki No Bi`, `Isle of Harris`
+and `Monkey 47`. It stays a heuristic, and approximate.
+`Roku Noryo Tea Edition Gin` gives `Roku Noryo Tea`, where the brand is `Roku`.
+Morrisons needs none of this, because its JSON-LD carries a real brand field.
+
+Seven of the 19 columns are empty on every Whisky Exchange row: `sku`,
+`price_was`, `pack_type`, `country_of_origin`, `flavour_style`, `availability`
+and `description`. The card holds the name and the price as well, and nothing
+else. The product pages hold no JSON-LD and no description block. The words
+`Country`, `Producer` and `Distillery` there belong to the navigation, not the
+product. Fetching 24 product pages would cost 24 requests and return almost
+nothing, so the columns stay empty rather than guessed. The six filled columns
+are full at 24 of 24: `name`, `brand`, `price_gbp`, `size_raw`, `size_ml` and
+`abv_percent`. Two retailers, the same category, and one publishes about twice
+the structured data of the other. For anyone comparing a category across
+retailers, that asymmetry is itself a result.
 
 ## The Whisky Exchange, live
 
 The adapter is verified against fixtures built from the site's real markup,
-and it runs live. Its dataset is `data/whisky_exchange/products.csv`.
+and it runs live.
 
 During the build the site returned 403 with a Cloudflare JavaScript challenge,
 and this README called it a permanent site-wide block. That was wrong. Two of
@@ -199,23 +224,22 @@ The one test on a residential connection came minutes after this tool had made
 about 26 requests to the host. That is a flag the tool earned.
 
 A retest from a normal connection, VPN off, returned 200 and 24 product cards.
-The flag had decayed. Majestic, also 403 over the VPN, returned 200 too.
+The flag had decayed.
 
-The check that was missing: when a site blocks you, work out whether it is a
-flag you earned or a policy the site set, and retest from a clean path before
-you conclude. In a single response the two look identical.
+The check that was missing: work out whether a block is a flag you earned or a
+policy the site set, and retest from a clean path before you conclude. In a
+single response the two look identical.
 
 The live run found a second defect. `category_url` was `/c/40/gin`, and that
 path redirects to `/c/40/single-malt-scotch-whisky`. The adapter would have
 collected whisky and labelled it gin. The fixture came from the same page, so
 the tests passed while the code and the fixture were both wrong about what the
 page was. The gin category is `/c/338/gin`, titled "Gin and Jenever".
-Extraction correct, meaning wrong, for the third time here. Only the live run
-found it.
+Extraction correct, meaning wrong. Only the live run found it.
 
 ## Tests
 
-91 tests, all offline against fixtures built from real markup, with the model
+106 tests, all offline against fixtures built from real markup, with the model
 faked. The suite makes no network call, even with a real key in `.env`. It
 covers both parsers, the ABV, size and origin patterns, the promotion price,
 the robots paths, the cache and the quota breaker.
@@ -223,30 +247,21 @@ the robots paths, the cache and the quota breaker.
 ## Three ways this breaks in production
 
 Layout drift. Morrisons removes its JSON-LD block and the parser returns nulls
-without raising. The 80% gate catches a total failure. A per-field fill-rate
-comparison against the previous run catches a partial one: a fall from 95% to
-5% is a broken selector, not a change in stock.
+without raising. A per-field fill-rate comparison against the previous run
+catches a partial failure: a fall from 95% to 5% is a broken selector, not a
+change in stock.
 
-Bot defence escalation. Morrisons serves an AWS WAF script, and it returned
-403 for all 25 product pages until the User-Agent changed. Watch the status
-codes and the response size, and alert on the first 403 rather than after 25
-wasted requests. A block can also be transient. The alert has to separate a
-flag this tool earned from a policy the site set, so retry once from a clean
-path before anyone rewrites an adapter.
+Bot defence escalation. Watch the status codes and the response size, and
+alert on the first 403 rather than after 25 wasted requests. A block can also
+be transient, so retest before anyone rewrites an adapter.
 
 Silent model drift. The model returns valid JSON that is wrong, the schema
 validates, and nothing raises; the Fever-Tree origin is the example. Keep a
 hand-checked reference set and compare it on a schedule. Alert on the null rate
-of each derived field: a sudden fall is as suspicious as a rise. An earlier
-case was caught this way, so the prompt now forbids repeating the product name
-as the flavour.
+of each derived field: a sudden fall is as suspicious as a rise.
 
 ## Known limitations
 
 - Two flavour values restate the category: J.J. Gin and Ableforth's Bathtub
   Gin both give `London dry gin`.
-- The Whisky Exchange adapter takes the brand from the first word of the name:
-  `Whitley Neill` gives `Whitley`.
-- `flavour_style` is empty for all 24 Whisky Exchange rows. That site
-  publishes no descriptions, so there is no prose to read.
 - Prices are a snapshot, with no price history.
