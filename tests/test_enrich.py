@@ -23,7 +23,21 @@ def test_extract_abv(text, expected):
 
 @pytest.mark.parametrize(
     "raw,expected",
-    [("70cl", 700.0), ("1L", 1000.0), ("1.5 litres", 1500.0), ("750ml", 750.0), ("", None), (None, None)],
+    [
+        ("70cl", 700.0),
+        ("1L", 1000.0),
+        ("1.5 litres", 1500.0),
+        ("750ml", 750.0),
+        ("", None),
+        (None, None),
+        ("8 x 150ml", 1200.0),
+        ("12 x 330ml", 3960.0),
+        ("4x250ml", 1000.0),
+        ("6 X 1L", 6000.0),
+        # A product name can hold a letter x with no digit before it.
+        # That must not read as a multiplier.
+        ("Explorer Gin 70cl", 700.0),
+    ],
 )
 def test_size_to_ml(raw, expected):
     assert size_to_ml(raw) == expected

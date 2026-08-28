@@ -13,7 +13,10 @@ _ABV_PATTERNS = [
     re.compile(r"/\s*(\d{1,2}(?:\.\d+)?)(?!\d)\s*%", re.I),
 ]
 
-_SIZE = re.compile(r"(\d+(?:\.\d+)?)\s*(cl|ml|l|litre|litres)\b", re.I)
+# A pack count can lead the size, e.g. "8 x 150ml". The multiplier group
+# only matches when a digit sits right before the x, so a name like
+# "Explorer Gin" never reads as a multiplier.
+_SIZE = re.compile(r"(?:(\d+)\s*[xX]\s*)?(\d+(?:\.\d+)?)\s*(cl|ml|l|litre|litres)\b", re.I)
 _TO_ML = {"cl": 10.0, "ml": 1.0, "l": 1000.0, "litre": 1000.0, "litres": 1000.0}
 
 # A closed list keeps the match safe. Free text after "Package Type" runs
@@ -47,7 +50,8 @@ def size_to_ml(raw: str | None) -> float | None:
     match = _SIZE.search(raw)
     if not match:
         return None
-    return float(match.group(1)) * _TO_ML[match.group(2).lower()]
+    pack_count = float(match.group(1)) if match.group(1) else 1.0
+    return pack_count * float(match.group(2)) * _TO_ML[match.group(3).lower()]
 
 
 def extract_pack_type(text: str | None) -> str | None:
