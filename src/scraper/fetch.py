@@ -14,6 +14,28 @@ USER_AGENT = (
     "uk-retail-product-scraper/0.1 (technical exercise; contact: {contact})"
 )
 
+# A site can send a very large Retry-After value. Cap the wait so one
+# response cannot stall the run for an unreasonable time.
+MAX_RETRY_WAIT = 120.0
+
+
+def retry_wait(headers, attempt: int) -> float:
+    backoff = float(2**attempt)
+    raw = headers.get("Retry-After")
+    if raw is None:
+        wait = backoff
+    else:
+        try:
+            wait = float(raw)
+        except ValueError:
+            # Retry-After can also be an HTTP-date (RFC 7231). Date parsing
+            # is not worth a dependency here, so fall back to the backoff.
+            wait = backoff
+    if wait > MAX_RETRY_WAIT:
+        log.warning("Retry-After of %ss exceeds the cap. Wait %ss instead", wait, MAX_RETRY_WAIT)
+        wait = MAX_RETRY_WAIT
+    return wait
+
 
 class RobotsDenied(Exception):
     """The site rules deny this path."""
@@ -117,7 +139,7 @@ class Fetcher:
                 return response.text
 
             if response.status_code in (429, 500, 502, 503, 504):
-                wait = float(response.headers.get("Retry-After", 2**attempt))
+                wait = retry_wait(response.headers, attempt)
                 log.warning("HTTP %s for %s. Wait %ss", response.status_code, url, wait)
                 time.sleep(wait)
                 last_error = requests.HTTPError(f"HTTP {response.status_code}")

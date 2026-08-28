@@ -1,6 +1,4 @@
-import pytest
-
-from scraper.fetch import Fetcher, RobotsGate
+from scraper.fetch import Fetcher, RobotsGate, retry_wait
 
 MORRISONS_ROBOTS = """
 User-agent: *
@@ -60,3 +58,16 @@ def test_get_returns_cached_text_and_makes_no_second_request(tmp_path):
     second = fetcher.get("https://example.test/gin")
     assert second == "hello gin"
     assert stub.calls == 1
+
+
+def test_retry_wait_honours_a_numeric_retry_after():
+    assert retry_wait({"Retry-After": "5"}, attempt=1) == 5.0
+
+
+def test_retry_wait_falls_back_to_backoff_for_an_http_date():
+    headers = {"Retry-After": "Fri, 28 Aug 2026 12:00:00 GMT"}
+    assert retry_wait(headers, attempt=2) == 4.0
+
+
+def test_retry_wait_falls_back_to_backoff_when_header_is_absent():
+    assert retry_wait({}, attempt=3) == 8.0
