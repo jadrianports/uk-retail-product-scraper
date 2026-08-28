@@ -26,3 +26,28 @@ def test_row_matches_column_contract():
     row = p.to_row()
     assert list(row.keys()) == COLUMNS
     assert json.loads(row["field_sources"]) == {"name": "jsonld"}
+
+
+def test_columns_include_price_was_and_promotion_flag():
+    assert len(COLUMNS) == 19
+    assert COLUMNS == [
+        "retailer",
+        "category",
+        "product_url",
+        "sku",
+        "name",
+        "brand",
+        "price_gbp",
+        "price_was",
+        "is_on_promotion",
+        "size_raw",
+        "size_ml",
+        "abv_percent",
+        "pack_type",
+        "country_of_origin",
+        "flavour_style",
+        "availability",
+        "description",
+        "field_sources",
+        "scraped_at",
+    ]

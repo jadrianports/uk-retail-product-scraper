@@ -11,6 +11,8 @@ COLUMNS = [
     "name",
     "brand",
     "price_gbp",
+    "price_was",
+    "is_on_promotion",
     "size_raw",
     "size_ml",
     "abv_percent",
@@ -34,6 +36,8 @@ class Product(BaseModel):
     name: str | None = None
     brand: str | None = None
     price_gbp: float | None = None
+    price_was: float | None = None
+    is_on_promotion: bool = False
     size_raw: str | None = None
     size_ml: float | None = None
     abv_percent: float | None = None

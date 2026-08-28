@@ -87,4 +87,6 @@ class WhiskyExchange:
         for field in ("name", "brand", "price_gbp", "size_raw", "abv_percent"):
             if getattr(product, field) is not None:
                 product.field_sources[field] = "css"
+        # The listing card does not show a struck-through price. Do not guess one.
+        product.field_sources["price_was"] = "missing"
         return product

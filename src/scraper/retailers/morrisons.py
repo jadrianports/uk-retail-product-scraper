@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import datetime, timezone
 from urllib.parse import urljoin
 
@@ -8,6 +9,10 @@ from scraper.models import Product
 from scraper.retailers.base import register
 
 BASE = "https://groceries.morrisons.com"
+
+# Matches a bare pound amount, e.g. "£30.50". A struck-through unit price
+# like "(£43.57/litre)" has trailing text, so it does not match.
+_BARE_PRICE = re.compile(r"£\s?(\d+(?:\.\d{2})?)")
 
 
 def _now() -> str:
@@ -21,6 +26,17 @@ def _detail_text(soup: BeautifulSoup) -> str:
     for tag in copy(["script", "style"]):
         tag.decompose()
     return copy.get_text(" ", strip=True)
+
+
+def _price_was(soup: BeautifulSoup) -> float | None:
+    # The JSON-LD offers.price is the current price only. The pre-promotion
+    # price is not in the JSON-LD, so read it from the strikethrough element.
+    for element in soup.select('[class*="strikethrough"]'):
+        text = element.get_text(strip=True)
+        match = re.fullmatch(_BARE_PRICE, text)
+        if match:
+            return float(match.group(1))
+    return None
 
 
 def _product_json_ld(soup: BeautifulSoup) -> dict:
@@ -68,6 +84,9 @@ class Morrisons:
         if isinstance(availability, str):
             availability = availability.rsplit("/", 1)[-1]
 
+        price_was = _price_was(soup)
+        is_on_promotion = price_was is not None and price is not None and price_was > price
+
         product = Product(
             retailer=self.name,
             category=self.category,
@@ -77,6 +96,8 @@ class Morrisons:
             name=data.get("name"),
             brand=brand,
             price_gbp=price,
+            price_was=price_was,
+            is_on_promotion=is_on_promotion,
             size_raw=data.get("size"),
             availability=availability,
             description=data.get("description"),
@@ -84,6 +105,12 @@ class Morrisons:
         for field in ("sku", "name", "brand", "price_gbp", "size_raw", "availability", "description"):
             if getattr(product, field) is not None:
                 product.field_sources[field] = "jsonld"
+
+        if price_was is not None:
+            product.field_sources["price_was"] = "css"
+            product.field_sources["is_on_promotion"] = "css"
+        else:
+            product.field_sources["price_was"] = "missing"
 
         product.detail_text = _detail_text(soup)
         return product
