@@ -13,6 +13,23 @@ would add a large dependency for no extra data.
 
 The dataset is committed, so `data/products.csv` can be read with no setup.
 
+The first row of `data/products.csv`:
+
+```
+retailer            morrisons           availability       InStock
+category            gin                 scraped_at         2026-08-28T18:45:01Z
+sku                 106909896           size_raw           70cl
+name                Caorunn Gin         size_ml            700.0
+brand               Caorunn             pack_type          Glass Bottle
+price_gbp           23.5                country_of_origin  (empty)
+price_was           30.5                flavour_style      Invigorating clean and crisp
+is_on_promotion     True                abv_percent        41.8
+```
+
+Columns `product_url`, `description`, and `field_sources` are not shown.
+The `field_sources` column records where each value came from: `price_gbp`
+from `jsonld`, `price_was` from `css`, `abv_percent` from `regex`.
+
 Clone the repository:
 
 ```bash
