@@ -71,3 +71,41 @@ def extract_origin(text: str | None) -> str | None:
         if match:
             return match.group(1).strip()
     return None
+
+
+def enrich_product(product, enricher) -> None:
+    """Fill the hard attributes. Try regex first, then the model."""
+    text = product.detail_text or product.description or ""
+
+    product.size_ml = size_to_ml(product.size_raw)
+    product.field_sources["size_ml"] = "regex" if product.size_ml is not None else "missing"
+
+    for field, extractor in (
+        ("abv_percent", extract_abv),
+        ("pack_type", extract_pack_type),
+        ("country_of_origin", extract_origin),
+    ):
+        value = extractor(text)
+        if value is not None:
+            setattr(product, field, value)
+            product.field_sources[field] = "regex"
+
+    needs_model = (
+        product.abv_percent is None
+        or product.country_of_origin is None
+        or product.flavour_style is None
+    )
+    if not needs_model:
+        return
+
+    derived = enricher.derive(product.name or "", (product.description or text)[:1500])
+
+    for field in ("flavour_style", "abv_percent", "country_of_origin"):
+        if getattr(product, field) is not None:
+            continue
+        value = getattr(derived, field)
+        setattr(product, field, value)
+        product.field_sources[field] = "llm" if value is not None else "missing"
+
+    if product.pack_type is None:
+        product.field_sources["pack_type"] = "missing"
