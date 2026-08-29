@@ -1,4 +1,10 @@
-from scraper.enrich import extract_abv, extract_origin, extract_pack_type, size_to_ml
+from scraper.enrich import (
+    extract_abv,
+    extract_origin,
+    extract_pack_type,
+    price_per_litre,
+    size_to_ml,
+)
 
 # A short text has no room for real prose. The model has nothing to read.
 MIN_TEXT_FOR_MODEL = 20
@@ -19,6 +25,13 @@ def enrich_product(product, enricher) -> None:
     if product.size_ml is None:
         product.size_ml = size_to_ml(product.size_raw)
         product.field_sources["size_ml"] = "regex" if product.size_ml is not None else "missing"
+
+    # Normalise price by volume. One category sells several sizes, so
+    # price alone cannot rank it. Both inputs are already on the product.
+    product.price_per_litre = price_per_litre(product.price_gbp, product.size_ml)
+    product.field_sources["price_per_litre"] = (
+        "derived" if product.price_per_litre is not None else "missing"
+    )
 
     # An adapter can set a field before enrich_product runs (Whisky Exchange
     # sets abv_percent from the listing card). Only fill a field still empty,

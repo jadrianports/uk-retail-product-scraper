@@ -29,7 +29,7 @@ def test_row_matches_column_contract():
 
 
 def test_columns_include_price_was_and_promotion_flag():
-    assert len(COLUMNS) == 19
+    assert len(COLUMNS) == 20
     assert COLUMNS == [
         "retailer",
         "category",
@@ -42,6 +42,7 @@ def test_columns_include_price_was_and_promotion_flag():
         "is_on_promotion",
         "size_raw",
         "size_ml",
+        "price_per_litre",
         "abv_percent",
         "pack_type",
         "country_of_origin",

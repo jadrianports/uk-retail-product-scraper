@@ -15,6 +15,7 @@ COLUMNS = [
     "is_on_promotion",
     "size_raw",
     "size_ml",
+    "price_per_litre",
     "abv_percent",
     "pack_type",
     "country_of_origin",
@@ -40,6 +41,7 @@ class Product(BaseModel):
     is_on_promotion: bool = False
     size_raw: str | None = None
     size_ml: float | None = None
+    price_per_litre: float | None = None
     abv_percent: float | None = None
     pack_type: str | None = None
     country_of_origin: str | None = None

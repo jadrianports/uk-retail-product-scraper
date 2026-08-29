@@ -96,3 +96,14 @@ def extract_origin(text: str | None) -> str | None:
         if match:
             return match.group(1).strip()
     return None
+
+
+def price_per_litre(price_gbp: float | None, size_ml: float | None) -> float | None:
+    """Normalise price by volume so sizes compare.
+
+    One category sells several sizes, so price alone cannot rank it.
+    Arithmetic, not a model. A missing input gives a null, never a guess.
+    """
+    if price_gbp is None or size_ml is None or size_ml <= 0:
+        return None
+    return round(price_gbp / (size_ml / 1000.0), 2)
