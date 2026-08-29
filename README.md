@@ -11,11 +11,13 @@ would add a large dependency for no extra data.
 
 ## Run it
 
-Every dataset is committed, so it can be read with no setup.
+### 1. Read the data with no setup
+
+Every dataset is committed. Open these in GitHub and nothing needs installing.
 
 ```
 data/
-  all_products.csv              49 rows, both retailers
+  all_products.csv              49 rows, both retailers, one file
   morrisons/gin/                products.csv  products.json
   whisky_exchange/gin/          products.csv  products.json
 ```
@@ -36,52 +38,124 @@ size_raw            70cl                                   and crisp
 size_ml             700.0
 ```
 
-Clone the repository:
-
-```bash
-git clone https://github.com/jadrianports/uk-retail-product-scraper
-cd uk-retail-product-scraper
-```
-
-Install `uv`:
+### 2. Install uv
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh          # macOS, Linux
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"   # Windows
 ```
 
-The project needs Python 3.11 or later. `uv` fetches its own interpreter, so
-`uv sync` is the whole install.
+`uv` is the only thing to install. It fetches its own Python, so the version
+already on the machine does not matter.
+
+### 3. Clone and install
 
 ```bash
+git clone https://github.com/jadrianports/uk-retail-product-scraper
+cd uk-retail-product-scraper
 uv sync
-uv run pytest                  # 129 offline tests, about a second
 ```
+
+`uv sync` reads `uv.lock`, which pins every package to one version and one
+hash. It took 8 seconds on a clean machine.
+
+The project needs Python 3.11 or later. The suite was run on 3.11.15, 3.12.10,
+3.13.13 and 3.14.5. All four pass. `uv` downloads any of them that is missing,
+so no system Python is needed.
+
+### 4. Run the tests
+
+```bash
+uv run pytest
+```
+
+Expect `131 passed`. The suite is offline and makes no network call, even with
+a real key in `.env`.
+
+### 5. Pull live data
+
+No configuration is needed for this step. Write to a scratch folder, so the
+committed dataset stays as it is:
+
+```bash
+uv run scrape --limit 5 --out out/try1
+```
+
+Expect this:
+
+```
+WARNING No model key was found. Set GEMINI_API_KEY, OPENAI_API_KEY or
+        ANTHROPIC_API_KEY. The derived fields stay null and the run goes on.
+INFO Found 5 product pages at morrisons
+INFO 1/5 Caorunn Gin
+...
+INFO Wrote 5 products to out/try1
+```
+
+That is a live run against Morrisons: one listing request, then one request
+per product, one per second. `flavour_style` is null without a key. Every
+other column fills.
+
+Leave `--out` off and the run writes to `data/<retailer>/<category>` and
+replaces what is there. A short run says so first:
+
+```
+WARNING This run replaces 25 rows with 5 in data/morrisons/gin.
+        Pass --out to write somewhere else and keep the committed dataset.
+```
+
+### 6. Add a model key, for flavour_style
 
 ```bash
 cp .env.example .env
-uv run scrape                             # Morrisons gin, 25 products
-uv run scrape --category vodka            # Morrisons vodka
-uv run scrape --retailer whisky_exchange  # 24 products, one request
-uv run scrape --list-categories           # what each retailer supports
-uv run scrape --combine                   # rebuild data/all_products.csv
 ```
 
-Every 200 response is cached, so a second run makes no live request.
+Set one of `GEMINI_API_KEY`, `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`. The tool
+reads them in that order and uses the first one it finds. A free Gemini key
+comes from https://aistudio.google.com/apikey. `SCRAPER_CONTACT` is an email
+for the `User-Agent` header, so the retailer can reach you; with no value the
+header reads "not supplied".
 
-`.env` holds `SCRAPER_CONTACT`, an email for the `User-Agent` header, and one
-model key. Set `GEMINI_API_KEY`, `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`, and
-the tool uses whichever it finds. With no key the derived fields are `null`
-and the run still succeeds.
+Then repeat step 5 and `flavour_style` fills. A full 25-product run takes
+about four minutes, because model calls are spaced by six seconds.
+
+### 7. Try another category, and the second retailer
+
+```bash
+uv run scrape --list-categories
+uv run scrape --category vodka --limit 5 --out out/vodka
+uv run scrape --retailer whisky_exchange --out out/twe
+```
+
+The Whisky Exchange may answer with a Cloudflare challenge. That is expected
+and it is not a defect:
+
+```
+ERROR www.thewhiskyexchange.com served a JavaScript challenge for
+      https://www.thewhiskyexchange.com/c/338/gin. This tool does not defeat
+      a challenge. Retry from a different network, or use the committed
+      dataset.
+```
+
+The site scores the connection, not the path. A UK residential line has the
+best chance. There is a section on this below, with measurements.
+
+### Options and exit codes
 
 `--retailer` picks the adapter. `--category` picks the category, and
 `--list-categories` prints the choices. `--limit` caps the products.
-`--no-llm` skips the model. `--out` sets the output directory. It defaults to
-`data/<retailer>/<category>`, and an explicit `--out` wins.
+`--no-llm` skips the model. `--combine` rebuilds `data/all_products.csv`.
+`--out` sets the output directory, and it wins over the default.
 
-Exit codes: 0 success. 1 means no usable dataset, so the listing failed to
-fetch or the parse-rate gate failed. 2 means robots.txt denied the path.
-3 means the host served a JavaScript challenge.
+Every 200 response is cached under `.cache/`, so a second run makes no live
+request. Delete that folder to force fresh data.
+
+| Code | Meaning |
+|---|---|
+| 0 | Success |
+| 1 | No usable dataset. The listing failed, or the parse-rate gate failed. |
+| 2 | robots.txt denied the path. |
+| 3 | The host served a JavaScript challenge. |
 
 ## What the data says
 
@@ -310,7 +384,7 @@ counted before it entered the map.
 
 ## Tests
 
-129 tests, all offline against fixtures built from real markup, with the model
+131 tests, all offline against fixtures built from real markup, with the model
 faked. The suite makes no network call, even with a real key in `.env`. It
 covers both parsers, the ABV, size and origin patterns, price per litre, the
 promotion price, the robots paths, the challenge detector, the cache, the
