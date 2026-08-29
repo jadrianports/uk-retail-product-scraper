@@ -14,12 +14,12 @@
     "price_per_litre": 78.5,
     "abv_percent": 47.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Germany",
     "flavour_style": "complex, delicate balance",
     "availability": "InStock",
     "description": "A curious gin from Monkey 47, produced in Germany's Schwarzwald – also known as the Black Forest – and made with an impressive combination of no less than 47 botanicals. This medley of ingredients includes fruits and herbs that are native to the Black Forest, as well as exotic Asian botanicals, including elderberries, mint, almonds, jasmine, ginger, Vervain and camomile, to name a few. Understandably complex, the palate finds a delicate balance between notes of juniper, citrus, sweet flowers, bitter fruit and peppery spices that lends itself well to use in cocktails such as Martinis and Gimlets, as well as being mixed with tonic and garnished with a slice of orange.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -36,12 +36,12 @@
     "price_per_litre": 30.71,
     "abv_percent": 41.3,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Scotland",
     "flavour_style": "solid juniper character",
     "availability": "InStock",
     "description": "A true classic, Tanqueray dry gin has been made with the same timeless recipe since 1830. With a solid juniper character, this textbook gin is a great all-rounder that works well in a Gin & Tonic and Martinis.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -58,12 +58,12 @@
     "price_per_litre": 42.79,
     "abv_percent": 41.4,
     "pack_type": null,
-    "country_of_origin": null,
-    "flavour_style": "pink-tinged gin",
+    "country_of_origin": "Scotland",
+    "flavour_style": "pink-tinged gin infused with rose petals and cucumber",
     "availability": "InStock",
     "description": "A superb, and utterly unique, pink-tinged gin from William Grant's. Infused with rose petals and cucumber as well as the normal botanicals, this is a must for all gin-lovers.  In the summertime, Hendrick's makes a fantastically refreshing gin and tonic: serve in a tall glass with plenty of ice and garnish with thinly-sliced cucumber – delicious!",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -80,12 +80,12 @@
     "price_per_litre": 41.07,
     "abv_percent": 38.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Spain",
     "flavour_style": null,
     "availability": "InStock",
     "description": "A cult gin from Mahon in Menorca, Xoriguer is one of the only gins in the world (alongside Plymouth) to have a geographical indication, Gin de Menorca. Gin has been made on Menorca since the 18th century British occupation and Xoriguer commands a devoted following of happy travellers. Unusually, Xoriguer is made in wood-fired pot stills from distilled wine (eau-de-vie) rather than the more usual grain-based distillate, and is rested in oak barrels before bottling.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -102,12 +102,12 @@
     "price_per_litre": 42.14,
     "abv_percent": 41.2,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "England",
     "flavour_style": null,
     "availability": "InStock",
     "description": "An elegant redesign of Plymouth, matching up their much respected and geographically protected gin with an old-school chunky bottle and their traditional branding. A must have for any home cocktail bar or lovers of a gin and tonic.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -124,12 +124,12 @@
     "price_per_litre": 51.07,
     "abv_percent": 46.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Scotland",
     "flavour_style": "floral",
     "availability": "InStock",
     "description": "An exciting and unusual gin from Islay whisky distillery Bruichladdich, The Botanist is made in a Lomond still christened Ugly Betty and contains no fewer than 31 botanicals, of which 22 are native to the Southern Hebridean island itself. The latter include the likes of mugwort, meadowsweet and the enigmatic Lady's Bedstraw flowers, and the resultant dry gin is described, perhaps unsurprisingly,  as 'floral'.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -146,12 +146,12 @@
     "price_per_litre": 52.5,
     "abv_percent": 42.8,
     "pack_type": null,
-    "country_of_origin": null,
-    "flavour_style": "balanced gin with subtle mineral edge",
+    "country_of_origin": "Australia",
+    "flavour_style": "subtle mineral edge",
     "availability": "InStock",
     "description": "Made in Byron Bay, this gin combines native botanicals including wattleseed, pink peppercorn, and oyster shell with hibiscus, citrus peel, and wax flower. The result is a balanced gin with a subtle mineral edge.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -168,12 +168,12 @@
     "price_per_litre": 47.86,
     "abv_percent": 43.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Japan",
     "flavour_style": "fresh and quietly complex",
     "availability": "InStock",
     "description": "A limited-edition Japanese gin inspired by the noryo tradition of summer cooling, showcasing sencha and gyokuro green tea alongside Roku’s signature botanicals. Fresh and quietly complex, it layers grassy tea, soft citrus and delicate florals over a smooth, subtly umami palate, finishing clean with a gentle spice and cooling lift.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -190,12 +190,12 @@
     "price_per_litre": 71.07,
     "abv_percent": 45.7,
     "pack_type": null,
-    "country_of_origin": null,
-    "flavour_style": "warming and spicy finish",
+    "country_of_origin": "Japan",
+    "flavour_style": "warming and spicy",
     "availability": "InStock",
     "description": "Produced at Japan's Kyoto Distillery, Ki No Bi is the first gin to be made in the city. Made with a rice spirit and botanicals including yellow yuzu, Japanese cypress, green tea, bamboo and sanso berries (Japanese peppercorn), this has classic juniper notes which complement the Japanese botanicals. With a warming and spicy finish, this will make a delicious G&T.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -212,12 +212,12 @@
     "price_per_litre": 62.14,
     "abv_percent": 45.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Scotland",
     "flavour_style": "aromatic",
     "availability": "InStock",
     "description": "An aromatic Scottish gin from the Isle of Harris, part of the larger island of Lewis And Harris in the Outer Hebrides, and is made with a combination of nine botanicals, including hand-picked sugar kelp from local sea-lochs. The palate offers notes of juniper berries, bitter orange peel, coriander seed and liquorice root, as well as sweet-and-salty sugar kelp.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -234,12 +234,12 @@
     "price_per_litre": 91.9,
     "abv_percent": 47.0,
     "pack_type": null,
-    "country_of_origin": null,
-    "flavour_style": "curiously aromatic",
+    "country_of_origin": "Germany",
+    "flavour_style": "aromatic",
     "availability": "InStock",
     "description": "A curiously aromatic gin from Germany, Monkey 47 is made with a whopping 47 botanicals. These botanicals create a complex palate that lends itself well to simple, classic cocktails such as a Martini.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -256,12 +256,12 @@
     "price_per_litre": 89.9,
     "abv_percent": 47.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "England",
     "flavour_style": "incredibly complex gin",
     "availability": "InStock",
     "description": "Capreolus Garden Swift Dry Gin (formerly known as Garden Tiger) is made in Gloucestershire using an impressive 34 botanicals, of which most are secret. Two that are revealed are fresh Sicilian blood orange zest and lime-tree flowers. This incredibly complex gin can be enjoyed on its own, or in cocktails.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -278,12 +278,12 @@
     "price_per_litre": 58.21,
     "abv_percent": 42.5,
     "pack_type": null,
-    "country_of_origin": null,
-    "flavour_style": "elegant balanced and aromatic",
+    "country_of_origin": "Montenegro",
+    "flavour_style": "herbal and maritime",
     "availability": "InStock",
     "description": "A premium Adriatic gin with classic juniper at its core, complemented by herbal and maritime botanicals for an elegant, balanced, and aromatic taste.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -300,12 +300,12 @@
     "price_per_litre": 49.29,
     "abv_percent": 45.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "England",
     "flavour_style": null,
     "availability": "InStock",
     "description": "Fords Gin is made at Thames Distillers in London using wheat. The botanicals – including Spanish lemon peel, Turkish grapefruit peel and Chinese jasmine – are steeped in the stills for 15 hours before distillation. The result is a gin where the botanicals come to the fore.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -322,12 +322,12 @@
     "price_per_litre": 56.79,
     "abv_percent": 43.4,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Scotland",
     "flavour_style": "quininated gin",
     "availability": "InStock",
     "description": "The distillers who brought us Hendrick’s beloved cucumber and rose gin have hit on another great innovation: quininated gin. By infusing their spirit with quinine and wormwood, Hendrick’s have created an complex and intriguing drink that pays homage to what is often mixed with gin: tonic and vermouth. The quinine and wormwood flavours are rounded out by blue lotus blossom, which adds bright floral notes to the mix.  Although it's delicious in tonic, you might also like to try Orbium with soda - which really lets the gin's flavour shine through - or in a classic cocktail such as a Martinez or Martini.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -349,7 +349,7 @@
     "availability": null,
     "description": null,
     "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"missing\", \"brand\": \"css\", \"country_of_origin\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -366,12 +366,12 @@
     "price_per_litre": 42.79,
     "abv_percent": 47.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Paraguay",
     "flavour_style": "rich and full-bodied",
     "availability": "InStock",
     "description": "Sincere Pure is an sugar-cane-based organic gin from Paraguay. Made using botanicals including angelica root, star anise, orris root, cloves, cinnamon, pink peppercorns, lemongrass and the indigenous congorosa, this is a rich and full-bodied spirit. All the ingredients are locally harvested, and the gin is sold in bottles made from 96% recycled glass.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -388,12 +388,12 @@
     "price_per_litre": 39.29,
     "abv_percent": 40.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "England",
     "flavour_style": "Zesty, peppery and floral",
     "availability": "InStock",
     "description": "The first gin released by Withers Gin, G1 is made with a combination of eight botanicals, including juniper, pink grapefruit zest and heartsease flower. Zesty, peppery and floral, try using this gin to create a refreshing G&T, garnish with a sprig of rosemary.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -410,12 +410,12 @@
     "price_per_litre": 49.95,
     "abv_percent": 47.3,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Scotland",
     "flavour_style": "very aromatic botanical flavours",
     "availability": "InStock",
     "description": "A super-premium small-batch Tanqueray named after the number of the No. 10 still in which it is made.  A superb controlled explosion of very aromatic botanical flavours, and it looks very good on your mantelpiece / drinks cabinet.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -432,12 +432,12 @@
     "price_per_litre": 39.29,
     "abv_percent": 41.5,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Scotland",
     "flavour_style": "pine buds, lavender, lemongrass, mulberries and orange peel",
     "availability": "InStock",
     "description": "This is a small-batch gin from Scotland that shows notes of pine buds, lavender, lemongrass, mulberries and orange peel. Try a measure of this in a Gin Fizz or a Gimlet.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -454,12 +454,12 @@
     "price_per_litre": 43.57,
     "abv_percent": 40.0,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "England",
     "flavour_style": "saline minerality",
     "availability": "InStock",
     "description": "The Cornish Distilling Company’s first foray into gin has been given a coastal Cornish twist. The region is known for its picturesque coast and boasts a vast array of aquatic plants that make great botanicals. This gin is made with a blend of nine botanicals including juniper, kelp, bladderwrack seaweed and grains of paradise which offer a saline minerality to your gin and tonics.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -476,12 +476,12 @@
     "price_per_litre": 68.5,
     "abv_percent": 42.7,
     "pack_type": null,
-    "country_of_origin": null,
+    "country_of_origin": "Spain",
     "flavour_style": "aromatic and herbal",
     "availability": "InStock",
     "description": "In celebration of its 10th anniversary, Gin Mare has released a super-premium gin inspired by the iconic Italian island Capri. Made with a blend of botanicals including juniper, arbequina olive, basil, thyme and both lemon and bergamot from the Sorrento peninsula, Capri is aromatic and herbal with a lively vein of citrus throughout the palate.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -498,12 +498,12 @@
     "price_per_litre": 33.57,
     "abv_percent": 40.0,
     "pack_type": null,
-    "country_of_origin": null,
-    "flavour_style": "light and elegant, gentle burst of spice",
+    "country_of_origin": "England",
+    "flavour_style": "light and elegant",
     "availability": "InStock",
     "description": "A London Dry Gin certified organic by the Soil Association, Juniper is something of a first.  The palate is light and elegant, with a gentle burst of spice at the finish.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   },
   {
     "retailer": "whisky_exchange",
@@ -520,11 +520,11 @@
     "price_per_litre": 64.21,
     "abv_percent": 43.7,
     "pack_type": null,
-    "country_of_origin": null,
-    "flavour_style": "richer classic notes of juniper and citrus",
+    "country_of_origin": "Italy",
+    "flavour_style": "richer with classic notes of juniper and citrus",
     "availability": "InStock",
     "description": "The Del Professore range is a collaboration between Federico Ricatto, Carlos Quaglia and the Jerry Thomas Speakeasy in Rome. The Monsieur gin is the richer of the range, with classic notes of juniper and citrus.",
-    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
-    "scraped_at": "2026-08-29T13:53:21Z"
+    "field_sources": "{\"abv_percent\": \"css\", \"availability\": \"css\", \"brand\": \"jsonld\", \"country_of_origin\": \"css\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"missing\", \"name\": \"css\", \"pack_type\": \"missing\", \"price_gbp\": \"css\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"css\", \"sku\": \"css\"}",
+    "scraped_at": "2026-08-29T14:19:04Z"
   }
 ]
