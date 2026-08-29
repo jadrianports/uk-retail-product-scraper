@@ -31,7 +31,7 @@ def no_model_calls(monkeypatch):
     # Belt-and-braces: every test that requests this fixture is guaranteed
     # no network call, even if it forgets --no-llm. Not autouse, because
     # test_runs_with_no_api_key_present must exercise the real build_client.
-    monkeypatch.setattr(cli, "GeminiEnricher", lambda client=None: _NullEnricher())
+    monkeypatch.setattr(cli, "build_enricher", lambda *a, **k: _NullEnricher())
     monkeypatch.setattr(cli, "build_client", lambda: None)
 
 
@@ -379,6 +379,10 @@ def test_build_client_returns_none_with_no_api_key_and_the_run_still_succeeds(mo
     # cli.GeminiEnricher run for real here, so this proves the no-key path
     # rather than a mock standing in for it.
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    # build_enricher reads three keys now. Clear them all, or a key in the
+    # real environment sends this test to a live provider.
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     # main() calls load_dotenv() first. A real .env file next to the repo
     # would put the key straight back. Stop that reload so this test stays
     # on the no-key path it means to prove.
@@ -397,17 +401,37 @@ def test_build_client_returns_none_with_no_api_key_and_the_run_still_succeeds(mo
     assert exit_code == 0
 
 
-@pytest.mark.parametrize("retailer, last_part", [("morrisons", "morrisons"), ("whisky_exchange", "whisky_exchange")])
-def test_default_out_path_nests_under_data_by_retailer_name(monkeypatch, retailer, last_part):
-    # No --out flag given: the default must be data/<retailer>, built from
-    # the adapter's own name attribute, not a hard-coded string.
+@pytest.mark.parametrize("retailer", ["morrisons", "whisky_exchange"])
+def test_default_out_path_nests_under_data_by_retailer_and_category(monkeypatch, retailer):
+    # No --out flag given: the default must be data/<retailer>/<category>,
+    # built from the adapter's own attributes, not a hard-coded string.
     monkeypatch.setattr(
         "sys.argv",
         ["scrape", "--retailer", retailer, "--no-llm"],
     )
     args = cli.parse_args()
-    parts = args.out.parts
-    assert parts[-2:] == ("data", last_part)
+    assert args.out.parts[-3:] == ("data", retailer, "gin")
+
+
+def test_a_second_category_writes_to_its_own_folder(monkeypatch):
+    # Two categories must never share one file.
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", "morrisons", "--category", "vodka", "--no-llm"],
+    )
+    args = cli.parse_args()
+    assert args.out.parts[-3:] == ("data", "morrisons", "vodka")
+
+
+def test_an_unknown_category_exits_1_and_names_the_known_ones(monkeypatch, tmp_path, caplog):
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", "whisky_exchange", "--category", "vodka",
+         "--out", str(tmp_path), "--no-llm"],
+    )
+
+    assert cli.main() == 1
+    assert "gin" in caplog.text
 
 
 def test_both_adapters_satisfy_the_collect_contract():
@@ -432,3 +456,35 @@ def test_both_adapters_satisfy_the_collect_contract():
         products, expected = result
         assert isinstance(products, list)
         assert isinstance(expected, int)
+
+
+def test_exits_3_when_the_host_serves_a_challenge(monkeypatch, tmp_path, no_model_calls):
+    # A challenge is not a refusal and not a rate limit. It gets its own
+    # exit code, because the tool will not defeat one by design.
+    from scraper.fetch import ChallengeBlocked
+
+    class _ChallengingFetcher:
+        def __init__(self, contact=""):
+            pass
+
+        def get(self, url: str) -> str:
+            raise ChallengeBlocked(f"{url} served a JavaScript challenge")
+
+    monkeypatch.setattr(cli, "Fetcher", _ChallengingFetcher)
+    monkeypatch.setattr(
+        "sys.argv",
+        ["scrape", "--retailer", "fake_listing", "--out", str(tmp_path), "--no-llm"],
+    )
+
+    assert cli.main() == 3
+
+
+def test_list_categories_names_every_retailer(capsys, monkeypatch):
+    monkeypatch.setattr("sys.argv", ["scrape", "--list-categories"])
+
+    assert cli.main() == 0
+
+    out = capsys.readouterr().out
+    assert "morrisons" in out and "vodka" in out
+    # The Whisky Exchange lists only the category that was verified.
+    assert "whisky_exchange: gin" in out
