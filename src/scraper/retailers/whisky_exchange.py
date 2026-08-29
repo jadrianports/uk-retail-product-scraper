@@ -1,3 +1,4 @@
+import json
 import logging
 import re
 import string
@@ -68,6 +69,23 @@ def _price(text: str | None) -> float | None:
     except ValueError:
         return None
 
+
+
+def _product_json_ld(soup: BeautifulSoup) -> dict:
+    """Read the Product schema from a detail page.
+
+    The listing page carries none. An earlier version of this adapter said
+    the whole site carried none, on evidence from the listing alone.
+    """
+    for tag in soup.find_all("script", attrs={"type": "application/ld+json"}):
+        try:
+            data = json.loads(tag.string or "")
+        except (json.JSONDecodeError, TypeError):
+            continue
+        for item in data if isinstance(data, list) else [data]:
+            if isinstance(item, dict) and item.get("@type") == "Product":
+                return item
+    return {}
 
 @register
 class WhiskyExchange:
@@ -177,11 +195,40 @@ class WhiskyExchange:
         product.field_sources["sku"] = "css" if sku is not None else "missing"
         return product
 
+    def parse_detail(self, html: str, product: Product) -> None:
+        """Fill the fields the listing card cannot carry.
+
+        The card gives the size, the strength and the promotion cheaply. The
+        detail page gives the real brand and the description, and the
+        description is what the pack type, the origin and the flavour need.
+        """
+        soup = BeautifulSoup(html, "lxml")
+        data = _product_json_ld(soup)
+
+        brand = data.get("brand")
+        if isinstance(brand, dict):
+            brand = brand.get("name")
+        if brand:
+            # The retailer states the brand, so the guess from the name goes.
+            product.brand = brand
+            product.field_sources["brand"] = "jsonld"
+
+        description = data.get("description")
+        source = "jsonld"
+        if not description:
+            element = soup.select_one(".product-main__description")
+            description = element.get_text(" ", strip=True) if element else None
+            source = "css"
+        if description:
+            product.description = description
+            product.detail_text = description
+            product.field_sources["description"] = source
+
     def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
-        # This site lists every hard attribute on the listing page itself.
-        # Its detail page holds no product card for itself, so a per-URL
-        # fetch loop would return null names. Read the listing page and
-        # stop there; do not fetch each product page.
+        # The listing gives the size, the strength and the promotion. The
+        # detail page gives the brand and the description, so it is worth one
+        # request per product. A detail page that fails leaves the card values
+        # in place rather than dropping the product.
         listing = fetcher.get(self.category_url)
         try:
             cards = self.parse_listing(listing)
@@ -201,5 +248,12 @@ class WhiskyExchange:
                     index, expected,
                 )
                 continue
+            try:
+                self.parse_detail(fetcher.get(product.product_url), product)
+            except Exception as exc:
+                log.warning(
+                    "Cannot read the detail page for %s: %s. The listing values stay.",
+                    product.name, exc,
+                )
             products.append(product)
         return products, expected

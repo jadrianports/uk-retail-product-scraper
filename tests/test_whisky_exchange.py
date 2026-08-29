@@ -133,3 +133,81 @@ def test_sku_tagged_missing_when_url_does_not_match_pattern():
 )
 def test_brand_from_name(name, expected):
     assert brand_from_name(name) == expected
+
+
+def _detail_html():
+    return (FIXTURES / "twe_product.html").read_text("utf-8")
+
+
+def _card(brand="Hendrick"):
+    from scraper.models import Product
+
+    return Product(
+        retailer="whisky_exchange",
+        category="gin",
+        product_url="https://www.thewhiskyexchange.com/p/2261/hendricks-gin",
+        scraped_at="2026-08-29T00:00:00Z",
+        name="Hendrick's Gin",
+        brand=brand,
+        field_sources={"brand": "css"},
+    )
+
+
+def test_detail_page_replaces_the_brand_read_from_the_name():
+    from scraper.retailers.whisky_exchange import WhiskyExchange
+
+    product = _card(brand="Hendrick")
+    WhiskyExchange().parse_detail(_detail_html(), product)
+
+    # The retailer states the brand, so the guess from the name goes.
+    assert product.brand == "Hendrick's"
+    assert product.field_sources["brand"] == "jsonld"
+
+
+def test_detail_page_fills_the_description():
+    from scraper.retailers.whisky_exchange import WhiskyExchange
+
+    product = _card()
+    WhiskyExchange().parse_detail(_detail_html(), product)
+
+    assert "pink-tinged gin" in product.description
+    assert product.field_sources["description"] == "jsonld"
+    # The extractors read detail_text, so it has to carry the prose too.
+    assert "pink-tinged gin" in product.detail_text
+
+
+def test_description_falls_back_to_the_page_when_there_is_no_json_ld():
+    from scraper.retailers.whisky_exchange import WhiskyExchange
+
+    html = _detail_html()
+    start = html.index("<script type=")
+    end = html.index("</script>") + len("</script>")
+    product = _card()
+
+    WhiskyExchange().parse_detail(html[:start] + html[end:], product)
+
+    assert "pink-tinged gin" in product.description
+    assert product.field_sources["description"] == "css"
+    # No Product schema means no brand, so the listing value survives.
+    assert product.brand == "Hendrick"
+
+
+def test_a_failed_detail_page_keeps_the_listing_values():
+    from scraper.retailers.base import REGISTRY
+    from scraper.retailers.whisky_exchange import WhiskyExchange
+
+    listing = (FIXTURES / "twe_listing.html").read_text("utf-8")
+    site = WhiskyExchange()
+
+    class _HalfBrokenFetcher:
+        def get(self, url):
+            if url == site.category_url:
+                return listing
+            raise RuntimeError("the detail page is unreachable")
+
+    products, expected = site.collect(_HalfBrokenFetcher(), limit=3)
+
+    # A detail page that fails must not drop the product.
+    assert len(products) == expected > 0
+    assert all(p.name for p in products)
+    assert REGISTRY["whisky_exchange"] is WhiskyExchange
