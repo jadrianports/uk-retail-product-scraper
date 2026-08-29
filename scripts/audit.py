@@ -35,6 +35,12 @@ SIZE_ML_RANGE = (20.0, 4500.0)
 PRICE_PER_LITRE_RANGE = (1.0, 400.0)
 MAX_LABEL_WORDS = 4
 
+# One product named as another category is the retailer cross-listing, the way
+# Morrisons lists tonic water under gin and a rum-cask Scotch under rum. Most
+# of a listing named as another category is a wrong URL, which is what the
+# redirect from /c/40/gin produced.
+CATEGORY_DEFECT_SHARE = 0.2
+
 
 def brand_key(value: str | None) -> str:
     """Reduce a brand to letters and digits, so Fever-Tree meets Fever Tree."""
@@ -43,7 +49,7 @@ def brand_key(value: str | None) -> str:
 
 # A note is true of the retailer's own data, so it is not a parse defect. It
 # is something a reader of the dataset has to handle. A finding is a defect.
-NOTE_KINDS = {"BRAND_SPELLING"}
+NOTE_KINDS = {"BRAND_SPELLING", "CATEGORY_CROSS_LISTED"}
 
 
 def check_rows(rows: list[dict]) -> list[tuple[str, str]]:
@@ -56,10 +62,6 @@ def check_rows(rows: list[dict]) -> list[tuple[str, str]]:
         name = (row.get("name") or "").strip()
         lowered = name.lower()
         sources = json.loads(row.get("field_sources") or "{}")
-
-        for word in OTHER_CATEGORY.get(row.get("category", ""), []):
-            if re.search(rf"\b{word}\b", lowered):
-                report("CATEGORY", f"{name!r} is labelled {row['category']} and names {word}")
 
         abv = row.get("abv_percent")
         if abv is not None and not ABV_RANGE[0] <= float(abv) <= ABV_RANGE[1]:
@@ -98,6 +100,18 @@ def check_rows(rows: list[dict]) -> list[tuple[str, str]]:
         was = row.get("price_was")
         if was is not None and price is not None and float(was) <= float(price):
             report("PROMOTION", f"{name!r} price_was={was} is not above price_gbp={price}")
+
+    # Judge the category on the whole listing, not on one row.
+    crossed = [
+        (r.get("name") or "").strip()
+        for r in rows
+        for word in OTHER_CATEGORY.get(r.get("category", ""), [])
+        if re.search(rf"\b{word}\b", (r.get("name") or "").lower())
+    ]
+    if crossed:
+        share = len(crossed) / len(rows)
+        kind = "CATEGORY" if share > CATEGORY_DEFECT_SHARE else "CATEGORY_CROSS_LISTED"
+        report(kind, f"{len(crossed)} of {len(rows)} rows name another category: {crossed[:3]}")
 
     skus = [r.get("sku") for r in rows if r.get("sku")]
     for sku in {s for s in skus if skus.count(s) > 1}:
