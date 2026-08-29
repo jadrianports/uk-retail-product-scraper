@@ -95,10 +95,14 @@ class WhiskyExchange:
     # strength, so the adapter does not need a second request for each product.
     # The path holds the gin and jenever category.
     #
-    # Only gin is listed. The other paths on this site were never fetched, and
-    # a category URL that nobody checked is how this tool once labelled whisky
-    # as gin. An unverified guess does not belong in a map.
-    CATEGORIES = {"gin": f"{BASE}/c/338/gin"}
+    # Every path was fetched and counted before it was added. A category URL
+    # that nobody checked is how this tool once labelled whisky as gin.
+    # Each returns 24 cards and a title that matches the category.
+    CATEGORIES = {
+        "gin": f"{BASE}/c/338/gin",
+        "vodka": f"{BASE}/c/335/vodka",
+        "rum": f"{BASE}/c/339/rum",
+    }
     DEFAULT_CATEGORY = "gin"
 
     def __init__(self, category: str | None = None) -> None:
