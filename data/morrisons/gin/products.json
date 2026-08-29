@@ -11,14 +11,15 @@
     "is_on_promotion": true,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 33.57,
     "abv_percent": 41.8,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
-    "flavour_style": "Invigorating, clean and crisp, aromatic",
+    "flavour_style": "Invigorating, clean and crisp",
     "availability": "InStock",
     "description": "Invigorating, clean and crisp, aromatic with a long dry finish.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:05Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:28Z"
   },
   {
     "retailer": "morrisons",
@@ -32,14 +33,15 @@
     "is_on_promotion": false,
     "size_raw": "1L",
     "size_ml": 1000.0,
+    "price_per_litre": 1.9,
     "abv_percent": null,
     "pack_type": "Plastic Bottle",
     "country_of_origin": null,
     "flavour_style": "timeless classic",
     "availability": "InStock",
     "description": "Masterfully made with quinine since 1783. A timeless classic, Perfect mixed with Gordon's®.<br><br>With Sweetener<br><br>Serve cold for maximum refreshment.<br><br>Store in a cool and dry place<br><br>Please recycle.",
-    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:06Z"
+    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:28Z"
   },
   {
     "retailer": "morrisons",
@@ -53,14 +55,15 @@
     "is_on_promotion": true,
     "size_raw": "1L",
     "size_ml": 1000.0,
+    "price_per_litre": 20.0,
     "abv_percent": 40.0,
     "pack_type": "Glass Bottle",
     "country_of_origin": "United Kingdom",
     "flavour_style": "balanced, bright, fresh and citrus-forward taste",
     "availability": "InStock",
     "description": "In its iconic blue bottle, Bombay Sapphire London Dry Gin features 10 hand selected botanicals from around the world, creating a balanced, bright, fresh and citrus-forward taste. Perfect for classic gin cocktails like a Gin & Tonic or Sapphire Negroni.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:06Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:29Z"
   },
   {
     "retailer": "morrisons",
@@ -74,14 +77,15 @@
     "is_on_promotion": true,
     "size_raw": "8 x 150ml",
     "size_ml": 1200.0,
+    "price_per_litre": 3.75,
     "abv_percent": null,
     "pack_type": null,
     "country_of_origin": "United Kingdom",
     "flavour_style": null,
     "availability": "InStock",
     "description": "If 3/4 of your drink is the mixer, mix with the best.",
-    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:06Z"
+    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:29Z"
   },
   {
     "retailer": "morrisons",
@@ -95,14 +99,15 @@
     "is_on_promotion": true,
     "size_raw": "8 x 150ml",
     "size_ml": 1200.0,
+    "price_per_litre": 3.75,
     "abv_percent": null,
     "pack_type": null,
     "country_of_origin": "Netherlands",
     "flavour_style": "delicious",
     "availability": "InStock",
     "description": "By blending luscious botanical oils with spring water and quinine of the highest quality from the 'fever trees' from the eastern hill ranges of the Democratic Republic of Congo, we have created a delicious, award-winning tonic water.",
-    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:06Z"
+    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:30Z"
   },
   {
     "retailer": "morrisons",
@@ -116,14 +121,15 @@
     "is_on_promotion": true,
     "size_raw": "1L",
     "size_ml": 1000.0,
+    "price_per_litre": 18.5,
     "abv_percent": 37.5,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
     "flavour_style": "London Dry",
     "availability": "InStock",
     "description": "",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"missing\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:06Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"missing\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:30Z"
   },
   {
     "retailer": "morrisons",
@@ -137,14 +143,15 @@
     "is_on_promotion": true,
     "size_raw": "8 x 150ml",
     "size_ml": 1200.0,
+    "price_per_litre": 3.96,
     "abv_percent": null,
     "pack_type": null,
     "country_of_origin": null,
     "flavour_style": "clean and refreshing",
     "availability": "InStock",
     "description": "Our Premium Indian Tonic water uses a handful of different botanicals, including our distinctive quinine and oils from Mexican Bitter Oranges, to give a uniquely clean and refreshing taste and aroma.",
-    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:07Z"
+    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:31Z"
   },
   {
     "retailer": "morrisons",
@@ -158,14 +165,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 21.43,
     "abv_percent": 0.0,
     "pack_type": null,
     "country_of_origin": "Italy",
-    "flavour_style": "bold piney juniper-led",
+    "flavour_style": "bold, piney juniper-led",
     "availability": "InStock",
     "description": "Gordon's 0.0% Alcohol Free Spirit provides the bold, piney juniper-led taste you'd expect from Gordon's, but without the alcohol. It delivers a truly authentic and vibrant non-alcoholic experience that captures the spirit of the range perfectly. Recommended for your mocktails and as the perfect alcohol-free alternative to your usual gin and tonic.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:07Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:31Z"
   },
   {
     "retailer": "morrisons",
@@ -179,14 +187,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 47.86,
     "abv_percent": 41.4,
     "pack_type": "Bottle",
     "country_of_origin": "Scotland",
-    "flavour_style": "smooth with a balance of subtle flavours",
+    "flavour_style": "smooth with subtle flavours rose petal and cucumber essence",
     "availability": "InStock",
     "description": "- No other Gin tastes like Hendrick’s because no other Gin is made like Hendrick’s. Smooth, with a balance of subtle flavours, Hendrick's Gin is a deliciously refreshing infusion of rose petal and cucumber essence.<br>- Perfectly delectable whether neat or mixed, Hendrick’s Original Gin, with its signature cucumber garnish, is a refreshingly exquisite addition to any summer garden party or BBQ that will have your guests coming back for more.<br>- Elevate any Gin cocktail and special summer night with Hendrick’s Gin – opt for a refreshingly curious Hendrick’s Cucumber Lemonade or release your inner mixologist and shake up a Hendrick’s Martini, or sip a delightful Hendrick’s Negroni.<br>- Hendrick’s Gin is an exquisite gift for any drinker and any occasion, the bold vintage design elevates the at-home entertaining experience for any Gin lover, cocktail expert, or at-home bartenders alike.<br>- For a taste of summer in every sip, concoct the classic Hendrick’s and Tonic – a simple, yet elegant, drink perfect for any summer gathering. Simply serve Hendrick's over ice with tonic water and garnish with thinly sliced cucumber.<br><br>Experience the unique infusion of rose and cucumber with Hendrick’s Gin. This balance of distinctive yet subtle flavours adds a remarkable twist to the quintessential gin and tonic. Why settle for ordinary when you can have deliciously unusual?<br><br>Crafting gin cocktails<br>The floral fragrance and smooth taste of Hendrick’s Gin makes it ideal for cocktails that can be as classic or creative as the occasion demands. Raise the bar of elegance with original gin cocktails at drinks parties and garden get-togethers. Or serve in a refreshing gin and tonics to accompany low-key nights in.<br><br>Perfectly presentable for gifting<br>Wondrously versatile, Hendrick’s Gin is as cracking at Christmas as it is sublime in summer. Dressed up in a striking black bottle with an apothecary-inspired look, this premium spirit transforms a drinks cabinet from purely practical to delightfully decorative – the perfect gin gift.<br><br>How the gin is made<br>No other gin tastes like Hendrick’s because no other gin is made like Hendrick’s. Handcrafted in Scotland by award-winning distillers William Grant &amp; Sons, the excellent quality and unusual taste of Hendrick’s Gin is fiercely protected.<br>- Hendrick’s is a divine marriage of two different spirits from two utterly dissimilar types of stills: the Bennet Still and our rare Carter-head Still.<br>- Combining these two spirits with marvellous infusion of rose and cucumber yields an extraordinarily smooth gin that is a rare union of lightness and complexity. Award<br><br>In 2018, the Hendrick's Master Distiller, Lesley Gracie was named Distiller of the Year 2018 by Gin Magazine<br><br>Produced by family owned distillers, William Grant &amp; Sons, named Distiller of the Year at the International Wine &amp; Spirits Competition 2018 and the International Spirits Challenge 2018.<br><br><br>",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:07Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:32Z"
   },
   {
     "retailer": "morrisons",
@@ -200,14 +209,15 @@
     "is_on_promotion": true,
     "size_raw": "1L",
     "size_ml": 1000.0,
+    "price_per_litre": 19.5,
     "abv_percent": 37.5,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
     "flavour_style": null,
     "availability": "InStock",
     "description": "",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:07Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"missing\", \"flavour_style\": \"missing\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:32Z"
   },
   {
     "retailer": "morrisons",
@@ -221,14 +231,15 @@
     "is_on_promotion": false,
     "size_raw": "1L",
     "size_ml": 1000.0,
+    "price_per_litre": 27.0,
     "abv_percent": 35.0,
     "pack_type": null,
     "country_of_origin": "United Kingdom",
-    "flavour_style": "refreshing fruity flavour profile",
+    "flavour_style": "refreshing fruity",
     "availability": "InStock",
     "description": "Gordon's Premium Pink is a vibrant gin crafted with the perfect balance of natural botanicals and distilled fruit essences. Infused with the flavour of raspberries, strawberries and redcurrants, this gin boasts a pink hue and a refreshing fruity flavour profile. Gordon's Premium Pink provides a light and refreshing tasting drink that makes the perfect gift for gin lovers or simply to enjoy with friends. The spirit balances the crisp, juniper taste of Gordon's with the sweetness of raspberries and strawberries and a tang of redcurrant. Inspired by an original 1880 recipe from Alexander Gordon, Premium Pink is carefully crafted using the highest quality ingredients.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:07Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:32Z"
   },
   {
     "retailer": "morrisons",
@@ -242,14 +253,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 42.86,
     "abv_percent": 41.3,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
-    "flavour_style": "tart crisp edge",
+    "flavour_style": "tart crisp edge warm",
     "availability": "InStock",
     "description": "Inspired by the glory of the English country garden. Essence of rhubarb adds a tart crisp edge whilst the real ginger warms the palate.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:08Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:33Z"
   },
   {
     "retailer": "morrisons",
@@ -263,14 +275,15 @@
     "is_on_promotion": true,
     "size_raw": "8 x 150ml",
     "size_ml": 1200.0,
+    "price_per_litre": 3.75,
     "abv_percent": null,
     "pack_type": null,
     "country_of_origin": "United Kingdom",
-    "flavour_style": "gentle bitterness and aromatic",
+    "flavour_style": "gentle bitterness",
     "availability": "InStock",
     "description": "By blending the gentle bitterness of South American angostura bark with aromatic botanicals, such as cardamom, pimento berry and ginger, we've created a delicious, unique tonic water that can be enjoyed with gin to make a Pink G&T or as a sophisticated soft drink on its own.",
-    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:08Z"
+    "field_sources": "{\"abv_percent\": \"missing\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:33Z"
   },
   {
     "retailer": "morrisons",
@@ -284,14 +297,15 @@
     "is_on_promotion": true,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 30.0,
     "abv_percent": 41.3,
     "pack_type": "Bottle",
     "country_of_origin": "United Kingdom",
     "flavour_style": "perfectly balanced gin",
     "availability": "InStock",
     "description": "Tanqueray London Dry is a perfectly balanced gin, delivering the ideal combination of four classic gin botanicals: refreshing juniper, peppery coriander, aromatic angelica and sweet liquorice. Created by Charles Tanqueray in 1830, Tanqueray London Dry Gin is still made according to the original timeless recipe. This award-winning and iconic spirit, distilled four times, is best enjoyed with a premium tonic water of your choice, plenty of ice and a wedge of lime, although it also makes a great base for a variety of cocktails.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:08Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:34Z"
   },
   {
     "retailer": "morrisons",
@@ -305,14 +319,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 42.5,
     "abv_percent": 41.3,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
-    "flavour_style": "vibrant citrus burst",
+    "flavour_style": "vibrant flavours of Sicily",
     "availability": "InStock",
     "description": "Inspired by the vibrant flavours of Sicily. Extract of sanguine Sicilian blood oranges injects a dynamic citrus burst to the clean gin base.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:08Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:34Z"
   },
   {
     "retailer": "morrisons",
@@ -326,14 +341,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 42.86,
     "abv_percent": 41.3,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
-    "flavour_style": "bright flavours from scottish raspberries",
+    "flavour_style": "bright vibrant sweet juniper",
     "availability": "InStock",
     "description": "Bright flavours from Scottish raspberries, balanced with juniper notes. A delicate sweetness rounds this deliciously vibrant gin.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:09Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:35Z"
   },
   {
     "retailer": "morrisons",
@@ -347,14 +363,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 35.71,
     "abv_percent": 41.3,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
     "flavour_style": "Strong Juniper and citrus fruits",
     "availability": "InStock",
     "description": "Strong Juniper and citrus fruits, hints of orange, angelica root, liquorice and coriander to form a complex Dry Gin.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:09Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:35Z"
   },
   {
     "retailer": "morrisons",
@@ -368,14 +385,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 42.86,
     "abv_percent": 41.3,
     "pack_type": "Glass Bottle",
     "country_of_origin": "United Kingdom",
     "flavour_style": "deep and luscious",
     "availability": "InStock",
     "description": "Black Cherry Gin<br>Inspired by South African cherry orchards, this delicious gin is infused with succulent black cherries for a deep and luscious flavour.<br>Johnny Neill",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:09Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:35Z"
   },
   {
     "retailer": "morrisons",
@@ -389,14 +407,15 @@
     "is_on_promotion": true,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 29.29,
     "abv_percent": 43.0,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
-    "flavour_style": "fresh juniper, coriander, citrus, oriental spices",
+    "flavour_style": "fresh juniper coriander citrus",
     "availability": "InStock",
     "description": "The nose is a rich complex of fresh juniper. Followed quickly with coriander and a complexity of gin flavours. Hints of citrus mingle with oriental spices. On adding a mixer the citrus, lemon, orange and even bergamot open out as well as hints of cinnamon, clove and even saffron.<br><br>Medium length on the finish leaving you ready for the next mouthful.<br><br>Distilled from pure grain. Combined with Botanicals from the four corners of the world. Blended with water from the beacons to create a clear spirit that is crisp, clean and exceptionally smooth.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:09Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:36Z"
   },
   {
     "retailer": "morrisons",
@@ -410,14 +429,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 27.14,
     "abv_percent": 35.0,
     "pack_type": null,
     "country_of_origin": "United Kingdom",
-    "flavour_style": "zesty lemons and delicate meringue sweetness",
+    "flavour_style": "zesty lemons delicate meringue sweetness",
     "availability": "InStock",
     "description": "An iconic British twist on the original recipe from Alexander Gordon.<br><br>The classic taste of Gordon’s, perfectly balanced with zesty lemons and a delicate meringue sweetness. Made using only natural flavourings and colourings.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:09Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:36Z"
   },
   {
     "retailer": "morrisons",
@@ -431,14 +451,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 42.5,
     "abv_percent": 41.3,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
     "flavour_style": "zesty fragrant citrus exotic bold",
     "availability": "InStock",
     "description": "Infused with zesty, fragrant citrus notes of Japanese Yuzu and succulent White Strawberries to create an exotic, bold gin.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:10Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:37Z"
   },
   {
     "retailer": "morrisons",
@@ -452,14 +473,15 @@
     "is_on_promotion": false,
     "size_raw": "35cl",
     "size_ml": 350.0,
+    "price_per_litre": 20.0,
     "abv_percent": 37.5,
     "pack_type": "Bottle",
     "country_of_origin": "United Kingdom",
     "flavour_style": null,
     "availability": "InStock",
     "description": "",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:10Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"missing\", \"flavour_style\": \"missing\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:37Z"
   },
   {
     "retailer": "morrisons",
@@ -473,14 +495,15 @@
     "is_on_promotion": true,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 32.86,
     "abv_percent": 41.6,
     "pack_type": null,
     "country_of_origin": "United Kingdom",
     "flavour_style": "fresh clean and beautifully balanced",
     "availability": "InStock",
     "description": "At Sipsmith we believe in uncompromisingly handcrafting our gin, and in celebration of becoming the first ever official gin partner of our equally uncompromising neighbour Wimbledon - home of The Championships, we've crafted a limited edition bottle* for our London Dry Gin for tennis and gin fans to cherish. Raise a toast to exquisite summer sipping!<br><br>*Please note, receiving the Sipsmith London Dry Gin 70cl bottle with the limited edition Wimbledon label is not guaranteed, you may instead receive the original bottle.<br><br>Sipsmith London Dry Gin is fresh, clean, and beautifully balanced with a sweet botanical bouquet complete with Juniper, baked lemon tarts, and white pepper. <br>Every drop is lovingly hand-crafted at London’s first copper-pot distillery for almost 200 years. We launched the craft gin boom in London – or, as we like to call it, the ginaissance – that has seen hundreds of small-batch gin distillers following in our intrepid footsteps.<br>Smooth enough for a Martini, yet rich and balanced, perfect for a G&amp;T, Sipsmith London Dry Gin is a joy from first to last sip.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:10Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"is_on_promotion\": \"css\", \"name\": \"jsonld\", \"pack_type\": \"missing\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"css\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:38Z"
   },
   {
     "retailer": "morrisons",
@@ -494,14 +517,15 @@
     "is_on_promotion": false,
     "size_raw": "70cl",
     "size_ml": 700.0,
+    "price_per_litre": 47.14,
     "abv_percent": 40.3,
     "pack_type": "Glass Bottle",
     "country_of_origin": null,
     "flavour_style": "London dry gin",
     "availability": "InStock",
     "description": "Award-winning craft gin, double infused for extra flavour. Hand-crafted from start to finish: first we distilan already delicious London dry gin in a traditional copper-pot still, then we take our extra step. We cold infuse With juniper, coriander, cassia, cardamom, cloves and the very finest orange peel over a further seven days, tasting regularly to ensure that distinct Bathtub flavour we're proud of.",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:10Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"missing\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:38Z"
   },
   {
     "retailer": "morrisons",
@@ -515,13 +539,14 @@
     "is_on_promotion": false,
     "size_raw": "50cl",
     "size_ml": 500.0,
+    "price_per_litre": 53.0,
     "abv_percent": 42.0,
     "pack_type": "Can",
     "country_of_origin": "Italy",
     "flavour_style": "stout structure",
     "availability": "InStock",
     "description": "Engine is an Organic Italian gin produced in Piedmont, in Northern Italy. Engine Organic Gin is made using 100% Italian botanicals and has a stout structure but a kind soul. It sparkles on the rocks and shines in tonic water. Our aluminum cans are made out of recycled olive oil and motor oil cans. Further recycling of Engine Gin cans uses up to 90% less energy than recycling glass. <br><br>GT is the liquid acronym for Gin Tonic<br><br>Ingredients:<br>50ml of Engine Gin<br>100ml Tonic Water<br><br>Method: Pour all the ingredients directly into the ice-filled glass. The tonic water must be very cold! Garnish with a sage leaf.<br><br>42% Alc/Vol",
-    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
-    "scraped_at": "2026-08-28T20:25:11Z"
+    "field_sources": "{\"abv_percent\": \"regex\", \"availability\": \"jsonld\", \"brand\": \"jsonld\", \"country_of_origin\": \"regex\", \"description\": \"jsonld\", \"flavour_style\": \"llm\", \"name\": \"jsonld\", \"pack_type\": \"regex\", \"price_gbp\": \"jsonld\", \"price_per_litre\": \"derived\", \"price_was\": \"missing\", \"size_ml\": \"regex\", \"size_raw\": \"jsonld\", \"sku\": \"jsonld\"}",
+    "scraped_at": "2026-08-29T11:58:38Z"
   }
 ]
