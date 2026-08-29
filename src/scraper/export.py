@@ -81,5 +81,8 @@ def combine_datasets(data_dir: Path) -> int:
         writer = csv.DictWriter(handle, fieldnames=COLUMNS)
         writer.writeheader()
         writer.writerows(rows)
-    log.info("Wrote %s rows from %s files to %s", len(rows), len(set(r["retailer"] for r in rows)), target)
+    log.info(
+        "Wrote %s rows from %s retailers to %s",
+        len(rows), len(set(r["retailer"] for r in rows)), target,
+    )
     return len(rows)

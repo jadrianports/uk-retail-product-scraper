@@ -10,6 +10,7 @@ made it. These checks run against real output instead.
 Exits 1 if anything is found.
 """
 
+import csv
 import json
 import re
 import sys
@@ -40,6 +41,11 @@ MAX_LABEL_WORDS = 4
 # of a listing named as another category is a wrong URL, which is what the
 # redirect from /c/40/gin produced.
 CATEGORY_DEFECT_SHARE = 0.2
+
+# A retailer name inside a product name is not a category. "The Whisky
+# Exchange" appears in three rum product names, and each one read as a whisky
+# filed under rum.
+RETAILER_NAMES = ("the whisky exchange", "whisky exchange")
 
 
 def brand_key(value: str | None) -> str:
@@ -101,12 +107,19 @@ def check_rows(rows: list[dict]) -> list[tuple[str, str]]:
         if was is not None and price is not None and float(was) <= float(price):
             report("PROMOTION", f"{name!r} price_was={was} is not above price_gbp={price}")
 
-    # Judge the category on the whole listing, not on one row.
+    # Judge the category on the whole listing, not on one row. Strip the
+    # retailer's own name first: "Exclusive to The Whisky Exchange" is not a
+    # whisky in the rum category, and three rows read that way.
+    def without_retailer(text: str) -> str:
+        for noise in RETAILER_NAMES:
+            text = text.replace(noise, " ")
+        return text
+
     crossed = [
         (r.get("name") or "").strip()
         for r in rows
         for word in OTHER_CATEGORY.get(r.get("category", ""), [])
-        if re.search(rf"\b{word}\b", (r.get("name") or "").lower())
+        if re.search(rf"\b{word}\b", without_retailer((r.get("name") or "").lower()))
     ]
     if crossed:
         share = len(crossed) / len(rows)
@@ -129,6 +142,35 @@ def check_rows(rows: list[dict]) -> list[tuple[str, str]]:
     return findings
 
 
+def check_formats_agree(json_path: Path) -> list[tuple[str, str]]:
+    """Compare the two shipped formats.
+
+    They are written in one call, so they cannot drift on their own. They can
+    drift when a file is copied and one write fails, and a stale CSV beside a
+    fresh JSON reads as correct in both files on its own.
+    """
+    csv_path = json_path.with_suffix(".csv")
+    if not csv_path.exists():
+        return [("MISSING_CSV", f"{json_path.parent} has no products.csv")]
+
+    rows = json.loads(json_path.read_text(encoding="utf-8"))
+    with csv_path.open(encoding="utf-8", newline="") as handle:
+        csv_rows = list(csv.DictReader(handle))
+
+    if len(rows) != len(csv_rows):
+        return [("FORMAT_DRIFT", f"json has {len(rows)} rows, csv has {len(csv_rows)}")]
+
+    findings = []
+    for column in rows[0]:
+        in_json = sum(1 for r in rows if r.get(column) not in (None, "", []))
+        in_csv = sum(1 for r in csv_rows if r.get(column) not in (None, "", []))
+        if in_json != in_csv:
+            findings.append(
+                ("FORMAT_DRIFT", f"{column}: json fills {in_json}, csv fills {in_csv}")
+            )
+    return findings
+
+
 def main(root: Path) -> int:
     paths = sorted(root.glob("**/products.json"))
     if not paths:
@@ -142,7 +184,7 @@ def main(root: Path) -> int:
         rows = json.loads(path.read_text(encoding="utf-8"))
         total += len(rows)
         label = f"{rows[0].get('retailer')}/{rows[0].get('category')}" if rows else str(path)
-        for kind, detail in check_rows(rows):
+        for kind, detail in check_rows(rows) + check_formats_agree(path):
             target = notes if kind in NOTE_KINDS else defects
             target.append((label, kind, detail))
         print(f"{label:28} {len(rows):>3} rows")
