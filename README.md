@@ -423,6 +423,24 @@ expression in `enrich.py`. Arithmetic on existing columns is a function, as
 `llm.py`. Set `field_sources` either way, so the new column is auditable on
 the day it lands.
 
+**Many retailers at once.** Scaling needs an orchestration layer, and the
+choice of scheduler is the least interesting part of it. One job per
+(retailer, category) pair is the unit, and cron, Airflow, Dagster or Cloud
+Scheduler all run that shape.
+
+The constraint that bites is politeness. `Fetcher` holds the one-second delay
+on the instance, so the limit is per process and not per host. Ten jobs
+against Morrisons at once is ten requests per second to one retailer, and the
+promise this README makes to that retailer is broken by the scheduler and not
+by the code. A shared rate budget per host has to sit above the jobs, so a
+token bucket in Redis, or a concurrency limit of one per host. Fan out across
+retailers, never within one.
+
+Two more things bend at scale. Retailers publish different attributes, so the
+schema has to version rather than widen forever, and a column that only two of
+ten retailers fill belongs in a per-retailer table. And every adapter drifts on
+its own schedule, so the health check has to be per adapter, not per run.
+
 **Keeping it running.** The reason to monitor is short. A broken scraper does
 not raise. It returns nulls, and a null column reaches a client as a statement
 about the category. The goal is to know what broke before the client does.
@@ -446,6 +464,20 @@ Four signals are worth an alert:
 
 Alerts go wherever the team already reads, so Slack, Telegram or email. An
 alert that nobody sees is not monitoring.
+
+A model can shorten the triage, but not the repair. When a parse fails, the
+retained pages give two versions of the same markup, and asking a model to
+diff them and name the selector that moved turns an hour of reading HTML into
+a short review. The output is a proposed change for a person to approve.
+
+The model does not repair the run. A selector it invents cannot be checked
+without the correct result, and the correct result is the thing the failure
+destroyed. This project has that failure twice already. The model read a
+sentence about quinine and reported a country for a tonic water, and a
+redirect served single malt whisky where the code expected gin. Both are valid
+output and wrong meaning, and both would pass a self-repair that only asks
+whether products were found. A run that stops and reports is worth more than a
+run that recovers and cannot say what it recovered.
 
 A scheduled container job is the natural host, so Cloud Run Jobs with Cloud
 Scheduler, or the equivalent. One caveat comes out of the measurements below.
