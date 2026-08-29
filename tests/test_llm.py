@@ -194,3 +194,49 @@ def test_per_minute_quota_error_does_not_trip_the_breaker(monkeypatch):
     later_result = enricher.derive("Another Gin", "Some text.")
     assert client.models.call_count == 3
     assert later_result.flavour_style == "Juniper led"
+
+
+def test_build_enricher_picks_the_provider_from_the_key(monkeypatch):
+    from scraper.llm import (
+        AnthropicEnricher,
+        NullEnricher,
+        OpenAIEnricher,
+        build_enricher,
+    )
+
+    for name in ("GEMINI_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY"):
+        monkeypatch.delenv(name, raising=False)
+    assert isinstance(build_enricher(), NullEnricher)
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    assert isinstance(build_enricher(), OpenAIEnricher)
+
+    monkeypatch.delenv("OPENAI_API_KEY")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    assert isinstance(build_enricher(), AnthropicEnricher)
+
+
+def test_a_null_enricher_never_calls_out():
+    from scraper.llm import Derived, NullEnricher
+
+    assert NullEnricher(min_interval=0).derive("A Gin", "Some text.") == Derived()
+
+
+def test_http_provider_reads_a_fenced_reply():
+    from scraper.llm import OpenAIEnricher
+
+    fence = chr(96) * 3
+    raw = fence + "json" + chr(10) + '{"flavour_style": "Citrus led", "abv_percent": 41.8}' + chr(10) + fence
+    result = OpenAIEnricher("k", min_interval=0)._from_json_text(raw)
+
+    assert result.flavour_style == "Citrus led"
+    assert result.abv_percent == 41.8
+
+
+def test_http_provider_range_checks_the_strength():
+    from scraper.llm import OpenAIEnricher
+
+    enricher = OpenAIEnricher("k", min_interval=0)
+    # Out of range is dropped, but 0.0 is a real reading and must survive.
+    assert enricher._from_json_text('{"abv_percent": 150}').abv_percent is None
+    assert enricher._from_json_text('{"abv_percent": 0}').abv_percent == 0.0
