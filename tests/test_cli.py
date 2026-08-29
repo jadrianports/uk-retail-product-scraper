@@ -426,7 +426,9 @@ def test_a_second_category_writes_to_its_own_folder(monkeypatch):
 def test_an_unknown_category_exits_1_and_names_the_known_ones(monkeypatch, tmp_path, caplog):
     monkeypatch.setattr(
         "sys.argv",
-        ["scrape", "--retailer", "whisky_exchange", "--category", "vodka",
+        # A category this retailer does not carry. It must be rejected before
+        # any request is made, or the test suite goes to the network.
+        ["scrape", "--retailer", "whisky_exchange", "--category", "tequila",
          "--out", str(tmp_path), "--no-llm"],
     )
 
