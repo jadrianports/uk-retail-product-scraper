@@ -57,8 +57,28 @@ def _product_json_ld(soup: BeautifulSoup) -> dict:
 @register
 class Morrisons:
     name = "morrisons"
-    category = "gin"
-    category_url = f"{BASE}/categories/beer-wines-spirits/spirits-liqueurs/gin/151526"
+
+    # Every entry was fetched and checked for products before it was added.
+    # A category is a real URL on the site, not a name this tool invents.
+    _SPIRITS = f"{BASE}/categories/beer-wines-spirits/spirits-liqueurs"
+    CATEGORIES = {
+        "gin": f"{_SPIRITS}/gin/151526",
+        "vodka": f"{_SPIRITS}/vodka/151525",
+        "whisky": f"{_SPIRITS}/whisky/151509",
+        "rum": f"{_SPIRITS}/rum/151520",
+        "brandy": f"{_SPIRITS}/brandy/151517",
+        "tequila": f"{_SPIRITS}/tequila/191961",
+    }
+    DEFAULT_CATEGORY = "gin"
+
+    def __init__(self, category: str | None = None) -> None:
+        self.category = category or self.DEFAULT_CATEGORY
+        if self.category not in self.CATEGORIES:
+            known = ", ".join(sorted(self.CATEGORIES))
+            raise KeyError(
+                f"{self.name} has no category '{self.category}'. Known: {known}"
+            )
+        self.category_url = self.CATEGORIES[self.category]
 
     def find_product_urls(self, listing_html: str) -> list[str]:
         soup = BeautifulSoup(listing_html, "lxml")

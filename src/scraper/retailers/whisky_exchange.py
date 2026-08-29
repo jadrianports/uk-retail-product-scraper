@@ -72,11 +72,25 @@ def _price(text: str | None) -> float | None:
 @register
 class WhiskyExchange:
     name = "whisky_exchange"
-    category = "gin"
+
     # This site has no JSON-LD. The listing page already holds the size and the
     # strength, so the adapter does not need a second request for each product.
     # The path holds the gin and jenever category.
-    category_url = f"{BASE}/c/338/gin"
+    #
+    # Only gin is listed. The other paths on this site were never fetched, and
+    # a category URL that nobody checked is how this tool once labelled whisky
+    # as gin. An unverified guess does not belong in a map.
+    CATEGORIES = {"gin": f"{BASE}/c/338/gin"}
+    DEFAULT_CATEGORY = "gin"
+
+    def __init__(self, category: str | None = None) -> None:
+        self.category = category or self.DEFAULT_CATEGORY
+        if self.category not in self.CATEGORIES:
+            known = ", ".join(sorted(self.CATEGORIES))
+            raise KeyError(
+                f"{self.name} has no category '{self.category}'. Known: {known}"
+            )
+        self.category_url = self.CATEGORIES[self.category]
 
     def find_product_urls(self, listing_html: str) -> list[str]:
         soup = BeautifulSoup(listing_html, "lxml")

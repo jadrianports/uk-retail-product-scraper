@@ -31,8 +31,15 @@ def register(cls: type) -> type:
     return cls
 
 
-def get_retailer(name: str) -> Retailer:
+def get_retailer(name: str, category: str | None = None) -> Retailer:
     if name not in REGISTRY:
         known = ", ".join(sorted(REGISTRY))
         raise KeyError(f"Unknown retailer '{name}'. Known retailers: {known}")
-    return REGISTRY[name]()
+    site = REGISTRY[name]
+    # A test adapter can take no category argument. Only pass one when asked.
+    return site(category) if category else site()
+
+
+def categories_for(name: str) -> list[str]:
+    """List the categories one retailer supports."""
+    return sorted(getattr(REGISTRY[name], "CATEGORIES", {}))
