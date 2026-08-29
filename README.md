@@ -1,7 +1,7 @@
 # UK Retail Product Scraper
 
-Captures product attributes for one category from a UK retailer, one row per
-product and one column per attribute, to CSV and JSON.
+Captures product attributes from UK retailer websites, one row per product and
+one column per attribute, to CSV and JSON.
 
 Morrisons gin is the answer to the brief: 25 products, 20 columns. Five more
 datasets ship with it, so the same tool covers three categories on two
@@ -118,8 +118,8 @@ ERROR www.thewhiskyexchange.com served a JavaScript challenge. This tool does
 ```
 
 The committed datasets were captured from a residential connection outside the
-UK. A UK residential line is the least suspicious traffic a UK retailer sees. This
-step is more likely to succeed from one than it was here.
+UK. A UK residential line is the least suspicious traffic a UK retailer sees.
+This step is more likely to succeed from one than it was here.
 
 </details>
 
@@ -179,9 +179,9 @@ packaging field anywhere on a product page, so `pack_type` holds a null. Its
 `country_of_origin` fills 23 of 24, from a labelled facts list on the detail
 page.
 
-The harder attributes are the partial ones. None of them sits in a clean field.
-`abv_percent`, `pack_type` and `country_of_origin` are parsed out of visible
-page text, which is why the origin pattern once read `United Kingdom Brand J`.
+The harder attributes are the partial ones. None of them sits in a clean
+field on the primary retailer. Morrisons states them inside visible page text,
+which is why the origin pattern once read `United Kingdom Brand J`.
 
 <details>
 <summary>Full provenance counts, and what an audit found</summary>
@@ -253,7 +253,7 @@ scraper that wins an evasion race still loses the relationship.
 <summary>The Cloudflare measurements, and which sites were rejected</summary>
 
 The Whisky Exchange gates on the reputation of the connection, not the path.
-Four measurements on 2026-08-29 from one machine:
+Six measurements on 2026-08-29 from one machine:
 
 | Connection | robots.txt | Listing | Product page |
 |---|---|---|---|
@@ -289,7 +289,7 @@ Site selection:
 | Site | robots.txt | Products in plain HTML | Outcome |
 |---|---|---|---|
 | Morrisons | Permits browse. Denies `/api/`. | Yes, with JSON-LD. | Primary |
-| The Whisky Exchange | Permits browse. | Yes, no JSON-LD. | Second |
+| The Whisky Exchange | Permits browse. | Yes. JSON-LD on the detail page. | Second |
 | Asda | `Content-Signal: ai-train=no`. | No. Client-rendered. | Rejected |
 | Ocado | Unreadable. Holds a WAF challenge. | | Rejected |
 | Tesco, Sainsbury's, Co-op, Iceland | 403 on robots.txt. | | Rejected |
@@ -306,16 +306,16 @@ Unreadable rules mean no scraping.
 | Field | Source |
 |---|---|
 | `name`, `brand`, `price_gbp`, `size_raw`, `sku`, `availability`, `description` | JSON-LD or CSS. The model never runs. |
-| `size_ml`, `pack_type`, `country_of_origin` | Regular expression only. |
+| `size_ml`, `pack_type` | Regular expression only. |
+| `country_of_origin` | A labelled field, by regular expression or CSS. Never the model. |
 | `price_per_litre` | Arithmetic. |
 | `abv_percent` | Regular expression, then the model if nothing was found. |
 | `flavour_style` | The model always. No other source gives it. |
 
 The split follows what each source can prove. `flavour_style` needs prose read
 and judged. It fills 22 of 25 at Morrisons and 20 of 24 at The Whisky
-Exchange. ABV is a number in a known range, so a model
-answer is checked against `0 <= value <= 100` and not a truthiness test,
-because 0.0 is a real ABV.
+Exchange. ABV is a number in a known range. A model answer is checked against
+`0 <= value <= 100` and not a truthiness test, because 0.0 is a real ABV.
 
 The model is deliberately barred from `country_of_origin`. It read a sentence
 about where quinine comes from and reported that country as a tonic water's
@@ -347,7 +347,7 @@ provider picker and the quota breaker.
 
 A test proves the parser did what it was told. It cannot prove the result means
 what the column says, because the fixture agrees with the code that made it.
-`scripts/audit.py` runs ten checks against real output instead:
+`scripts/audit.py` runs eleven checks against real output instead:
 
 ```bash
 uv run python scripts/audit.py            # the committed datasets
@@ -370,10 +370,9 @@ Two brands carry a second spelling. Two listings hold one product named as
 another category, such as a rum finished in whisky casks.
 
 It also found two errors in this work. The brand count in this file read 16
-where the retailer publishes 16 strings for 15 brands. A stale CSV also sat beside a fresh
-JSON once. A copy of one file failed while its pair succeeded, so the two
-shipped formats disagreed. Each file read as correct on
-its own.
+where the retailer publishes 16 strings for 15 brands. A stale CSV also sat
+beside a fresh JSON once. A copy of one file failed while its pair succeeded,
+so the two shipped formats disagreed. Each file read as correct on its own.
 
 All six Morrisons categories were pulled live and checked the same way. 36
 rows across gin, vodka, whisky, rum, brandy and tequila raised no defect.
