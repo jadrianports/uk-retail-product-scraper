@@ -325,7 +325,7 @@ def test_listing_path_survives_a_parse_listing_exception(monkeypatch, tmp_path, 
     assert exit_code == 1
 
 
-def test_listing_path_skips_one_bad_card_and_keeps_the_rest(monkeypatch, tmp_path, no_model_calls):
+def test_a_failed_gate_leaves_the_previous_dataset_untouched(monkeypatch, tmp_path, no_model_calls):
     pages = {"https://listing.example.test/category": "<html></html>"}
     _install_fake_fetcher(monkeypatch, pages)
     monkeypatch.setattr(
@@ -342,14 +342,19 @@ def test_listing_path_skips_one_bad_card_and_keeps_the_rest(monkeypatch, tmp_pat
 
     monkeypatch.setattr(cli, "enrich_product", flaky_enrich_product)
 
+    # A good dataset from an earlier run sits in the output folder.
+    previous = json.dumps([{"name": "From an earlier run"}])
+    (tmp_path / "products.json").write_text(previous, "utf-8")
+    (tmp_path / "products.csv").write_text("name\nFrom an earlier run\n", "utf-8")
+
     exit_code = cli.main()
 
-    # 2 of 3 products survive: below the 80% gate, so exit 1 — but the run
-    # completes and writes the 2 good products rather than crashing.
+    # 2 of 3 products survive, below the 80% gate. One bad card does not
+    # crash the run, and the gate stops the write, so the earlier dataset
+    # survives intact. A short file that looks complete is the worse fault.
     assert exit_code == 1
-    data = json.loads((tmp_path / "products.json").read_text("utf-8"))
-    assert len(data) == 2
-    assert "Gin 2" not in {row["name"] for row in data}
+    assert (tmp_path / "products.json").read_text("utf-8") == previous
+    assert "From an earlier run" in (tmp_path / "products.csv").read_text("utf-8")
 
 
 def test_unwritable_out_path_yields_exit_1_not_a_traceback(monkeypatch, tmp_path, no_model_calls):

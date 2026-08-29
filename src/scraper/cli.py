@@ -67,15 +67,18 @@ def main() -> int:
         products.append(product)
         log.info("%s/%s %s", index, expected, product.name)
 
+    # Check before the write. A short run must not overwrite a good
+    # dataset with a shorter one. The previous file stays untouched.
+    if not check_parse_rate(parsed=len(products), expected=expected):
+        log.error("The dataset in %s was left unchanged.", args.out)
+        return 1
+
     try:
         write_outputs(products, args.out)
     except Exception as exc:
         log.error("Cannot write output to %s: %s", args.out, exc)
         return 1
     log.info("Wrote %s products to %s", len(products), args.out)
-
-    if not check_parse_rate(parsed=len(products), expected=expected):
-        return 1
     return 0
 
 
