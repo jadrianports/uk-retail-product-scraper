@@ -48,6 +48,22 @@ class RobotsDenied(Exception):
     """The site rules deny this path."""
 
 
+class ChallengeBlocked(Exception):
+    """The host served a JavaScript challenge.
+
+    This tool does not defeat one. No browser, no cookie replay, no solver.
+    A challenge is a judgement about the connection, not about the path, so
+    the same request can succeed from a different network later.
+    """
+
+
+def is_challenge(status_code: int, headers, body: str) -> bool:
+    """Tell a JavaScript challenge from a plain refusal."""
+    if headers.get("cf-mitigated") == "challenge":
+        return True
+    return status_code in (403, 503) and "challenge-platform" in body[:4000]
+
+
 class RobotsGate:
     def __init__(self, base_url: str, parser: RobotFileParser | None):
         self.base_url = base_url
@@ -147,6 +163,13 @@ class Fetcher:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(response.text, "utf-8")
                 return response.text
+
+            if is_challenge(response.status_code, response.headers, response.text):
+                raise ChallengeBlocked(
+                    f"{urlparse(url).netloc} served a JavaScript challenge for {url}. "
+                    "This tool does not defeat a challenge. Retry from a different "
+                    "network, or use the committed dataset."
+                )
 
             if response.status_code in (429, 500, 502, 503, 504):
                 last_error = requests.HTTPError(f"HTTP {response.status_code}")

@@ -127,3 +127,25 @@ def test_formatted_user_agent_is_browser_compatible_and_identifies_tool(tmp_path
     assert user_agent.startswith("Mozilla/5.0"), "User-Agent must start with Mozilla/5.0 for browser compatibility"
     assert "uk-retail-product-scraper/0.1" in user_agent, "Tool name and version must be present"
     assert contact in user_agent, "Contact address must be present"
+
+
+def test_is_challenge_reads_the_cloudflare_header():
+    from scraper.fetch import is_challenge
+
+    assert is_challenge(403, {"cf-mitigated": "challenge"}, "") is True
+
+
+def test_is_challenge_reads_the_challenge_body():
+    from scraper.fetch import is_challenge
+
+    assert is_challenge(403, {}, "<html>challenge-platform</html>") is True
+    assert is_challenge(503, {}, "<html>challenge-platform</html>") is True
+
+
+def test_a_plain_refusal_is_not_a_challenge():
+    from scraper.fetch import is_challenge
+
+    # A 403 with no challenge marker is a refusal. The two need different
+    # handling, so the tool must not treat every 403 as a challenge.
+    assert is_challenge(403, {}, "Forbidden") is False
+    assert is_challenge(200, {}, "fine") is False
