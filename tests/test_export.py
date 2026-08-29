@@ -76,3 +76,44 @@ def test_combine_reports_an_empty_data_directory(tmp_path):
     # Nothing to join is a fault worth reporting, not a silent empty file.
     assert combine_datasets(tmp_path) == 0
     assert not (tmp_path / "all_products.csv").exists()
+
+
+def _sample_rows(count):
+    from scraper.models import Product
+
+    return [
+        Product(
+            retailer="morrisons",
+            category="gin",
+            product_url=f"https://example.test/{i}",
+            scraped_at="2026-08-29T00:00:00Z",
+            name=f"Gin {i}",
+        )
+        for i in range(count)
+    ]
+
+
+def test_a_shorter_run_warns_before_it_replaces_a_longer_dataset(tmp_path, caplog):
+    import logging
+
+    from scraper.export import write_outputs
+
+    write_outputs(_sample_rows(25), tmp_path)
+    with caplog.at_level(logging.WARNING):
+        write_outputs(_sample_rows(3), tmp_path)
+
+    # A --limit run parses everything it asked for, so the parse gate passes
+    # and cannot catch this. Without the warning the loss is silent.
+    assert "replaces 25 rows with 3" in caplog.text
+
+
+def test_a_longer_run_writes_without_a_warning(tmp_path, caplog):
+    import logging
+
+    from scraper.export import write_outputs
+
+    write_outputs(_sample_rows(1), tmp_path)
+    with caplog.at_level(logging.WARNING):
+        write_outputs(_sample_rows(2), tmp_path)
+
+    assert "replaces" not in caplog.text

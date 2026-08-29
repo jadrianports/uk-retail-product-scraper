@@ -10,9 +10,27 @@ log = logging.getLogger(__name__)
 MIN_PARSE_RATE = 0.8
 
 
+def _row_count(path: Path) -> int:
+    """Count the data rows in an existing CSV. A missing file counts zero."""
+    if not path.exists():
+        return 0
+    with path.open(encoding="utf-8", newline="") as handle:
+        return max(sum(1 for _ in handle) - 1, 0)
+
+
 def write_outputs(products: list[Product], out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = [p.to_row() for p in products]
+
+    # A run with --limit passes the parse gate and still replaces a longer
+    # dataset. That is a valid run, so it is a warning and not a failure.
+    previous = _row_count(out_dir / "products.csv")
+    if previous > len(rows):
+        log.warning(
+            "This run replaces %s rows with %s in %s. Pass --out to write "
+            "somewhere else and keep the committed dataset.",
+            previous, len(rows), out_dir,
+        )
 
     with (out_dir / "products.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=COLUMNS)
