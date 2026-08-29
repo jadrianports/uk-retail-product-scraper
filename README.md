@@ -20,7 +20,7 @@ data/
 |---|---|---|
 | Products | 25 | 24 |
 | Median price per litre | £29.29 | £50.51 |
-| Distinct brands | 15 | 23 |
+| Distinct brands | 15 | 21 |
 | Sizes sold | 350, 500, 700, 1000, 1200 ml | 500, 700, 1000 ml |
 
 The specialist reads as 72% dearer. The two brands that both retailers carry
@@ -66,7 +66,7 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"   # Windows
 git clone https://github.com/jadrianports/uk-retail-product-scraper
 cd uk-retail-product-scraper
 uv sync                                   # 8 seconds, pinned by uv.lock
-uv run pytest                             # 131 passed
+uv run pytest                             # 135 passed
 uv run scrape --limit 5 --out out/try1    # a live run, no setup needed
 ```
 
@@ -125,10 +125,13 @@ Plain HTTP, not a browser. Both sites serve product data in HTML, so a browser
 would add a large dependency for no extra data.
 
 The two retailers need different routes. Morrisons publishes JSON-LD on every
-product page, so that adapter reads the listing and then one page per product,
-about 26 requests. The Whisky Exchange publishes none, but its cards already
-carry the size and the strength, so that adapter reads the listing and stops,
-one request in two seconds.
+product page, so that adapter reads the listing and then one page per product.
+The Whisky Exchange publishes none on its listing, but its cards already carry
+the size, the strength and the promotion, which Morrisons does not. Its detail
+pages then carry a JSON-LD Product schema of their own. So one adapter takes
+everything from the detail page, and the other takes the cheap fields from the
+listing and only the brand and the description from the detail page. Both cost
+about 25 requests.
 
 Both meet at `collect(fetcher, limit) -> tuple[list[Product], int]`. The
 Protocol promises the result and not the route, so the CLI never branches on
@@ -137,13 +140,13 @@ which adapter it holds. A test asserts that both satisfy it.
 <details>
 <summary>What each adapter reads, and where the brand comes from</summary>
 
-The Whisky Exchange publishes no brand field, so the adapter reads words from
-the start of the name. It stops at the first category, style or place word,
-and takes four words at most. A leading category word is kept, so `Gin Mare`
-survives. That gives `The Botanist`, `Ki No Bi` and `Isle of Harris`. It stays
-approximate: `Roku Noryo Tea Edition Gin` gives `Roku Noryo Tea`, where the
-brand is `Roku`. Morrisons needs none of this, because its JSON-LD carries a
-real brand field.
+The Whisky Exchange listing publishes no brand, so an earlier version read
+words from the start of the name. It stayed approximate: `Roku Noryo Tea
+Edition Gin` gave `Roku Noryo Tea`, where the brand is `Roku`. The detail page
+carries a real brand field, so that guess is gone and 9 of 24 brand values
+changed. `Hendrick's Orbium Gin` is now branded `Hendrick's` rather than
+`Hendrick's Orbium`, which is also why the distinct brand count for this
+retailer fell from 23 to 21.
 
 The card holds more than the name and the price. `sku` comes from the URL,
 which has the shape `/p/14553/monkey-47-schwarzwald-dry-gin`. `availability`
@@ -164,8 +167,11 @@ wrong value was caught rather than shipped.
 
 Morrisons fills eight attributes 25 of 25. The rest are partial:
 `description` 22, `flavour_style` 22, `abv_percent` 20, `pack_type` 17,
-`country_of_origin` 13, `price_was` 11. Four columns are empty on every Whisky
-Exchange row, because each needs product prose and that listing publishes none.
+`country_of_origin` 13, `price_was` 11. Two columns are empty on every Whisky
+Exchange row: `pack_type` and `country_of_origin`. Both are read from labelled
+page text, and that retailer writes prose with no labels. The Monkey 47
+description says the gin is produced in Germany, and a label pattern will not
+read that, so the column holds a null rather than a guess.
 
 The harder attributes are the partial ones. None of them sits in a clean field.
 `abv_percent`, `pack_type` and `country_of_origin` are parsed out of visible
@@ -175,8 +181,8 @@ page text, which is why the origin pattern once read `United Kingdom Brand J`.
 <summary>Full provenance counts, and what an audit found</summary>
 
 The 25 Morrisons rows hold 361 values: `jsonld` 172, `regex` 75, `missing` 45,
-`derived` 25, `css` 22, `llm` 22. The 24 Whisky Exchange rows hold 336:
-`css` 174, `missing` 114, `regex` 24, `derived` 24.
+`derived` 25, `css` 22, `llm` 22. The 24 Whisky Exchange rows hold 359:
+`css` 151, `missing` 94, `jsonld` 46, `derived` 24, `regex` 24, `llm` 20.
 
 An audit re-parsed all 25 Morrisons rows with independent code. Zero parser
 defects, and three things no test could find.
@@ -240,23 +246,30 @@ scraper that wins an evasion race still loses the relationship.
 <summary>The Cloudflare measurements, and which sites were rejected</summary>
 
 The Whisky Exchange gates on the reputation of the connection, not the path.
-Three measurements on 2026-08-29 from one machine:
+Four measurements on 2026-08-29 from one machine:
 
 | Connection | robots.txt | Listing | Product page |
 |---|---|---|---|
 | Residential, outside the UK, 03:46 | 200 | 200, 24 cards | not requested |
-| The same line, later | 200 | 403 challenge | 403 challenge |
+| The same line, after about 26 requests | 200 | 403 challenge | 403 challenge |
 | A VPN exit, London datacentre | 200 | 403 challenge | 403 challenge |
+| The residential line again, VPN off | 200 | 200 | 200 |
 
-The committed dataset comes from row one. Row two followed about 26 requests to
-the host, so it is a flag the tool earned. Row three is the lesson: a VPN exit
-is a datacentre IP, and Cloudflare scores those badly, so the geography
-improved and the IP class got worse. A 403 from a VPN proves nothing about the
-site's policy.
+Row two is a flag the tool earned. Row three is the lesson: a VPN exit is a
+datacentre IP, and Cloudflare scores those badly, so the geography improved and
+the IP class got worse. A 403 from a VPN proves nothing about the site's
+policy. Row four is the score decaying, which is what row two predicted.
 
-Reaching a product page needs a challenge defeated, so no product page was ever
-fetched and this repository holds none. That is why four columns are empty for
-that retailer.
+Row four also corrected this file. Every earlier version said the detail pages
+held no product data, and that the site published no JSON-LD. Both claims came
+from the listing page alone, because every attempt at a detail page had met a
+challenge. When one finally returned 200 it held a full JSON-LD Product schema,
+with a brand field and a description. Two empty columns filled and nine brand
+values were corrected.
+
+The lesson is the one this project keeps relearning. A claim about what a page
+does not contain needs a fetch of that page. Until then it is an assumption,
+and an assumption in a README reads exactly like a measurement.
 
 Site selection:
 
@@ -286,7 +299,8 @@ Unreadable rules mean no scraping.
 | `flavour_style` | The model always. No other source gives it. |
 
 The split follows what each source can prove. `flavour_style` needs prose read
-and judged, and it fills 22 of 25. ABV is a number in a known range, so a model
+and judged. It fills 22 of 25 at Morrisons and 20 of 24 at The Whisky
+Exchange. ABV is a number in a known range, so a model
 answer is checked against `0 <= value <= 100` and not a truthiness test,
 because 0.0 is a real ABV.
 
@@ -313,20 +327,32 @@ products unenriched.
 
 ## Tests
 
-131 tests, offline, about one second. The suite makes no network call, even
+135 tests, offline, about one second. The suite makes no network call, even
 with a real key in `.env`. It covers both parsers, the ABV, size and origin
 patterns, price per litre, the promotion price, the robots paths, the challenge
 detector, the cache, the provider picker and the quota breaker.
 
-Tests agree with the code that wrote them, so the six categories were also
-pulled live and audited. 36 rows were checked for a name that contradicts its
-category, a strength outside 0 to 80 percent, an impossible size, a price per
-litre outside 1 to 400, an over-captured text field, a duplicate product and a
-promotion cheaper than the current price. The five brand mismatches the audit
-raised were all correct: each brand came from the retailer's own JSON-LD and
-differs from the product name, as `J.J. Whitley` does for `J.J Vodka
-Raspberry`. `name`, `brand`, `price_gbp`, `size_ml` and `price_per_litre`
-filled 36 of 36.
+A test proves the parser did what it was told. It cannot prove the result means
+what the column says, because the fixture agrees with the code that made it.
+`scripts/audit.py` runs ten checks against real output instead:
+
+```bash
+uv run python scripts/audit.py            # the committed datasets
+uv run python scripts/audit.py out/try1   # any run
+```
+
+It checks for a name that contradicts its category, a strength or size or price
+per litre outside range, a derived value that no longer matches its inputs, an
+over-captured text field, a duplicate product, a promotion cheaper than the
+current price, a brand this tool guessed that is absent from the name, and one
+brand under two spellings. It separates a note from a defect, and only a defect
+exits 1.
+
+All six Morrisons categories were pulled live and put through it. 36 rows
+across gin, vodka, whisky, rum, brandy and tequila raised no defect, and
+`name`, `brand`, `price_gbp`, `size_ml` and `price_per_litre` filled 36 of 36.
+It also found an error in this file: the brand count for Morrisons read 16
+where the retailer publishes 16 strings for 15 brands.
 
 ## Extending it to more retailers and more attributes
 
