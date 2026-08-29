@@ -87,6 +87,23 @@ def _product_json_ld(soup: BeautifulSoup) -> dict:
                 return item
     return {}
 
+
+def _product_facts(soup: BeautifulSoup) -> dict[str, str]:
+    """Read the labelled facts list on a detail page.
+
+    An earlier version of this adapter said the words Country and Distillery
+    on these pages belonged to the navigation. They are a labelled list, one
+    label and one value per item. That claim was written without fetching a
+    detail page, because every attempt met a challenge.
+    """
+    facts: dict[str, str] = {}
+    for item in soup.select(".product-facts__item"):
+        label = item.select_one(".product-facts__type")
+        value = item.select_one(".product-facts__data")
+        if label and value:
+            facts[label.get_text(strip=True)] = value.get_text(" ", strip=True)
+    return facts
+
 @register
 class WhiskyExchange:
     name = "whisky_exchange"
@@ -227,6 +244,14 @@ class WhiskyExchange:
             product.description = description
             product.detail_text = description
             product.field_sources["description"] = source
+
+        # The facts list states the country. It is the retailer's own label,
+        # so it is recorded as published: "Caribbean Blend" is a blend and not
+        # a country, and normalising it here would lose what the page said.
+        country = _product_facts(soup).get("Country")
+        if country:
+            product.country_of_origin = country
+            product.field_sources["country_of_origin"] = "css"
 
     def collect(self, fetcher, limit: int) -> tuple[list[Product], int]:
         # The listing gives the size, the strength and the promotion. The

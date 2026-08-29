@@ -211,3 +211,41 @@ def test_a_failed_detail_page_keeps_the_listing_values():
     assert len(products) == expected > 0
     assert all(p.name for p in products)
     assert REGISTRY["whisky_exchange"] is WhiskyExchange
+
+
+def test_detail_page_fills_the_country_from_the_facts_list():
+    from scraper.retailers.whisky_exchange import WhiskyExchange
+
+    product = _card()
+    WhiskyExchange().parse_detail(_detail_html(), product)
+
+    assert product.country_of_origin == "Scotland"
+    assert product.field_sources["country_of_origin"] == "css"
+
+
+def test_the_country_is_recorded_as_the_retailer_publishes_it():
+    from scraper.retailers.whisky_exchange import WhiskyExchange
+
+    # This site files some products under a blend rather than a country.
+    # Recording it as published keeps the page and the row in agreement.
+    html = _detail_html().replace(
+        '<p class="product-facts__data">Scotland</p>',
+        '<p class="product-facts__data">Caribbean Blend</p>',
+    )
+    product = _card()
+    WhiskyExchange().parse_detail(html, product)
+
+    assert product.country_of_origin == "Caribbean Blend"
+
+
+def test_a_page_with_no_facts_list_leaves_the_country_null():
+    from scraper.retailers.whisky_exchange import WhiskyExchange
+
+    html = _detail_html()
+    start = html.index('<ul class="product-facts">')
+    end = html.index("</ul>") + len("</ul>")
+    product = _card()
+
+    WhiskyExchange().parse_detail(html[:start] + html[end:], product)
+
+    assert product.country_of_origin is None
