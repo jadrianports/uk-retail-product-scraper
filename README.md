@@ -231,6 +231,19 @@ No IP rotation, no proxy pool, no CAPTCHA solving, no browser. The tool never
 continues past an explicit rate-limit response, and a JavaScript challenge is
 where it stops.
 
+The line is not "no browser". Rendering a page that a shopper can see is
+ordinary work, and Asda would need it, because its catalogue is client
+rendered. Defeating a control that a site put up to say no is a different act.
+An undetected automation framework and a CAPTCHA solving service both sit on
+that side of the line. Neither is in this tool, and neither is planned.
+
+What happens instead when a host says no: lower the rate, then retry later
+from a clean connection, because the score decays. The measurements below show
+that happening. If the host still says no, the next step is commercial and not
+technical. Ask the retailer for a feed or an agreement. A scraper that wins an
+evasion race still loses the relationship, and a category dataset is worth
+only what its sources will keep supplying.
+
 ## Politeness and reliability
 
 One request per second with jitter, single-threaded. robots.txt is read once
@@ -410,13 +423,36 @@ expression in `enrich.py`. Arithmetic on existing columns is a function, as
 `llm.py`. Set `field_sources` either way, so the new column is auditable on
 the day it lands.
 
-**Keeping it running.** The parts that break are named in the next section,
-and each one is detected by comparing per-field fill rates between runs rather
-than by watching for an exception. Run it on a schedule, keep every run rather
-than overwriting, and compare against the run before. The `scraped_at` column
-and one folder per category already give the shape that needs; a row store
-keyed on `retailer`, `category`, `sku` and `scraped_at` would give price
-history, which this tool does not keep.
+**Keeping it running.** The reason to monitor is short. A broken scraper does
+not raise. It returns nulls, and a null column reaches a client as a statement
+about the category. The goal is to know what broke before the client does.
+
+Run each retailer as its own scheduled job, so one failure does not stop the
+rest. The CLI already works that way, because one invocation reads one
+retailer and one category. Write each run to its own dated folder instead of
+overwriting, so any two runs compare and any run rolls back. The `scraped_at`
+column and one folder per category already give that shape. A row store keyed
+on `retailer`, `category`, `sku` and `scraped_at` would add price history,
+which this tool does not keep.
+
+Four signals are worth an alert:
+
+| Signal | What it means | Action |
+|---|---|---|
+| A field's fill rate falls hard, 95% to 5% | A selector broke | Page a human. The dataset is wrong, not empty. |
+| The newest row is older than the schedule | A run never started | Page a human. A comparison cannot see a run that did not happen. |
+| The median price moves by an order of magnitude | Extraction correct, meaning wrong | Page a human. This is the whisky-labelled-as-gin failure. |
+| A 403 or a challenge on the first request | Bot defence changed | Warn, and stop the run before it spends 25 requests. |
+
+Alerts go wherever the team already reads, so Slack, Telegram or email. An
+alert that nobody sees is not monitoring.
+
+A scheduled container job is the natural host, so Cloud Run Jobs with Cloud
+Scheduler, or the equivalent. One caveat comes out of the measurements below.
+Serverless egress is a datacentre IP range, and the test in this README shows
+a London datacentre address meeting a Cloudflare challenge where a residential
+line got 200. A scheduled cloud job will meet more challenges than a laptop
+does. Plan the egress before the compute.
 
 **What is deliberately absent.** No dashboard, no scheduler, no container, no
 queue, no proxy pool. `uv sync` fetches its own interpreter, so a container
@@ -429,7 +465,10 @@ adds no row and no column to the dataset.
 Layout drift. Morrisons removes its JSON-LD block and the parser returns nulls
 without raising. A per-field fill-rate comparison against the previous run
 catches a partial failure: a fall from 95% to 5% is a broken selector, not a
-change in stock.
+change in stock. Keep the raw page for every run that fails to parse. The
+cache already writes every 200 response to disk, so this is retention and not
+new code. A diff of the old markup against the new names what moved, and it
+turns a guess into a short answer.
 
 Bot defence escalation. Watch the status codes and the response size, and
 alert on the first 403 rather than after 25 wasted requests. The challenge
