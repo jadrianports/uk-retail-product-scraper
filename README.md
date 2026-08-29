@@ -3,43 +3,47 @@
 Captures product attributes for one category from a UK retailer, one row per
 product and one column per attribute, to CSV and JSON.
 
-Two datasets ship: 25 gin products from Morrisons and 24 from The Whisky
-Exchange. Both are 20 columns wide. `data/all_products.csv` holds all 49 rows
-in one file.
+Morrisons gin is the answer to the brief: 25 products, 20 columns. Five more
+datasets ship with it, so the same tool covers three categories on two
+retailers. `data/all_products.csv` holds all 147 rows in one file.
 
 ```
 data/
-  all_products.csv          49 rows, both retailers
-  morrisons/gin/            products.csv  products.json
-  whisky_exchange/gin/      products.csv  products.json
+  all_products.csv            147 rows, 2 retailers, 3 categories
+  morrisons/         gin/ vodka/ rum/     25 products each
+  whisky_exchange/   gin/ vodka/ rum/     24 products each
 ```
 
 ## What the data shows
 
-| | Morrisons | The Whisky Exchange |
+The specialist looks far dearer in all three categories:
+
+| Median price per litre | Morrisons | The Whisky Exchange | Gap |
+|---|---|---|---|
+| Gin | £29.29 | £50.51 | +72% |
+| Vodka | £23.75 | £45.36 | +91% |
+| Rum | £27.86 | £68.18 | +145% |
+
+Four bottles are the same product at the same size on both sites. They say
+something else:
+
+| Bottle, 70cl | Morrisons | The Whisky Exchange |
 |---|---|---|
-| Products | 25 | 24 |
-| Median price per litre | £29.29 | £50.51 |
-| Distinct brands | 15 | 21 |
-| Sizes sold | 350, 500, 700, 1000, 1200 ml | 500, 700, 1000 ml |
+| Hendrick's Gin | £33.50 | £29.95 |
+| Tanqueray London Dry | £21.00 | £21.50 |
+| Grey Goose Vodka | £42.50 | £39.95 |
+| Kraken Black Spiced Rum | £21.00 | £28.95 |
 
-The specialist reads as 72% dearer. The two brands that both retailers carry
-say something else, at the same 70cl size:
+The specialist is cheaper on two, level on one and 38% dearer on one. So the
+median gap is range composition and not a price difference on the same
+product. The specialist stocks premium products rather than dearer copies. A
+buyer who read the medians alone would reach the wrong conclusion. A buyer who
+read the four bottles alone would reach a different wrong one.
 
-| Brand | Morrisons | The Whisky Exchange |
-|---|---|---|
-| Hendrick's | £33.50 | £29.95 |
-| Tanqueray | £21.00 | £21.50 |
-
-So the gap is range composition and not like-for-like pricing. The specialist
-stocks premium products, not dearer copies of the same product. A buyer who
-compared the two medians alone would reach the wrong conclusion.
-
-The brand count needs care. Morrisons publishes 16 brand strings for 15
-brands, because `Fever Tree` and `Fever-Tree` are the same company. The tool
+Brand counts need care. Morrisons publishes 16 brand strings for 15 gin
+brands, because `Fever Tree` and `Fever-Tree` are one company. The tool
 records what the retailer publishes and does not normalise, so a count of
-distinct brands has to normalise first. The two shared brands are the same
-either way.
+distinct brands has to normalise first.
 
 <details>
 <summary>Why the dataset needs a price per litre column</summary>
@@ -66,7 +70,7 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"   # Windows
 git clone https://github.com/jadrianports/uk-retail-product-scraper
 cd uk-retail-product-scraper
 uv sync                                   # 8 seconds, pinned by uv.lock
-uv run pytest                             # 135 passed
+uv run pytest                             # 138 passed
 uv run scrape --limit 5 --out out/try1    # a live run, no setup needed
 ```
 
@@ -114,8 +118,8 @@ ERROR www.thewhiskyexchange.com served a JavaScript challenge. This tool does
 ```
 
 The committed datasets were captured from a residential connection outside the
-UK. A UK residential line is the least suspicious traffic a UK retailer sees,
-so this step is more likely to succeed from one than it was here.
+UK. A UK residential line is the least suspicious traffic a UK retailer sees. This
+step is more likely to succeed from one than it was here.
 
 </details>
 
@@ -126,12 +130,13 @@ would add a large dependency for no extra data.
 
 The two retailers need different routes. Morrisons publishes JSON-LD on every
 product page, so that adapter reads the listing and then one page per product.
-The Whisky Exchange publishes none on its listing, but its cards already carry
-the size, the strength and the promotion, which Morrisons does not. Its detail
-pages then carry a JSON-LD Product schema of their own. So one adapter takes
-everything from the detail page, and the other takes the cheap fields from the
-listing and only the brand and the description from the detail page. Both cost
-about 25 requests.
+The Whisky Exchange publishes none on its listing. Its cards carry the size,
+the strength and the promotion instead, which Morrisons does not. Its detail
+pages then hold a JSON-LD schema and a labelled facts list of their own.
+
+So one adapter takes everything from the detail page. The other takes the
+cheap fields from the listing, then the brand, the description and the country
+from the detail page. Both cost about 25 requests.
 
 Both meet at `collect(fetcher, limit) -> tuple[list[Product], int]`. The
 Protocol promises the result and not the route, so the CLI never branches on
@@ -145,7 +150,7 @@ words from the start of the name. It stayed approximate: `Roku Noryo Tea
 Edition Gin` gave `Roku Noryo Tea`, where the brand is `Roku`. The detail page
 carries a real brand field, so that guess is gone and 9 of 24 brand values
 changed. `Hendrick's Orbium Gin` is now branded `Hendrick's` rather than
-`Hendrick's Orbium`, which is also why the distinct brand count for this
+`Hendrick's Orbium`. That is also why the distinct brand count for this
 retailer fell from 23 to 21.
 
 The card holds more than the name and the price. `sku` comes from the URL,
@@ -167,11 +172,12 @@ wrong value was caught rather than shipped.
 
 Morrisons fills eight attributes 25 of 25. The rest are partial:
 `description` 22, `flavour_style` 22, `abv_percent` 20, `pack_type` 17,
-`country_of_origin` 13, `price_was` 11. Two columns are empty on every Whisky
-Exchange row: `pack_type` and `country_of_origin`. Both are read from labelled
-page text, and that retailer writes prose with no labels. The Monkey 47
-description says the gin is produced in Germany, and a label pattern will not
-read that, so the column holds a null rather than a guess.
+`country_of_origin` 13, `price_was` 11.
+
+One column is empty on every Whisky Exchange row. That site publishes no
+packaging field anywhere on a product page, so `pack_type` holds a null. Its
+`country_of_origin` fills 23 of 24, from a labelled facts list on the detail
+page.
 
 The harder attributes are the partial ones. None of them sits in a clean field.
 `abv_percent`, `pack_type` and `country_of_origin` are parsed out of visible
@@ -180,9 +186,10 @@ page text, which is why the origin pattern once read `United Kingdom Brand J`.
 <details>
 <summary>Full provenance counts, and what an audit found</summary>
 
-The 25 Morrisons rows hold 361 values: `jsonld` 172, `regex` 75, `missing` 45,
-`derived` 25, `css` 22, `llm` 22. The 24 Whisky Exchange rows hold 359:
-`css` 151, `missing` 94, `jsonld` 46, `derived` 24, `regex` 24, `llm` 20.
+The 25 Morrisons gin rows hold 361 values: `jsonld` 172, `regex` 75,
+`missing` 45, `derived` 25, `css` 22, `llm` 22. The 24 Whisky Exchange gin
+rows hold 359: `css` 174, `missing` 71, `jsonld` 46, `derived` 24, `regex` 24,
+`llm` 20.
 
 An audit re-parsed all 25 Morrisons rows with independent code. Zero parser
 defects, and three things no test could find.
@@ -221,15 +228,15 @@ both wrong about what the page was. Extraction correct, meaning wrong.
 ## Anti-bot and rate limiting
 
 robots.txt was read before any code was written. Morrisons permits browse and
-denies `/api/`; the denied API is easier to parse than the HTML, and the tool
+denies `/api/`. The denied API is easier to parse than the HTML, and the tool
 never calls it. Sites with unreadable rules were rejected.
 
 One request per second with jitter, single-threaded. robots.txt is read once
 per host. `Retry-After` is honoured and capped at 120 seconds.
 
 Morrisons returns 403 to an honest agent on every product page. The tool sends
-a browser agent with its own name and a contact address appended, because
-robots.txt permits those paths while the filter reads one header at a time.
+a browser agent with its own name and a contact address appended. robots.txt
+permits those paths, and the filter reads one header at a time.
 The counter-argument is that a block is a block, and a production deployment
 should hold the retailer's written agreement instead.
 
@@ -254,18 +261,24 @@ Four measurements on 2026-08-29 from one machine:
 | The same line, after about 26 requests | 200 | 403 challenge | 403 challenge |
 | A VPN exit, London datacentre | 200 | 403 challenge | 403 challenge |
 | The residential line again, VPN off | 200 | 200 | 200 |
+| The same line, after about 75 requests | 200 | 403 challenge | not requested |
+| The same line, 15 minutes later | 200 | 200 | 200 |
 
-Row two is a flag the tool earned. Row three is the lesson: a VPN exit is a
-datacentre IP, and Cloudflare scores those badly, so the geography improved and
-the IP class got worse. A 403 from a VPN proves nothing about the site's
-policy. Row four is the score decaying, which is what row two predicted.
+Rows two and five are flags the tool earned. Row three is the lesson. A VPN
+exit is a datacentre IP, and Cloudflare scores those badly. The geography
+improved and the IP class got worse, so a 403 from a VPN proves nothing about
+the site's policy. Rows four and six are the score decaying. The second decay
+took about fifteen minutes.
 
 Row four also corrected this file. Every earlier version said the detail pages
-held no product data, and that the site published no JSON-LD. Both claims came
-from the listing page alone, because every attempt at a detail page had met a
-challenge. When one finally returned 200 it held a full JSON-LD Product schema,
-with a brand field and a description. Two empty columns filled and nine brand
-values were corrected.
+held no product data, and that the site published no JSON-LD. It also said the
+words Country and Distillery on those pages belonged to the navigation. All
+three claims came from the listing page alone, because every attempt at a
+detail page had met a challenge.
+
+The detail page holds a JSON-LD Product schema with a brand and a description,
+and a labelled facts list that states the country. Three empty columns filled
+and nine brand values were corrected.
 
 The lesson is the one this project keeps relearning. A claim about what a page
 does not contain needs a fetch of that page. Until then it is an assumption,
@@ -327,10 +340,10 @@ products unenriched.
 
 ## Tests
 
-135 tests, offline, about one second. The suite makes no network call, even
-with a real key in `.env`. It covers both parsers, the ABV, size and origin
-patterns, price per litre, the promotion price, the robots paths, the challenge
-detector, the cache, the provider picker and the quota breaker.
+138 tests, offline, about one second. The suite makes no network call, even
+with a real key in `.env`. It covers both parsers and every extraction pattern.
+It also covers the robots paths, the challenge detector, the cache, the
+provider picker and the quota breaker.
 
 A test proves the parser did what it was told. It cannot prove the result means
 what the column says, because the fixture agrees with the code that made it.
@@ -341,18 +354,29 @@ uv run python scripts/audit.py            # the committed datasets
 uv run python scripts/audit.py out/try1   # any run
 ```
 
-It checks for a name that contradicts its category, a strength or size or price
-per litre outside range, a derived value that no longer matches its inputs, an
-over-captured text field, a duplicate product, a promotion cheaper than the
-current price, a brand this tool guessed that is absent from the name, and one
-brand under two spellings. It separates a note from a defect, and only a defect
-exits 1.
+It checks eleven things. A listing mostly named as another category. A
+strength, a size or a price per litre outside range. A derived value that no
+longer matches its inputs. An over-captured text field. A duplicate product. A
+promotion cheaper than the current price. A brand this tool guessed that is
+absent from the name. One brand under two spellings. And the CSV disagreeing
+with the JSON beside it.
 
-All six Morrisons categories were pulled live and put through it. 36 rows
-across gin, vodka, whisky, rum, brandy and tequila raised no defect, and
-`name`, `brand`, `price_gbp`, `size_ml` and `price_per_litre` filled 36 of 36.
-It also found an error in this file: the brand count for Morrisons read 16
-where the retailer publishes 16 strings for 15 brands.
+A note and a defect are separated. Two spellings of one brand is true of the
+retailer's own data, so it is reported and does not fail. Only a defect exits
+1.
+
+It ran over all 147 shipped rows and raised no defect. It raised four notes.
+Two brands carry a second spelling. Two listings hold one product named as
+another category, such as a rum finished in whisky casks.
+
+It also found two errors in this work. The brand count in this file read 16
+where the retailer publishes 16 strings for 15 brands. A stale CSV also sat beside a fresh
+JSON once. A copy of one file failed while its pair succeeded, so the two
+shipped formats disagreed. Each file read as correct on
+its own.
+
+All six Morrisons categories were pulled live and checked the same way. 36
+rows across gin, vodka, whisky, rum, brandy and tequila raised no defect.
 
 ## Extending it to more retailers and more attributes
 
@@ -414,8 +438,8 @@ person to approve.
 
 It should not repair the run. A selector a model invents cannot be checked
 without the correct result, and the failure destroyed that. This project has
-the failure twice: a country read from a sentence about an ingredient, and a
-redirect that served whisky where the code expected gin. Both are valid output
+the failure twice. A country was read from a sentence about an ingredient. A
+redirect served whisky where the code expected gin. Both are valid output
 with wrong meaning, and both would pass a self-repair that only asks whether
 products were found.
 
