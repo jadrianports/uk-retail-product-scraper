@@ -38,3 +38,41 @@ def test_parse_rate_gate():
     assert check_parse_rate(parsed=20, expected=25) is True
     assert check_parse_rate(parsed=19, expected=25) is False
     assert check_parse_rate(parsed=0, expected=0) is False
+
+
+def test_combine_joins_every_retailer_into_one_file(tmp_path):
+    from scraper.export import COLUMNS, combine_datasets, write_outputs
+    from scraper.models import Product
+
+    def row(retailer, category, name):
+        return Product(
+            retailer=retailer,
+            category=category,
+            product_url=f"https://example.test/{name}",
+            scraped_at="2026-08-29T00:00:00Z",
+            name=name,
+        )
+
+    write_outputs([row("morrisons", "gin", "A Gin")], tmp_path / "morrisons" / "gin")
+    write_outputs([row("morrisons", "vodka", "A Vodka")], tmp_path / "morrisons" / "vodka")
+    write_outputs([row("whisky_exchange", "gin", "B Gin")], tmp_path / "whisky_exchange" / "gin")
+
+    assert combine_datasets(tmp_path) == 3
+
+    import csv
+
+    with (tmp_path / "all_products.csv").open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+
+    # One schema for every retailer is what makes the files concatenate.
+    assert list(rows[0]) == COLUMNS
+    assert {r["retailer"] for r in rows} == {"morrisons", "whisky_exchange"}
+    assert {r["category"] for r in rows} == {"gin", "vodka"}
+
+
+def test_combine_reports_an_empty_data_directory(tmp_path):
+    from scraper.export import combine_datasets
+
+    # Nothing to join is a fault worth reporting, not a silent empty file.
+    assert combine_datasets(tmp_path) == 0
+    assert not (tmp_path / "all_products.csv").exists()

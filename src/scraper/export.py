@@ -37,3 +37,31 @@ def check_parse_rate(parsed: int, expected: int) -> bool:
         )
         return False
     return True
+
+
+COMBINED_NAME = "all_products.csv"
+
+
+def combine_datasets(data_dir: Path) -> int:
+    """Join every per-category dataset into one file for cross-retailer work.
+
+    The schema is the same for every retailer, so the files concatenate.
+    The retailer and category columns keep each row traceable to its source.
+    Returns the number of rows written.
+    """
+    rows: list[dict] = []
+    for path in sorted(data_dir.glob("*/*/products.csv")):
+        with path.open(encoding="utf-8", newline="") as handle:
+            rows.extend(csv.DictReader(handle))
+
+    if not rows:
+        log.error("No dataset was found under %s.", data_dir)
+        return 0
+
+    target = data_dir / COMBINED_NAME
+    with target.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+    log.info("Wrote %s rows from %s files to %s", len(rows), len(set(r["retailer"] for r in rows)), target)
+    return len(rows)
